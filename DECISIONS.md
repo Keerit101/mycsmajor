@@ -66,7 +66,8 @@ Choices made while building the site without asking, and the reasoning behind ea
 ## Tooling
 
 - **Vite 8** (latest at build time) with no other build dependencies. `playwright-core` is a dev dependency for the check script; it drives the Edge or Chrome already installed rather than downloading a browser.
-- **Git**: its own repository in this folder, LF line endings via `.gitattributes`, one commit per finished page.
+- **Git**: its own repository in this folder, LF line endings via `.gitattributes`, one commit per finished page (round 1) and per task (round 2). All commits use the Keerit101 name and GitHub no-reply email, with no AI credit lines.
+- **GitHub**: published on 23 October 2026 as the public repo **Keerit101/mycsmajor** (`gh repo create --public --source . --push`), as the brief asked. Before pushing, the full history was scanned for personal details (personal email, school, city, LinkedIn), secrets and credit trailers; none were found. The site and repo deliberately say nothing about the owner's school or location. **No license file** was added, so the code and content stay all rights reserved, which fits a site whose content is the product (see TODO.md). The repo's website field is left empty until the domain is live.
 
 ## Quality (round 2)
 
