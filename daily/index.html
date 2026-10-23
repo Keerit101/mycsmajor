@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Daily CS Problem and Streak Tracker | mycsmajor</title>
+    <meta name="description" content="A new computer science problem every day: Python, logic and data structures, with hints, hidden solutions and a streak counter saved in your browser." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <div class="wrap">
+        <header class="page-head">
+          <span class="eyebrow">Daily Problem</span>
+          <h1>Today's problem</h1>
+          <p class="lede">One problem a day in Python, logic or data structures. Try it first, open the hint if you are stuck, and check the solution when you are done.</p>
+        </header>
+
+        <section aria-label="Your streak">
+          <div class="streak" data-streak>
+            <div class="stat stat-current"><span class="stat-value" data-stat="current">0</span><span class="stat-label">Current streak</span></div>
+            <div class="stat"><span class="stat-value" data-stat="best">0</span><span class="stat-label">Best streak</span></div>
+            <div class="stat"><span class="stat-value" data-stat="total">0</span><span class="stat-label">Problems solved</span></div>
+          </div>
+        </section>
+
+        <div data-today>
+          <noscript><p class="card">The daily problem needs JavaScript to pick today's question. Please enable it to see the problem.</p></noscript>
+        </div>
+
+        <section aria-labelledby="archive-title">
+          <h2 id="archive-title">Recent problems</h2>
+          <p class="muted">Missed a day? The last two weeks are here. Only today's problem counts towards your streak.</p>
+          <ul class="archive" data-archive></ul>
+        </section>
+
+        <section class="prose" aria-labelledby="how-title">
+          <h2 id="how-title">How it works</h2>
+          <ul>
+            <li>A new problem appears at midnight in your time zone.</li>
+            <li>Press "I solved it" once you have a working answer. Solving on back-to-back days builds your streak; missing a day resets it.</li>
+            <li>Your streak is saved only in this browser using localStorage. There are no accounts and nothing is sent to us. Clearing your browser data or switching devices starts you from zero.</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+    <!--footer-->
+    <script type="module" src="/src/js/daily.js"></script>
+  </body>
+</html>
