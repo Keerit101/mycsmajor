@@ -845,3 +845,17 @@ details.reveal > .reveal-body > :last-child {
 .below-card {
   margin-top: 0.9rem;
 }
+
+.gear-section .grid {
+  margin-top: 1.5rem;
+}
+
+.pick {
+  display: flex;
+  flex-direction: column;
+}
+
+.pick .btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
