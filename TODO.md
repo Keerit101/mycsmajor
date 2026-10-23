@@ -21,7 +21,19 @@
 
   For each one, swap the `href` for your affiliate URL, change `rel="nofollow noopener"` to `rel="sponsored nofollow noopener"`, and remove `data-affiliate="TODO"` and the `<!-- TODO: affiliate link -->` comment above it.
 - [ ] **Check the picks are still current** and that you are happy recommending them. They are product lines (for example "Sony WH-1000X series"), not specific models or prices.
-- [ ] Some programs (Amazon's included) require specific disclosure wording. Check the disclosure on the gear page and in `src/partials/footer.html` against your program's rules.
+- [ ] Some programs (Amazon's included) require specific disclosure wording. Check the disclosure on the gear page, in `src/partials/footer.html` and on `/affiliate-disclosure/` against your program's rules. Amazon Associates, for example, requires the sentence "As an Amazon Associate I earn from qualifying purchases."
+- [ ] **Read the affiliate disclosure page** (`affiliate-disclosure/index.html`). It makes promises on your behalf (commissions never decide recommendations, ads will be labelled and kept away from solutions). Edit anything you are not comfortable committing to, and update its "Last updated" date. Once real affiliate links are live, delete the sentence saying buy links still point to the makers' sites.
+
+## Ads (later, for example Google AdSense)
+
+Empty, hidden ad slots are already on the home page, every problem page, the problem index, every book chapter and the middle of Cyber Brief. Search for `AD SLOT` to find them. Nothing loads until you finish these steps:
+
+- [ ] **Apply for AdSense** with the live site. Google usually wants a site with real content and some traffic, and reviews it before approving.
+- [ ] **Consent banner first.** Google requires a Google-certified consent management platform (CMP) for visitors in the EEA, the UK and Switzerland. AdSense offers its own ("Privacy & messaging"). Set it up before turning ads on.
+- [ ] **Update the privacy policy** (`privacy/index.html`): it currently promises no cookies, no trackers and no ads. AdSense uses cookies, so the policy must change *before* ads go live. The affiliate disclosure also says the policy will be updated first.
+- [ ] **Turn the slots on** in `src/js/ads.js`: set `ADSENSE_CLIENT` to your publisher ID (`ca-pub-...`) and add an ad unit ID for each placement you want in `SLOT_IDS`. Placements without an ID stay hidden.
+- [ ] **Add `public/ads.txt`** with the exact line AdSense shows you in its dashboard.
+- [ ] Re-run `npm run build` and `npm run check` after enabling, and check the pages still feel fast on a phone.
 
 ## Optional
 

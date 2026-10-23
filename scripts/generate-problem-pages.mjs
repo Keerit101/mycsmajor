@@ -88,6 +88,9 @@ function problemPage(p, trackProblems) {
         </div>
         <p class="small muted below-card">Want a problem like this every day? <a href="/daily/">See today's problem</a> and keep a streak going.</p>
 
+        <!-- AD SLOT: problem-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="problem-end" aria-label="Advertisement" hidden></aside>
+
         <nav class="chapter-nav" aria-label="More ${p.topic} problems">
           ${navLink(prev, 'Easier', 'btn-ghost') || `<a class="btn btn-ghost" href="/problems/">All problems</a>`}
           ${navLink(next, 'Harder', '') || `<a class="btn" href="/daily/">Today's problem</a>`}
@@ -130,6 +133,9 @@ ${rows}
         <ul class="toc" aria-label="Tracks">
 ${TRACKS.map((t) => `          <li><a href="#${t.key}">${t.name}</a></li>`).join('\n')}
         </ul>
+
+        <!-- AD SLOT: problems-index. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="problems-index" aria-label="Advertisement" hidden></aside>
 
 ${sections}
       </div>`,

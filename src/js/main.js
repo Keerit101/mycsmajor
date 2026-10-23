@@ -1,6 +1,7 @@
 import '@fontsource-variable/inter';
 import '../styles.css';
 import { markScrollableCode } from './scrollable.js';
+import { initAds } from './ads.js';
 
 const toggle = document.querySelector('.menu-toggle');
 const nav = document.getElementById('site-nav');
@@ -17,3 +18,5 @@ for (const el of document.querySelectorAll('[data-year]')) {
 }
 
 markScrollableCode();
+
+initAds();
