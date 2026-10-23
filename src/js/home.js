@@ -8,3 +8,5 @@ const slot = document.querySelector('[data-today]');
 slot.innerHTML = problemCard(problemFor(today), today);
 mountSolveControls(slot.querySelector('[data-solve]'));
 markScrollableCode();
+
+document.body.classList.add('today-ready');

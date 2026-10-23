@@ -64,3 +64,12 @@ Choices made while building the site without asking, and the reasoning behind ea
 
 - **Vite 8** (latest at build time) with no other build dependencies. `playwright-core` is a dev dependency for the check script; it drives the Edge or Chrome already installed rather than downloading a browser.
 - **Git**: its own repository in this folder, LF line endings via `.gitattributes`, one commit per finished page.
+
+## Quality (round 2)
+
+- **Lighthouse (mobile settings, run locally against `npm run preview` on 23 October 2026)**: Home, Daily, a problem page, two book chapters, About and the affiliate disclosure all scored **100** for performance, accessibility, best practices and SEO, as did Gear, Cyber Brief and the problem index in the first run. Real-world scores on Vercel will differ a little with network conditions.
+- **Two fixes came out of it.** Home and Daily scored 77 and 81 on performance, because today's problem is inserted by JavaScript and pushed the content below it down (layout shift 0.59). The content below the problem and the footer now stay invisible until the problem is in place (`has-today` / `today-ready` classes), with a CSS fallback that reveals them after 3 seconds if the script fails. The headline still paints immediately. Book chapters shifted when the Inter font arrived, so the Latin subset of Inter is now preloaded on every page by a small build plugin (`preloadFont` in `vite.config.js`). Layout shift is now 0 on all audited pages.
+- **Accessibility is checked on every page, not just a sample.** `npm run check` now also runs axe-core's WCAG 2.1 A and AA rules on all 113 pages at 320, 360 and 1366px, with every hint and solution opened. All pass.
+- **Keyboard focus**: every focusable element type (skip link, menu, links, cards, buttons, `<summary>`, form fields and scrollable code blocks) shows a 2px blue focus ring, checked by tabbing through the pages.
+- **Contrast** (WCAG AA needs 4.5:1 for body text): text #111 on the background is about 18:1, the muted grey 8.4:1, the blue accent 6.4:1 on the background and 5.8:1 on the pale blue, and white on blue buttons 6.7:1.
+- **Alt text**: the site has no `<img>` elements; the only images are the favicon and the social share image, which has `og:image:alt` and `twitter:image:alt` text.

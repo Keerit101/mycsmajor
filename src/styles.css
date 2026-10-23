@@ -896,3 +896,25 @@ details.reveal > .reveal-body > :last-child {
 .ad-slot[hidden] {
   display: none !important;
 }
+
+/* Home and Daily insert today's problem with JavaScript. Until it is in
+   place, keep what sits below it invisible so nothing jumps (layout shift).
+   If the script fails, the animation reveals everything after 3 seconds. */
+
+.js .has-today [data-today] ~ *,
+.js .has-today .site-footer {
+  visibility: hidden;
+  animation: reveal 0s linear 3s forwards;
+}
+
+.js .has-today.today-ready [data-today] ~ *,
+.js .has-today.today-ready .site-footer {
+  visibility: visible;
+  animation: none;
+}
+
+@keyframes reveal {
+  to {
+    visibility: visible;
+  }
+}

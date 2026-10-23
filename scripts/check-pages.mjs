@@ -1,5 +1,6 @@
 // Loads every built page at phone and desktop widths and reports
-// horizontal overflow, console errors and failed requests.
+// horizontal overflow, console errors, failed requests and accessibility
+// problems found by axe-core (WCAG 2.1 A and AA rules).
 //
 // Usage: npm run build && npm run preview  (in another terminal)
 //        node scripts/check-pages.mjs [baseUrl] [screenshotDir]
@@ -7,12 +8,14 @@
 // Needs Microsoft Edge or Google Chrome installed (uses playwright-core).
 
 import { chromium } from 'playwright-core';
-import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { join, relative } from 'node:path';
 
 const base = process.argv[2] ?? 'http://localhost:4173';
 const shotDir = process.argv[3];
 const dist = join(import.meta.dirname, '..', 'dist');
+const axeSource = readFileSync(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
 
 const VIEWPORTS = [
   { name: 'phone-s', width: 320, height: 640 },
@@ -71,12 +74,21 @@ for (const vp of VIEWPORTS) {
       return { scroll: document.documentElement.scrollWidth, width, wide };
     });
 
+    await page.addScriptTag({ content: axeSource });
+    const a11y = await page.evaluate(async () => {
+      const result = await window.axe.run(document, {
+        runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] },
+      });
+      return result.violations.map((v) => `${v.id} (${v.nodes.length}): ${v.nodes[0].target.join(' ')}`);
+    });
+
     const status = path === '/404.html' ? 200 : res.status();
-    const bad = status >= 400 || errors.length || overflow.scroll > overflow.width || overflow.wide.length;
+    const bad =
+      status >= 400 || errors.length || overflow.scroll > overflow.width || overflow.wide.length || a11y.length;
     if (bad) problems++;
     console.log(
       `${bad ? 'FAIL' : 'ok  '} ${vp.name.padEnd(7)} ${path.padEnd(42)} ` +
-        (bad ? JSON.stringify({ status, errors, overflow }) : ''),
+        (bad ? JSON.stringify({ status, errors, overflow, a11y }) : ''),
     );
 
     if (shotDir) {

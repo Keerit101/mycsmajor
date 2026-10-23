@@ -30,7 +30,14 @@ With `npm run preview` running in another terminal:
 npm run check
 ```
 
-This opens every built page in headless Edge or Chrome at 320px, 360px and 1366px wide. It fails if a page scrolls sideways, logs a console error or has a broken request. To save screenshots, pass a base URL and an output folder:
+This opens every built page in headless Edge or Chrome at 320px, 360px and 1366px wide. It fails if a page scrolls sideways, logs a console error, has a broken request, or breaks a WCAG 2.1 AA rule checked by axe-core.
+
+Two more checks run without a browser:
+
+```sh
+npm test            # runs every Python solution against its examples (needs Python 3)
+npm run check:seo   # titles, descriptions, canonicals, social tags, sitemap coverage
+``` To save screenshots, pass a base URL and an output folder:
 
 ```sh
 node scripts/check-pages.mjs http://localhost:4173 ./screenshots

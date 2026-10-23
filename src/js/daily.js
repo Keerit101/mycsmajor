@@ -42,3 +42,5 @@ function renderArchive(state) {
 mountSolveControls(todaySlot.querySelector('[data-solve]'), renderStats);
 renderArchive(getStreak(today));
 markScrollableCode();
+
+document.body.classList.add('today-ready');

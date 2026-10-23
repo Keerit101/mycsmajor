@@ -70,6 +70,25 @@ function layout() {
   };
 }
 
+// Preloads the Latin subset of Inter so text does not reflow when it arrives.
+// The file name has a content hash, so it is looked up in the finished bundle.
+function preloadFont() {
+  return {
+    name: 'mycsmajor-preload-font',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html, ctx) {
+        const font = Object.keys(ctx.bundle ?? {}).find((f) => /inter-latin-wght-normal-.*\.woff2$/.test(f));
+        if (!font) return html;
+        return html.replace(
+          '</head>',
+          `  <link rel="preload" href="/${font}" as="font" type="font/woff2" crossorigin>\n  </head>`,
+        );
+      },
+    },
+  };
+}
+
 // Writes sitemap.xml for every page that is not marked noindex.
 function sitemap() {
   return {
@@ -95,7 +114,7 @@ ${urls.join('\n')}
 }
 
 export default defineConfig({
-  plugins: [layout(), sitemap()],
+  plugins: [layout(), preloadFont(), sitemap()],
   build: {
     rolldownOptions: {
       input: Object.fromEntries(
