@@ -7,7 +7,10 @@ Choices made while building the site without asking, and the reasoning behind ea
 - **Multi-page app, one HTML file per page.** Every page is real HTML at a clean URL (`/daily/`, `/python-book/loops/`), so search engines can read it without running JavaScript, and each page gets its own title and description.
 - **Shared layout through a small Vite plugin** (`vite.config.js`) instead of a template engine. It injects `src/partials/head.html`, `header.html` and `footer.html`, marks the current menu item, and fills in the canonical URL and Open Graph tags from each page's title and description. No extra dependencies.
 - **`sitemap.xml` is generated at build time** from the list of pages, so it can never miss a page. Pages marked `noindex` (only the 404) are left out.
-- **`vercel.json` sets `trailingSlash: true`** so `/daily` redirects to `/daily/`, matching the canonical URLs.
+- **`vercel.json`** sets `cleanUrls` (so `/404.html` is served as `/404` and `.html` never appears in URLs) and `trailingSlash: true` (so `/daily` redirects to `/daily/`, matching the canonical URLs). It pins `npm ci` and `npm run build` with output in `dist/`. Vercel serves `dist/404.html` automatically for any missing page, so no extra route is needed.
+- **Security headers** on every response: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY` and a `Permissions-Policy` that turns off camera, microphone and location. Vercel adds HTTPS and HSTS itself. I did **not** add a Content-Security-Policy yet: AdSense and analytics would each need it changed, and a wrong CSP silently breaks pages. Worth adding once those decisions are made.
+- **`engines.node` is `>=20.19`**, the minimum Vite 8 supports, so Vercel picks a compatible Node version.
+- **Verified from a fresh clone**: `npm ci && npm run build` produces a complete `dist/` (113 pages, sitemap, robots.txt, share image, favicon, 404) with no other steps.
 
 ## Daily problems
 

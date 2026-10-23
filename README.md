@@ -46,7 +46,7 @@ node scripts/check-pages.mjs http://localhost:4173 ./screenshots
 ## Deploy to Vercel
 
 1. Push this repo to GitHub.
-2. In Vercel, choose **Add New > Project** and import the repo. It reads `vercel.json`, so the defaults are already right: build command `npm run build`, output directory `dist`.
+2. In Vercel, choose **Add New > Project** and import the repo. It reads `vercel.json`, so the settings are already right: install `npm ci`, build `npm run build` (which also generates the 90 problem pages), output `dist`, clean URLs with trailing slashes, the 404 page and security headers.
 3. Deploy. Every push to `main` then deploys automatically.
 4. In **Project > Settings > Domains**, add `mycsmajor.com` (and `www.mycsmajor.com` redirecting to it), then set the DNS records Vercel shows you at your domain registrar.
 
