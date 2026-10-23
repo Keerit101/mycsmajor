@@ -18,25 +18,25 @@
         <h2>Lists</h2>
         <p>A list is an ordered collection, written with square brackets:</p>
         <pre><code>langs = ["Python", "C", "Java"]
-print(langs[0])    # Python  (counting starts at 0)
-print(langs[-1])   # Java    (negative counts from the end)
+print(langs[0])  # Python  (counting starts at 0)
+print(langs[-1])  # Java    (negative counts from the end)
 print(len(langs))  # 3</code></pre>
 
         <h2>Changing a list</h2>
-        <pre><code>langs.append("Rust")    # add to the end
-langs.insert(1, "Go")   # add at position 1
-langs.remove("C")       # remove by value
-last = langs.pop()      # remove and return the last item
-langs[0] = "Python 3"   # replace an item
+        <pre><code>langs.append("Rust")  # add to the end
+langs.insert(1, "Go")  # add at position 1
+langs.remove("C")  # remove by value
+last = langs.pop()  # remove and return the last item
+langs[0] = "Python 3"  # replace an item
 print(langs)</code></pre>
         <p>Use <code>in</code> to check membership: <code>if "Go" in langs:</code>.</p>
 
         <h2>Slicing</h2>
         <p>A slice takes part of a list (or a string) with <code>[start:stop]</code>. As with <code>range</code>, the stop index is not included.</p>
         <pre><code>nums = [10, 20, 30, 40, 50]
-nums[1:3]   # [20, 30]
-nums[:2]    # [10, 20]
-nums[3:]    # [40, 50]
+nums[1:3]  # [20, 30]
+nums[:2]  # [10, 20]
+nums[3:]  # [40, 50]
 nums[::-1]  # [50, 40, 30, 20, 10]</code></pre>
 
         <h2>Looping over a list</h2>
@@ -60,11 +60,11 @@ passed = [s for s in scores if s &gt;= 70]
         <h2>Dictionaries</h2>
         <p>A dictionary maps <em>keys</em> to <em>values</em>, so you can look things up by name instead of position:</p>
         <pre><code>student = {"name": "Ada", "year": 2, "major": "CS"}
-print(student["name"])        # Ada
-student["year"] = 3           # update
-student["gpa"] = 3.8          # add a new key
-print(student.get("minor"))   # None instead of an error
-print("major" in student)     # True</code></pre>
+print(student["name"])  # Ada
+student["year"] = 3  # update
+student["gpa"] = 3.8  # add a new key
+print(student.get("minor"))  # None instead of an error
+print("major" in student)  # True</code></pre>
         <p>Looking up a key with square brackets raises a <code>KeyError</code> if it is missing. <code>.get()</code> returns <code>None</code>, or a default you choose: <code>student.get("minor", "none")</code>.</p>
 
         <h2>Looping over a dictionary</h2>
@@ -87,9 +87,9 @@ print(counts)
           <details class="reveal">
             <summary>Show answer</summary>
             <div class="reveal-body">
-              <pre><code>print(max(nums))                      # 17
-print(min(nums))                      # 2
-print(sorted(nums, reverse=True))     # [17, 9, 4, 2]</code></pre>
+              <pre><code>print(max(nums))  # 17
+print(min(nums))  # 2
+print(sorted(nums, reverse=True))  # [17, 9, 4, 2]</code></pre>
               <p><code>sorted</code> returns a new list. <code>nums.sort()</code> sorts the original list in place instead.</p>
             </div>
           </details>

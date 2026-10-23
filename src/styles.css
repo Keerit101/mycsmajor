@@ -859,3 +859,7 @@ details.reveal > .reveal-body > :last-child {
   margin-top: auto;
   align-self: flex-start;
 }
+
+.notice + .toc {
+  margin-top: 1.25rem;
+}

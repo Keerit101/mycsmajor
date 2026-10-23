@@ -15,6 +15,7 @@ const shotDir = process.argv[3];
 const dist = join(import.meta.dirname, '..', 'dist');
 
 const VIEWPORTS = [
+  { name: 'phone-s', width: 320, height: 640 },
   { name: 'phone', width: 360, height: 780 },
   { name: 'desktop', width: 1366, height: 900 },
 ];

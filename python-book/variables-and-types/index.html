@@ -43,12 +43,12 @@ print(score)  # 15</code></pre>
 &lt;class 'str'&gt;</code></pre>
 
         <h2>Working with numbers</h2>
-        <pre><code>print(10 + 3)   # 13
-print(10 - 3)   # 7
-print(10 * 3)   # 30
-print(10 / 3)   # 3.3333333333333335
+        <pre><code>print(10 + 3)  # 13
+print(10 - 3)  # 7
+print(10 * 3)  # 30
+print(10 / 3)  # 3.3333333333333335
 print(10 // 3)  # 3
-print(10 % 3)   # 1
+print(10 % 3)  # 1
 print(2 ** 10)  # 1024</code></pre>
         <p><code>/</code> always gives a float. Floats are stored in binary, so some decimals cannot be exact: <code>0.1 + 0.2</code> gives <code>0.30000000000000004</code>. That is normal in every language, not a Python bug.</p>
 
@@ -56,17 +56,17 @@ print(2 ** 10)  # 1024</code></pre>
         <pre><code>first = "Grace"
 last = "Hopper"
 full = first + " " + last
-print(full)          # Grace Hopper
-print(len(full))     # 12
+print(full)  # Grace Hopper
+print(len(full))  # 12
 print(full.upper())  # GRACE HOPPER
-print("ha" * 3)      # hahaha</code></pre>
+print("ha" * 3)  # hahaha</code></pre>
 
         <h2>Converting between types</h2>
         <p>You cannot add a number to a string directly. <code>"Age: " + 19</code> raises a <code>TypeError</code>. Convert first:</p>
-        <pre><code>int("42")      # 42
-float("3.5")   # 3.5
-str(19)        # "19"
-int(3.9)       # 3 (cuts off the decimal part)</code></pre>
+        <pre><code>int("42")  # 42
+float("3.5")  # 3.5
+str(19)  # "19"
+int(3.9)  # 3 (cuts off the decimal part)</code></pre>
 
         <h2>Reading input</h2>
         <p><code>input()</code> shows a prompt and waits for the user to type something. It always returns a string, so convert it if you need a number:</p>
