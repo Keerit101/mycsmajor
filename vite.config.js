@@ -67,8 +67,32 @@ function layout() {
   };
 }
 
+// Writes sitemap.xml for every page that is not marked noindex.
+function sitemap() {
+  return {
+    name: 'mycsmajor-sitemap',
+    generateBundle() {
+      const today = new Date().toISOString().slice(0, 10);
+      const urls = findPages(root)
+        .filter((file) => !readFileSync(file, 'utf8').includes('content="noindex"'))
+        .map((file) => urlPath(file))
+        .sort()
+        .map((path) => `  <url><loc>${SITE}${path}</loc><lastmod>${today}</lastmod></url>`);
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sitemap.xml',
+        source: `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
+</urlset>
+`,
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [layout()],
+  plugins: [layout(), sitemap()],
   build: {
     rolldownOptions: {
       input: Object.fromEntries(
