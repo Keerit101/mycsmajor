@@ -55,7 +55,8 @@ Choices made while building the site without asking, and the reasoning behind ea
 
 ## Privacy and SEO
 
-- **No analytics and no cookies.** The privacy policy says so and promises an update before that changes. If you add analytics, update `privacy/index.html` first.
+- **No analytics and no cookies.** The privacy policy says so and promises an update before that changes.
+- **Analytics is ready but off.** The Vercel Web Analytics snippet (cookieless, chosen because the site already runs on Vercel and needs no consent banner for cookies) sits commented out in `src/partials/head.html`. It uses a placeholder `UNIQUE-PATH`, because Vercel now gives each project its own script path in the dashboard (checked against Vercel's docs on 23 October 2026), and a guessed path would 404. Turning it on means updating the privacy policy too, so it is left for you (TODO.md).
 - **The privacy page is indexable** and listed in the sitemap. Only the 404 page is `noindex`.
 - **Titles are at most about 65 characters and descriptions 105 to 170 characters**, each unique per page (checked with a script during the build).
 

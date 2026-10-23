@@ -75,4 +75,8 @@ vite.config.js             Page discovery, layout injection, sitemap generation
 
 **Change the accent colour or font.** Edit the variables at the top of `src/styles.css`.
 
+**Turn on analytics.** Vercel Web Analytics (cookieless) is ready but commented out in `src/partials/head.html`. Enable it in the Vercel dashboard, paste the script path it gives you over `UNIQUE-PATH`, uncomment the two script tags and update the privacy policy. Step by step in `TODO.md`.
+
+**Turn on ads.** Hidden ad slots are already placed (search for `AD SLOT`). `src/js/ads.js` is the single switch; it does nothing until you set an AdSense publisher ID. Read the ads section of `TODO.md` first: the privacy policy and a consent banner must come before ads.
+
 See `DECISIONS.md` for why things are built this way, and `TODO.md` for what still needs you.

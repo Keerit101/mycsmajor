@@ -24,6 +24,15 @@
 - [ ] Some programs (Amazon's included) require specific disclosure wording. Check the disclosure on the gear page, in `src/partials/footer.html` and on `/affiliate-disclosure/` against your program's rules. Amazon Associates, for example, requires the sentence "As an Amazon Associate I earn from qualifying purchases."
 - [ ] **Read the affiliate disclosure page** (`affiliate-disclosure/index.html`). It makes promises on your behalf (commissions never decide recommendations, ads will be labelled and kept away from solutions). Edit anything you are not comfortable committing to, and update its "Last updated" date. Once real affiliate links are live, delete the sentence saying buy links still point to the makers' sites.
 
+## Analytics (optional, privacy-friendly)
+
+Vercel Web Analytics is cookieless and counts page views without tracking individuals. The snippet is already in `src/partials/head.html`, commented out.
+
+- [ ] In Vercel, open the project, go to **Analytics** and click **Enable** (or run `npx vercel project web-analytics enable mycsmajor`). Check the current free allowance on the Hobby plan.
+- [ ] Vercel shows a script path for your project. In `src/partials/head.html`, find the `ANALYTICS` comment, replace `UNIQUE-PATH` with that path, and delete the `<!-- ANALYTICS ...` line and the closing `-->` so the two `<script>` tags are live.
+- [ ] **Update the privacy policy before deploying.** Replace the "Cookies and analytics" section of `privacy/index.html` with something like: "We use Vercel Web Analytics to count page views. It does not use cookies and does not track you across sites. It records the page you visited, the referring site, and your approximate country, browser and device type." Then update "Last updated".
+- [ ] Commit, push, and check the Analytics tab after a day.
+
 ## Ads (later, for example Google AdSense)
 
 Empty, hidden ad slots are already on the home page, every problem page, the problem index, every book chapter and the middle of Cyber Brief. Search for `AD SLOT` to find them. Nothing loads until you finish these steps:
@@ -40,7 +49,6 @@ Empty, hidden ad slots are already on the home page, every problem page, the pro
 - [ ] **About page bio.** `about/index.html` describes the site but not who runs it. Add a short paragraph about yourself if you want a personal touch.
 - [ ] **Search engines.** After launch, add the site to Google Search Console and Bing Webmaster Tools and submit `https://mycsmajor.com/sitemap.xml`.
 - [ ] **Social preview image.** Pages have Open Graph titles and descriptions but no image. Add a 1200 by 630 PNG to `public/` and an `og:image` tag in `src/partials/head.html`.
-- [ ] **Analytics.** None is installed. If you add one (Vercel Web Analytics is cookieless), update the privacy policy first.
 - [ ] **Current security news.** Cyber Brief covers well-known past incidents. To add current news, either write new `<article class="brief">` entries yourself (newest at the top) or set up a news API. Most need an API key and a server or a scheduled build.
 - [ ] **More problems.** There are 36, so the cycle repeats after 36 days. Append more to `src/data/problems.js` (append only).
 - [ ] **Contact form service.** If you would rather receive form messages directly instead of through the visitor's email app, sign up for a form service such as Formspree and point the form at it.
