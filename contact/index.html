@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Contact mycsmajor</title>
+    <meta name="description" content="Contact mycsmajor to report a mistake in a problem, suggest a new problem or topic, or ask about the site." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <div class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow">Contact</span>
+          <h1>Get in touch</h1>
+          <p class="lede">Spotted a bug in a solution, want to suggest a problem, or have a question? We read every message.</p>
+        </header>
+
+        <!-- TODO: set up the hello@mycsmajor.com mailbox (or change the address here and in src/js/contact.js). -->
+        <p>Email us at <a href="mailto:hello@mycsmajor.com">hello@mycsmajor.com</a>, or fill in the form below. It opens your email app with the message ready to send.</p>
+
+        <form class="form" data-contact-form novalidate>
+          <div class="field">
+            <label for="topic">Topic</label>
+            <select id="topic" name="topic">
+              <option>Mistake in a problem or solution</option>
+              <option>Problem or topic suggestion</option>
+              <option>Python Book feedback</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="name">Your name <span class="muted">(optional)</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <p class="form-error" role="alert" data-form-error></p>
+          <div>
+            <button class="btn" type="submit">Open in email app</button>
+          </div>
+        </form>
+
+        <p class="muted small">This form does not send anything to a server. Your message only leaves your device when you press send in your own email app. See the <a href="/privacy/">privacy policy</a>.</p>
+      </div>
+    </main>
+    <!--footer-->
+    <script type="module" src="/src/js/contact.js"></script>
+  </body>
+</html>
