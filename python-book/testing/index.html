@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 12: Testing Your Python Code | mycsmajor Python Book</title>
+    <meta name="description" content="Learn to test Python code: assert, writing and running tests with pytest, choosing edge cases, testing exceptions and the test-first workflow. Free chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 12</span>
+          <h1>Testing your code</h1>
+          <p class="lede">Running your program and eyeballing the output works for ten lines. For anything bigger, you want tests: small programs that check your code automatically, every time you change it.</p>
+        </header>
+
+        <h2>assert</h2>
+        <p><code>assert</code> checks that something is true, and stops with an <code>AssertionError</code> if it is not:</p>
+        <pre><code>def is_even(n):
+    return n % 2 == 0
+
+assert is_even(4)
+assert not is_even(7)
+assert is_even(0)</code></pre>
+        <p>If all three pass, nothing happens. That silence is the point: you only hear about problems.</p>
+
+        <h2>pytest</h2>
+        <p><a href="https://docs.pytest.org/" rel="noopener">pytest</a> is the most popular Python testing tool. Install it once:</p>
+        <pre><code>python -m pip install pytest</code></pre>
+        <p>Put your code in one file and your tests in a file whose name starts with <code>test_</code>. Every function starting with <code>test_</code> is a test:</p>
+        <pre><code># grades.py
+def letter(score):
+    if score &gt;= 80:
+        return "A"
+    if score &gt;= 70:
+        return "B"
+    if score &gt;= 60:
+        return "C"
+    return "F"</code></pre>
+        <pre><code># test_grades.py
+from grades import letter
+
+def test_top_grade():
+    assert letter(95) == "A"
+
+def test_boundaries():
+    assert letter(80) == "A"
+    assert letter(79) == "B"
+    assert letter(60) == "C"
+    assert letter(59) == "F"</code></pre>
+        <p>Run every test in the folder with:</p>
+        <pre><code>python -m pytest</code></pre>
+        <p>pytest prints a dot for each passing test. When one fails, it shows exactly which values did not match.</p>
+
+        <h2>Choosing test cases</h2>
+        <p>Bugs hide at the edges, so test those first:</p>
+        <ul>
+          <li><strong>Boundaries:</strong> 79 and 80 in the example above, the first and last items of a list.</li>
+          <li><strong>Empty input:</strong> an empty list, an empty string, zero.</li>
+          <li><strong>One item:</strong> a list with a single element.</li>
+          <li><strong>Unusual values:</strong> negative numbers, duplicates, very large inputs.</li>
+          <li><strong>The normal case:</strong> one or two ordinary examples.</li>
+        </ul>
+
+        <h2>Testing for exceptions</h2>
+        <p>If your function should raise an error on bad input, test that too:</p>
+        <pre><code>import pytest
+
+def average(scores):
+    if not scores:
+        raise ValueError("cannot average an empty list")
+    return sum(scores) / len(scores)
+
+def test_average_rejects_empty_list():
+    with pytest.raises(ValueError):
+        average([])</code></pre>
+
+        <h2>Floats need care</h2>
+        <p>Because <code>0.1 + 0.2</code> is <code>0.30000000000000004</code>, compare floats with a tolerance:</p>
+        <pre><code>def test_average():
+    assert average([0.1, 0.2]) == pytest.approx(0.15)</code></pre>
+
+        <h2>Write the test first</h2>
+        <p>A useful habit is to write a failing test before you fix a bug or add a feature:</p>
+        <ol>
+          <li>Write a test that describes what the code should do. Run it and watch it fail.</li>
+          <li>Write the simplest code that makes it pass.</li>
+          <li>Tidy the code up, re-running the tests to make sure nothing broke.</li>
+        </ol>
+        <p>This is called test-driven development. Even if you do not follow it strictly, step 1 is valuable whenever you fix a bug: the test makes sure that bug never quietly comes back. (The <a href="/cyber-brief/#regresshion">regreSSHion brief</a> shows what can happen without one.)</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Test a palindrome checker</h3>
+          <p>Write pytest tests for an <code>is_palindrome(s)</code> function that ignores case. Cover at least four kinds of input.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>from palindrome import is_palindrome
+
+def test_simple_palindrome():
+    assert is_palindrome("level")
+
+def test_ignores_case():
+    assert is_palindrome("Racecar")
+
+def test_not_a_palindrome():
+    assert not is_palindrome("python")
+
+def test_edge_cases():
+    assert is_palindrome("")
+    assert is_palindrome("a")</code></pre>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Find the bug with a test</h3>
+          <p>This function should return the largest number in a list. Write a test that fails, then fix the function.</p>
+          <pre><code>def largest(nums):
+    best = 0
+    for n in nums:
+        if n &gt; best:
+            best = n
+    return best</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>def test_all_negative():
+    assert largest([-5, -2, -9]) == -2   # fails: returns 0</code></pre>
+              <p>Starting <code>best</code> at 0 is wrong when every number is negative. Start at <code>nums[0]</code> instead, or use the built-in <code>max</code>. Choosing an unusual input, all negatives, is what exposed the bug.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Test an exception</h3>
+          <p>Write a test checking that <code>int("abc")</code> raises a <code>ValueError</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>import pytest
+
+def test_int_rejects_letters():
+    with pytest.raises(ValueError):
+        int("abc")</code></pre>
+            </div>
+          </details>
+        </section>
+
+        <h2>Where next?</h2>
+        <p>You have finished the book. You now know enough Python to solve every problem in the <a href="/problems/">problem archive</a>. Pick one a day, and when you solve one, try writing a few pytest tests for your answer too.</p>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/errors-and-exceptions/">Previous: Errors and exceptions</a>
+          <a class="btn" href="/daily/">Try today's problem</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

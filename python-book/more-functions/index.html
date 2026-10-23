@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 7: More Python Functions | mycsmajor Python Book</title>
+    <meta name="description" content="Go further with Python functions: *args and **kwargs, keyword-only arguments, functions as values, lambdas, sorting with key, recursion and type hints." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 7</span>
+          <h1>More functions</h1>
+          <p class="lede">Chapter 5 covered the basics. This chapter shows the features that make Python functions flexible: any number of arguments, functions passed around like values, and functions that call themselves.</p>
+        </header>
+
+        <h2>Any number of arguments</h2>
+        <p>A parameter written as <code>*args</code> collects any extra positional arguments into a tuple:</p>
+        <pre><code>def total(*numbers):
+    result = 0
+    for n in numbers:
+        result += n
+    return result
+
+total(1, 2)         # 3
+total(1, 2, 3, 4)   # 10
+total()             # 0</code></pre>
+        <p><code>**kwargs</code> does the same for keyword arguments, collecting them into a dictionary:</p>
+        <pre><code>def describe(**info):
+    for key, value in info.items():
+        print(f"{key} = {value}")
+
+describe(name="Ada", year=2)
+# name = Ada
+# year = 2</code></pre>
+        <p>The names <code>args</code> and <code>kwargs</code> are just conventions; the <code>*</code> and <code>**</code> are what matter.</p>
+
+        <h2>Unpacking when you call</h2>
+        <p>The stars also work the other way, spreading a list or dictionary out into separate arguments:</p>
+        <pre><code>point = [3, 4]
+print(*point)   # same as print(3, 4)
+
+options = {"sep": "-", "end": "!\n"}
+print("a", "b", **options)   # a-b!</code></pre>
+
+        <h2>Keyword-only arguments</h2>
+        <p>Parameters after a bare <code>*</code> must be passed by name. This makes calls readable and stops arguments being mixed up:</p>
+        <pre><code>def connect(host, *, port=443, timeout=10):
+    return f"{host}:{port} (timeout {timeout}s)"
+
+connect("example.com", port=8080)   # fine
+connect("example.com", 8080)        # TypeError</code></pre>
+
+        <h2>Functions are values</h2>
+        <p>A function can be stored in a variable, put in a list or passed to another function, just like a number or a string:</p>
+        <pre><code>def shout(text):
+    return text.upper() + "!"
+
+def whisper(text):
+    return text.lower() + "..."
+
+def apply(style, text):
+    return style(text)
+
+apply(shout, "hello")     # 'HELLO!'
+apply(whisper, "HELLO")   # 'hello...'</code></pre>
+        <p>Notice there are no brackets after <code>shout</code> when passing it in. <code>shout</code> is the function itself; <code>shout("hi")</code> calls it.</p>
+
+        <h2>Lambdas and sorting with a key</h2>
+        <p>A <code>lambda</code> is a small function written in one expression, handy when you need a function for a single use. The most common place you will meet one is the <code>key</code> argument of <code>sorted</code>, <code>min</code> and <code>max</code>:</p>
+        <pre><code>words = ["banana", "kiwi", "apple", "fig"]
+sorted(words)                          # alphabetical
+sorted(words, key=len)                 # ['fig', 'kiwi', 'apple', 'banana']
+sorted(words, key=lambda w: w[-1])     # by last letter
+
+students = [("Ada", 88), ("Linus", 95), ("Grace", 91)]
+max(students, key=lambda s: s[1])      # ('Linus', 95)</code></pre>
+        <p><code>key</code> is called once on every item, and items are compared by what it returns. If a lambda gets longer than one short line, use a normal <code>def</code> instead.</p>
+
+        <h2>Recursion</h2>
+        <p>A recursive function calls itself on a smaller version of the problem. Every recursive function needs a <strong>base case</strong> that stops it:</p>
+        <pre><code>def factorial(n):
+    if n &lt;= 1:          # base case
+        return 1
+    return n * factorial(n - 1)
+
+factorial(5)   # 120</code></pre>
+        <p>Recursion fits naturally when the data is itself nested, such as folders inside folders or trees. Python stops recursion after about 1,000 levels with a <code>RecursionError</code>, so for simple counting a loop is usually better.</p>
+
+        <h2>Type hints</h2>
+        <p>You can note the types a function expects and returns. Python does not enforce them, but editors and tools like mypy use them to catch mistakes, and they document your code:</p>
+        <pre><code>def average(scores: list[float]) -&gt; float:
+    return sum(scores) / len(scores)</code></pre>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Average of anything</h3>
+          <p>Write <code>average(*nums)</code> that returns the average of any number of arguments, or <code>None</code> if there are none.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>def average(*nums):
+    if not nums:
+        return None
+    return sum(nums) / len(nums)
+
+average(2, 4, 9)   # 5.0
+average()          # None</code></pre>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Sort by two things</h3>
+          <p>Sort <code>["pear", "fig", "apple", "kiwi", "date"]</code> by length, and alphabetically when two words have the same length.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>words = ["pear", "fig", "apple", "kiwi", "date"]
+sorted(words, key=lambda w: (len(w), w))
+# ['fig', 'date', 'kiwi', 'pear', 'apple']</code></pre>
+              <p>Tuples compare item by item, so the key sorts by length first and uses the word itself to break ties.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Recursive sum of digits</h3>
+          <p>Write <code>digit_sum(n)</code> recursively for a non-negative integer, without converting it to a string.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>def digit_sum(n):
+    if n &lt; 10:
+        return n
+    return n % 10 + digit_sum(n // 10)
+
+digit_sum(4096)   # 19</code></pre>
+              <p>The base case is a single digit. Each call handles the last digit and passes the rest on.</p>
+            </div>
+          </details>
+        </section>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/lists-and-dictionaries/">Previous: Lists and dictionaries</a>
+          <a class="btn" href="/python-book/dictionaries-and-sets/">Next: Dictionaries and sets</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

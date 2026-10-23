@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 11: Python Errors and Exceptions | mycsmajor Python Book</title>
+    <meta name="description" content="Read Python tracebacks, handle errors with try, except, else and finally, raise your own exceptions and write custom exception classes. Free chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 11</span>
+          <h1>Errors and exceptions</h1>
+          <p class="lede">Users type the wrong thing, files go missing and networks drop. Good programs expect this and respond sensibly instead of crashing.</p>
+        </header>
+
+        <h2>Reading a traceback</h2>
+        <p>When an error is not handled, Python prints a <em>traceback</em>:</p>
+        <pre><code>Traceback (most recent call last):
+  File "grades.py", line 7, in &lt;module&gt;
+    print(average([]))
+  File "grades.py", line 2, in average
+    return sum(scores) / len(scores)
+ZeroDivisionError: division by zero</code></pre>
+        <p>Read it from the bottom up. The last line names the exception and what went wrong. The lines above show the chain of calls that led there, with the most recent call last. Here, <code>average</code> was called with an empty list on line 7.</p>
+        <p>Common exceptions you will meet: <code>ValueError</code> (right type, bad value, like <code>int("abc")</code>), <code>TypeError</code> (wrong type, like <code>"a" + 1</code>), <code>KeyError</code>, <code>IndexError</code>, <code>FileNotFoundError</code> and <code>ZeroDivisionError</code>.</p>
+
+        <h2>try and except</h2>
+        <pre><code>while True:
+    text = input("Enter your age: ")
+    try:
+        age = int(text)
+        break
+    except ValueError:
+        print(f"{text!r} is not a whole number, try again.")</code></pre>
+        <p>Python runs the <code>try</code> block. If a <code>ValueError</code> happens inside it, Python jumps to the matching <code>except</code> block instead of crashing.</p>
+        <p>Always name the exception you expect. A bare <code>except:</code> catches everything, including typos in your own code and Ctrl + C, which hides bugs.</p>
+
+        <h2>else and finally</h2>
+        <pre><code>try:
+    f = open("data.txt", encoding="utf-8")
+except FileNotFoundError:
+    print("No data file yet.")
+else:
+    print(f.read())       # runs only if no exception happened
+    f.close()
+finally:
+    print("Done.")        # always runs</code></pre>
+        <p>Keep the <code>try</code> block small, so you only catch errors from the line you expected to fail. <code>finally</code> is for clean-up that must happen either way. (For files, a <code>with</code> block already does that clean-up.)</p>
+
+        <h2>Raising exceptions</h2>
+        <p>Your own functions should raise an exception when they are given something they cannot handle, rather than returning a wrong answer quietly:</p>
+        <pre><code>def average(scores):
+    if not scores:
+        raise ValueError("cannot average an empty list")
+    return sum(scores) / len(scores)</code></pre>
+        <p>The caller can then decide what to do: catch it, show a message or let the program stop.</p>
+
+        <h2>Custom exceptions</h2>
+        <p>For your own projects, you can define exception types by inheriting from <code>Exception</code>. Callers can then catch exactly your error:</p>
+        <pre><code>class InsufficientFunds(Exception):
+    pass
+
+def withdraw(balance, amount):
+    if amount &gt; balance:
+        raise InsufficientFunds(f"balance {balance}, tried {amount}")
+    return balance - amount
+
+try:
+    withdraw(30, 50)
+except InsufficientFunds as e:
+    print("Declined:", e)   # Declined: balance 30, tried 50</code></pre>
+
+        <h2>Ask forgiveness, not permission</h2>
+        <p>Python style often tries the operation and handles failure, rather than checking everything first:</p>
+        <pre><code># Checking first
+if "email" in user:
+    send(user["email"])
+
+# Trying, then handling failure
+try:
+    send(user["email"])
+except KeyError:
+    print("No email on file.")</code></pre>
+        <p>Both are fine for dictionaries. For files and networks, trying is safer: a file can be deleted between your check and your <code>open</code>.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Safe division</h3>
+          <p>Write <code>safe_divide(a, b)</code> that returns <code>a / b</code>, or <code>None</code> if <code>b</code> is zero, using <code>try</code> and <code>except</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None
+
+safe_divide(10, 4)   # 2.5
+safe_divide(1, 0)    # None</code></pre>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Read a number from a file</h3>
+          <p>Write <code>read_number(path)</code> that returns the integer stored in a text file. It should return 0 if the file does not exist, and raise a <code>ValueError</code> with a clear message if the file contains something that is not a number.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>def read_number(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read().strip()
+    except FileNotFoundError:
+        return 0
+    try:
+        return int(text)
+    except ValueError:
+        raise ValueError(f"{path} does not contain a number: {text!r}")</code></pre>
+              <p>Two small <code>try</code> blocks keep each one about a single kind of failure.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Find the bug</h3>
+          <p>This code is meant to skip bad lines, but it hides a real bug. What is it?</p>
+          <pre><code>total = 0
+for line in lines:
+    try:
+        total += int(lnie)
+    except:
+        pass</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p><code>lnie</code> is a typo, which raises a <code>NameError</code> on every line. The bare <code>except</code> swallows it, so <code>total</code> silently stays 0. Write <code>except ValueError:</code> and the typo shows up immediately.</p>
+            </div>
+          </details>
+        </section>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/classes/">Previous: Classes and objects</a>
+          <a class="btn" href="/python-book/testing/">Next: Testing your code</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

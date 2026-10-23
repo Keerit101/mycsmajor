@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 10: Python Classes and Objects | mycsmajor Python Book</title>
+    <meta name="description" content="Learn Python classes: __init__ and self, methods, __repr__ and __eq__, inheritance and dataclasses. Free beginner chapter with exercises and answers." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 10</span>
+          <h1>Classes and objects</h1>
+          <p class="lede">A class bundles data together with the functions that work on it. Most CS courses build on this idea, called object-oriented programming, so it is worth getting comfortable with early.</p>
+        </header>
+
+        <h2>Your first class</h2>
+        <pre><code>class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+        if amount &gt; self.balance:
+            raise ValueError("insufficient funds")
+        self.balance -= amount
+
+
+acct = BankAccount("Ada")
+acct.deposit(50)
+acct.withdraw(20)
+print(acct.balance)   # 30</code></pre>
+        <p>A <strong>class</strong> is a blueprint; <code>acct</code> is an <strong>object</strong> (or <em>instance</em>) built from it. You can make as many objects as you like, and each has its own data.</p>
+        <ul>
+          <li><code>__init__</code> runs automatically when you create an object. It sets up the object's starting data.</li>
+          <li><code>self</code> is the object the method was called on. <code>acct.deposit(50)</code> runs <code>deposit</code> with <code>self</code> set to <code>acct</code>.</li>
+          <li><code>self.balance</code> is an <strong>attribute</strong>: a variable that belongs to one object.</li>
+          <li>Functions defined inside a class are called <strong>methods</strong>.</li>
+        </ul>
+
+        <h2>A readable printout: __repr__</h2>
+        <p>By default, printing an object shows something unhelpful like <code>&lt;__main__.BankAccount object at 0x...&gt;</code>. Define <code>__repr__</code> to fix that:</p>
+        <pre><code>class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"
+
+print(Point(3, 4))   # Point(3, 4)</code></pre>
+        <p>Methods with double underscores on both sides are called <em>special methods</em> (or "dunder" methods). Python calls them for you at particular moments.</p>
+
+        <h2>Equality: __eq__</h2>
+        <p>Without help, two objects are equal only if they are the very same object:</p>
+        <pre><code>Point(1, 2) == Point(1, 2)   # False, until we define __eq__
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        return isinstance(other, Point) and (self.x, self.y) == (other.x, other.y)
+
+Point(1, 2) == Point(1, 2)   # True</code></pre>
+
+        <h2>Inheritance</h2>
+        <p>A class can build on another, reusing its methods and adding or changing some:</p>
+        <pre><code>class SavingsAccount(BankAccount):
+    def __init__(self, owner, balance=0, rate=0.02):
+        super().__init__(owner, balance)
+        self.rate = rate
+
+    def add_interest(self):
+        self.deposit(self.balance * self.rate)
+
+
+s = SavingsAccount("Grace", 100)
+s.add_interest()
+print(s.balance)   # 102.0</code></pre>
+        <p><code>super().__init__</code> runs the parent class's setup, so you do not repeat it. <code>SavingsAccount</code> also gets <code>deposit</code> and <code>withdraw</code> for free. Use inheritance when the new class really is a kind of the old one; otherwise, store one object inside another.</p>
+
+        <h2>Dataclasses</h2>
+        <p>Classes that mostly hold data need a lot of repetitive code. The <code>dataclass</code> decorator writes <code>__init__</code>, <code>__repr__</code> and <code>__eq__</code> for you from type-annotated fields:</p>
+        <pre><code>from dataclasses import dataclass
+
+@dataclass
+class Student:
+    name: str
+    year: int
+    gpa: float = 0.0
+
+s = Student("Ada", 2, 3.9)
+print(s)                          # Student(name='Ada', year=2, gpa=3.9)
+s == Student("Ada", 2, 3.9)       # True</code></pre>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Rectangle</h3>
+          <p>Write a <code>Rectangle</code> class with <code>width</code> and <code>height</code>, and methods <code>area()</code> and <code>perimeter()</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+r = Rectangle(3, 4)
+r.area(), r.perimeter()   # (12, 14)</code></pre>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. A counter that remembers</h3>
+          <p>Write a class <code>Counter</code> with <code>increment()</code>, <code>reset()</code> and a <code>value</code> attribute starting at 0. Then make two counters and show that they are independent.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>class Counter:
+    def __init__(self):
+        self.value = 0
+
+    def increment(self):
+        self.value += 1
+
+    def reset(self):
+        self.value = 0
+
+a = Counter()
+b = Counter()
+a.increment()
+a.increment()
+b.increment()
+print(a.value, b.value)   # 2 1</code></pre>
+              <p>Each object has its own <code>self.value</code>. (The standard library also has a <code>collections.Counter</code>, which is a different thing.)</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Overdraft</h3>
+          <p>Write <code>CheckingAccount</code>, a subclass of <code>BankAccount</code> that allows the balance to go down to &minus;100 but no further.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>class CheckingAccount(BankAccount):
+    LIMIT = -100
+
+    def withdraw(self, amount):
+        if self.balance - amount &lt; self.LIMIT:
+            raise ValueError("overdraft limit reached")
+        self.balance -= amount
+
+c = CheckingAccount("Linus", 20)
+c.withdraw(100)
+print(c.balance)   # -80</code></pre>
+              <p>Defining <code>withdraw</code> again in the subclass <em>overrides</em> the parent's version. <code>LIMIT</code> is a class attribute, shared by every checking account.</p>
+            </div>
+          </details>
+        </section>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/files/">Previous: Working with files</a>
+          <a class="btn" href="/python-book/errors-and-exceptions/">Next: Errors and exceptions</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

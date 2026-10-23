@@ -1,4 +1,8 @@
-const escapeHtml = (s) =>
+import { dateKey } from '../data/problems.js';
+
+export const problemUrl = (p) => `/problems/${p.slug}/`;
+
+export const escapeHtml = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const codeBlock = (code) => `<pre><code>${escapeHtml(code)}</code></pre>`;
@@ -45,11 +49,12 @@ export function problemCard(p, date, headingTag = 'h2') {
   return `
     <article class="card problem" aria-labelledby="problem-title">
       <div class="problem-meta">
-        <span>Problem #${p.id} &middot; <time datetime="${date.toISOString().slice(0, 10)}">${formatDate(date)}</time></span>
+        <span><time datetime="${dateKey(date)}">${formatDate(date)}</time> &middot; ${p.topic} ${p.number} of ${p.of}</span>
         ${problemTags(p)}
       </div>
       <${headingTag} id="problem-title" class="problem-title">${p.title}</${headingTag}>
       ${problemBody(p)}
       <div class="solve" data-solve></div>
+      <p class="small permalink"><a href="${problemUrl(p)}">Open this problem's own page</a> to bookmark or share it.</p>
     </article>`;
 }

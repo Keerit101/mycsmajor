@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 8: Python Dictionaries and Sets | mycsmajor Python Book</title>
+    <meta name="description" content="Go deeper with Python dictionaries and sets: comprehensions, Counter, defaultdict, set operations, nested data and why keys must be hashable." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 8</span>
+          <h1>Dictionaries and sets</h1>
+          <p class="lede">Dictionaries and sets are built on hash tables, which makes looking something up almost instant however much data you have. This chapter shows the tools that make them a pleasure to use.</p>
+        </header>
+
+        <h2>Dictionary comprehensions</h2>
+        <p>Like list comprehensions, but producing key-value pairs:</p>
+        <pre><code>squares = {n: n * n for n in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+prices = {"apple": 1.2, "melon": 3.5, "fig": 0.4}
+cheap = {name: p for name, p in prices.items() if p &lt; 2}
+# {'apple': 1.2, 'fig': 0.4}</code></pre>
+
+        <h2>Counter</h2>
+        <p>Counting things is so common that the standard library has a dictionary built for it:</p>
+        <pre><code>from collections import Counter
+
+votes = ["red", "blue", "red", "green", "red", "blue"]
+counts = Counter(votes)
+counts["red"]            # 3
+counts["purple"]         # 0, no KeyError
+counts.most_common(2)    # [('red', 3), ('blue', 2)]</code></pre>
+
+        <h2>defaultdict</h2>
+        <p>A <code>defaultdict</code> creates a starting value the first time you use a missing key, which removes a lot of "is it there yet?" checks:</p>
+        <pre><code>from collections import defaultdict
+
+words = ["apple", "avocado", "banana", "blueberry", "cherry"]
+by_letter = defaultdict(list)
+for w in words:
+    by_letter[w[0]].append(w)
+
+dict(by_letter)
+# {'a': ['apple', 'avocado'], 'b': ['banana', 'blueberry'], 'c': ['cherry']}</code></pre>
+
+        <h2>Sets</h2>
+        <p>A set is an unordered collection with no duplicates. Checking <code>x in s</code> is fast, unlike with a list, which has to look at every item.</p>
+        <pre><code>seen = {"ada", "linus"}
+seen.add("grace")
+seen.add("ada")          # already there, nothing changes
+len(seen)                # 3
+"linus" in seen          # True
+
+empty = set()            # {} would be an empty dict</code></pre>
+        <p>Sets support the operations from maths:</p>
+        <pre><code>a = {1, 2, 3, 4}
+b = {3, 4, 5}
+a | b    # union:        {1, 2, 3, 4, 5}
+a &amp; b    # intersection: {3, 4}
+a - b    # difference:   {1, 2}
+a ^ b    # in one only:  {1, 2, 5}</code></pre>
+
+        <h2>Nested data</h2>
+        <p>Real data is often dictionaries inside lists inside dictionaries. It is the same shape as JSON, which you will meet in the next chapter.</p>
+        <pre><code>course = {
+    "code": "CS101",
+    "students": [
+        {"name": "Ada", "grade": 91},
+        {"name": "Linus", "grade": 78},
+    ],
+}
+
+for s in course["students"]:
+    print(s["name"], s["grade"])
+
+top = max(course["students"], key=lambda s: s["grade"])
+top["name"]   # 'Ada'</code></pre>
+
+        <h2>What can be a key?</h2>
+        <p>Dictionary keys and set items must be <strong>hashable</strong>, which in practice means they cannot change. Strings, numbers and tuples work. Lists, dictionaries and sets do not:</p>
+        <pre><code>grid = {(0, 0): "start", (2, 3): "goal"}   # tuple keys: fine
+bad = {[0, 0]: "start"}                     # TypeError: unhashable type: 'list'</code></pre>
+        <p>If a key could change after being stored, the dictionary would look for it in the wrong place, so Python does not allow it.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Letter frequencies</h3>
+          <p>Using <code>Counter</code>, find the three most common letters in <code>"mississippi"</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>from collections import Counter
+Counter("mississippi").most_common(3)
+# [('i', 4), ('s', 4), ('p', 2)]</code></pre>
+              <p>When counts tie, <code>most_common</code> keeps the order in which items were first seen.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Shared friends</h3>
+          <p>Ada's friends are Linus, Grace and Alan. Linus's friends are Grace, Ada and Ken. Use sets to find the friends they have in common and the people only Ada knows.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>ada = {"Linus", "Grace", "Alan"}
+linus = {"Grace", "Ada", "Ken"}
+ada &amp; linus    # {'Grace'}
+ada - linus    # {'Linus', 'Alan'}</code></pre>
+              <p>Sets have no order, so Python may print these in a different order.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Group by length</h3>
+          <p>Group the words in <code>"the quick brown fox jumps over the lazy dog".split()</code> by length, as a dictionary from length to a list of distinct words.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>from collections import defaultdict
+
+groups = defaultdict(list)
+for w in "the quick brown fox jumps over the lazy dog".split():
+    if w not in groups[len(w)]:
+        groups[len(w)].append(w)
+
+dict(groups)
+# {3: ['the', 'fox', 'dog'], 5: ['quick', 'brown', 'jumps'], 4: ['over', 'lazy']}</code></pre>
+            </div>
+          </details>
+        </section>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/more-functions/">Previous: More functions</a>
+          <a class="btn" href="/python-book/files/">Next: Working with files</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

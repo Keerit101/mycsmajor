@@ -12,7 +12,7 @@
         <header class="page-head">
           <span class="eyebrow">Cyber Brief</span>
           <h1>Security news, explained for CS students</h1>
-          <p class="lede">Each brief covers a real incident: what happened, how it worked, and the lesson you can apply to your own code. Every brief links to its official vulnerability record.</p>
+          <p class="lede">Twelve real incidents, newest first. Each brief covers what happened, how it worked, and the lesson you can apply to your own code. Every brief links to its official vulnerability record.</p>
         </header>
 
         <div class="prose">
@@ -32,6 +32,22 @@
             <p class="takeaway"><strong>Lesson:</strong> your project trusts every dependency and every maintainer behind it. And when something is oddly slow, curiosity is a security skill.</p>
           </article>
 
+          <article class="brief" id="ivanti-connect-secure">
+            <p class="brief-meta">January 2024 &middot; Ivanti Connect Secure &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" rel="noopener">CVE-2023-46805</a> and <a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" rel="noopener">CVE-2024-21887</a></p>
+            <h2>Ivanti Connect Secure: two bugs make one break-in</h2>
+            <p>Ivanti Connect Secure is a VPN appliance that many organisations use to let staff into their networks. Attackers chained two flaws: an authentication bypass in its web component, and a command injection bug that only logged-in administrators should have been able to reach. Together, they let an attacker with no password run commands on the device.</p>
+            <p>Exploitation started before a fix existed, and the US Cybersecurity and Infrastructure Security Agency (CISA) issued Emergency Directive 24-01 ordering federal agencies to act.</p>
+            <p class="takeaway"><strong>Lesson:</strong> "only admins can reach that code" is not a security control on its own. Validate input everywhere, because one bug can remove the wall you were relying on to stop another.</p>
+          </article>
+
+          <article class="brief" id="citrix-bleed">
+            <p class="brief-meta">October 2023 &middot; Citrix NetScaler &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-4966" rel="noopener">CVE-2023-4966</a></p>
+            <h2>Citrix Bleed: stolen sessions outlive the patch</h2>
+            <p>A buffer over-read in Citrix NetScaler ADC and Gateway devices let attackers read memory that contained valid session tokens. With a stolen token, an attacker could take over a user's logged-in session, skipping the password and multi-factor authentication entirely. Ransomware groups used it against many organisations.</p>
+            <p>Patching closed the hole, but sessions already stolen kept working, so the advice was to patch <em>and</em> end every active session.</p>
+            <p class="takeaway"><strong>Lesson:</strong> a session token is as good as a password. Give them expiry times, make them revocable, and think about what an attacker already has when you fix a bug.</p>
+          </article>
+
           <article class="brief" id="moveit">
             <p class="brief-meta">May 2023 &middot; MOVEit Transfer &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-34362" rel="noopener">CVE-2023-34362</a></p>
             <h2>MOVEit: SQL injection at scale</h2>
@@ -46,6 +62,21 @@
             <p>Log4j 2, a very widely used Java logging library, supported "lookups": special text like <code>${jndi:ldap://...}</code> inside a log message would be interpreted, not just written down. If an attacker could get that text logged (in a username, a chat message or an HTTP header), the server could fetch and run the attacker's code.</p>
             <p>Because Log4j was buried deep in so many dependency trees, many teams first had to work out whether they used it at all.</p>
             <p class="takeaway"><strong>Lesson:</strong> treat all user input as data, never as instructions. And know what is in your dependency tree; tools that generate a software bill of materials (SBOM) help.</p>
+          </article>
+
+          <article class="brief" id="baron-samedit">
+            <p class="brief-meta">January 2021 &middot; sudo &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3156" rel="noopener">CVE-2021-3156</a></p>
+            <h2>Baron Samedit: a ten-year-old bug in sudo</h2>
+            <p>Researchers at Qualys found a heap buffer overflow in sudo, the Unix tool that lets permitted users run commands as root. A mistake in how it handled backslashes in command-line arguments meant any local user, even one not allowed to use sudo at all, could become root. The bug had been in the code since 2011.</p>
+            <p class="takeaway"><strong>Lesson:</strong> code that runs with high privileges deserves the most careful review, and age is not proof of safety. Manual memory handling in C is a common source of this kind of bug, which is one reason memory-safe languages are gaining ground in systems code.</p>
+          </article>
+
+          <article class="brief" id="spectre">
+            <p class="brief-meta">January 2018 &middot; Modern CPUs &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2017-5753" rel="noopener">CVE-2017-5753</a></p>
+            <h2>Spectre: when the processor guesses ahead</h2>
+            <p>To run faster, modern processors guess which way a program will go and start running instructions early ("speculative execution"). If the guess is wrong, the results are thrown away, but traces stay behind in the CPU cache. Spectre showed that a program could trick the processor into speculatively reading secret data, then recover it by timing how fast memory accesses were.</p>
+            <p>It affected processors from several major manufacturers, and fixes needed changes to operating systems, browsers and compilers, some at a cost in speed.</p>
+            <p class="takeaway"><strong>Lesson:</strong> abstractions leak. Code can be logically correct and still reveal secrets through timing. It is why security-sensitive code, like password comparison, should take the same time whatever the input.</p>
           </article>
 
           <article class="brief" id="equifax">
