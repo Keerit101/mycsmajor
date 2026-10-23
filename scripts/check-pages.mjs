@@ -64,7 +64,8 @@ for (const vp of VIEWPORTS) {
     const overflow = await page.evaluate(() => {
       const width = document.documentElement.clientWidth;
       const wide = [...document.querySelectorAll('body *')]
-        .filter((el) => el.getBoundingClientRect().right > width + 1)
+        // Content inside a code block scrolls within that block, which is fine.
+        .filter((el) => !el.closest('pre') && el.getBoundingClientRect().right > width + 1)
         .slice(0, 3)
         .map((el) => `${el.tagName.toLowerCase()}.${el.className}`);
       return { scroll: document.documentElement.scrollWidth, width, wide };

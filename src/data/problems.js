@@ -77,8 +77,8 @@ reverse_words("  hello   world ")
     difficulty: 'Easy',
     prompt: `<p>Write <code>is_balanced(s)</code> that returns <code>True</code> if every bracket in <code>s</code> is closed by the same type of bracket in the right order. The string contains only <code>()[]{}</code>.</p>`,
     example: `is_balanced("([]{})")  # True
-is_balanced("([)]")  # False
-is_balanced("((")  # False`,
+is_balanced("([)]")    # False
+is_balanced("((")      # False`,
     hint: `<p>The most recently opened bracket must be the first one closed. Which data structure gives you "last in, first out"?</p>`,
     code: `def is_balanced(s):
     pairs = {")": "(", "]": "[", "}": "{"}
@@ -107,8 +107,8 @@ is_balanced("((")  # False`,
     topic: 'Python',
     difficulty: 'Easy',
     prompt: `<p>Write <code>most_common_char(s)</code> that returns the character appearing most often in a non-empty string. If there is a tie, return the one that appears first in the string.</p>`,
-    example: `most_common_char("banana")  # "a"
-most_common_char("abba")  # "a"`,
+    example: `most_common_char("banana")   # "a"
+most_common_char("abba")     # "a"`,
     hint: `<p>Count first, then walk the original string from the left to settle ties.</p>`,
     code: `from collections import Counter
 
@@ -228,8 +228,8 @@ is_palindrome("race a car")
     topic: 'Data structures',
     difficulty: 'Easy',
     prompt: `<p>A list contains <code>n</code> distinct numbers taken from the range 0 to <code>n</code>, so exactly one number in that range is missing. Find it in O(n) time and O(1) extra space.</p>`,
-    example: `missing([3, 0, 1])  # 2
-missing([0, 1])  # 2
+    example: `missing([3, 0, 1])        # 2
+missing([0, 1])           # 2
 missing([9,6,4,2,3,5,7,0,1])  # 8`,
     hint: `<p>You know what 0 + 1 + ... + n adds up to without looking at the list.</p>`,
     code: `def missing(nums):
@@ -360,8 +360,8 @@ def group_anagrams(words):
     topic: 'Data structures',
     difficulty: 'Easy',
     prompt: `<p>Write <code>search(nums, target)</code> that returns the index of <code>target</code> in a sorted list, or <code>-1</code> if it is not there. It must run in O(log n). No <code>bisect</code>.</p>`,
-    example: `search([1, 3, 5, 7, 9], 7)  # 3
-search([1, 3, 5, 7, 9], 4)  # -1`,
+    example: `search([1, 3, 5, 7, 9], 7)   # 3
+search([1, 3, 5, 7, 9], 4)   # -1`,
     hint: `<p>Keep two indices, <code>lo</code> and <code>hi</code>, for the part of the list that could still contain the target. Look at the middle and throw away half.</p>`,
     code: `def search(nums, target):
     lo, hi = 0, len(nums) - 1
@@ -391,8 +391,8 @@ search([1, 3, 5, 7, 9], 4)  # -1`,
     topic: 'Python',
     difficulty: 'Medium',
     prompt: `<p>Write <code>rle(s)</code> that compresses runs of repeated characters into the character followed by the run length.</p>`,
-    example: `rle("aaabcc")  # "a3b1c2"
-rle("")  # ""`,
+    example: `rle("aaabcc")   # "a3b1c2"
+rle("")         # ""`,
     hint: `<p><code>itertools.groupby</code> groups consecutive equal items for you.</p>`,
     code: `from itertools import groupby
 
@@ -437,8 +437,8 @@ def rle(s):
     topic: 'Python',
     difficulty: 'Easy',
     prompt: `<p>The naive recursive Fibonacci makes an exponential number of calls. Write <code>fib(n)</code> that returns the nth Fibonacci number (with <code>fib(0) = 0</code> and <code>fib(1) = 1</code>) in O(n) time.</p>`,
-    example: `fib(10)  # 55
-fib(50)  # 12586269025`,
+    example: `fib(10)   # 55
+fib(50)   # 12586269025`,
     hint: `<p>You only ever need the last two values.</p>`,
     code: `def fib(n):
     a, b = 0, 1
@@ -504,9 +504,9 @@ grid[0][0] = 1
     topic: 'Data structures',
     difficulty: 'Easy',
     prompt: `<p>Write <code>first_unique(s)</code> that returns the index of the first character that appears exactly once in <code>s</code>, or <code>-1</code> if there is none.</p>`,
-    example: `first_unique("leetcode")  # 0
-first_unique("loveleetcode")  # 2
-first_unique("aabb")  # -1`,
+    example: `first_unique("leetcode")       # 0
+first_unique("loveleetcode")   # 2
+first_unique("aabb")           # -1`,
     hint: `<p>Two passes: one to count, one to find.</p>`,
     code: `from collections import Counter
 
@@ -550,9 +550,9 @@ def top_k(nums, k):
     topic: 'Python',
     difficulty: 'Easy',
     prompt: `<p>Write <code>rotate(xs, k)</code> that returns a new list rotated <code>k</code> steps to the right. <code>k</code> may be larger than the list, and the list may be empty.</p>`,
-    example: `rotate([1, 2, 3, 4, 5], 2)  # [4, 5, 1, 2, 3]
-rotate([1, 2, 3], 7)  # [3, 1, 2]
-rotate([], 4)  # []`,
+    example: `rotate([1, 2, 3, 4, 5], 2)   # [4, 5, 1, 2, 3]
+rotate([1, 2, 3], 7)         # [3, 1, 2]
+rotate([], 4)                # []`,
     hint: `<p>Rotating by the list length changes nothing, so reduce <code>k</code> with <code>%</code>. Watch out for dividing by zero.</p>`,
     code: `def rotate(xs, k):
     if not xs:

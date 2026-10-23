@@ -29,11 +29,11 @@ Choices made while building the site without asking, and the reasoning behind ea
 
 ## Design
 
-- **One font: Inter** (variable), self-hosted through `@fontsource-variable/inter`, so no request goes to Google Fonts. That is better for privacy and means there are no third parties to disclose.
-- **Code uses the same font.** The brief asked for one font, so code blocks use Inter too, with its disambiguation and tabular-figure features on and ligatures off, so `->` does not turn into an arrow. Python indentation still lines up because every line starts with the same spaces. To switch code to a monospace font, change `font-family` in the `code, pre, kbd` rule in `src/styles.css`.
+- **One text font: Inter** (variable), self-hosted through `@fontsource-variable/inter`, so no request goes to Google Fonts. That is better for privacy and means there are no third parties to disclose.
+- **Code uses a monospace font** (changed in round 2 at the owner's request). It is a system font stack (`--mono` in `src/styles.css`: ui-monospace, Cascadia Mono, Consolas, SF Mono, Menlo), so it adds no download. Ligatures are off. Comments in code samples are aligned in columns again.
 - **Colours**: off-white `#faf9f6` background, near-black `#111` text, one blue accent `#1d4ed8` (6.4:1 contrast on the background, passes WCAG AA). A muted grey is used only for secondary text.
 - **No shadows at all**; 1px borders separate surfaces.
-- **No sideways scrolling**: code blocks wrap long lines instead of scrolling (`white-space: pre-wrap`), grids collapse to one column on phones, and `overflow-x: clip` on the body is a safety net. The check script verifies this at 320px and 360px on every page with all `<details>` opened.
+- **No sideways scrolling on the page**: grids collapse to one column on phones and `overflow-x: clip` on the body is a safety net. **Code blocks keep their real indentation** (`white-space: pre`) and scroll sideways *inside the block* when a line is too long, instead of wrapping, because wrapped Python lines look like wrong indentation. A scrolling code block gets `tabindex="0"` and a label (`src/js/scrollable.js`) so keyboard users can scroll it. The check script verifies at 320px, 360px and 1366px, with all `<details>` opened, that the page never scrolls sideways (content inside a `<pre>` is allowed to).
 - **Mobile menu**: on narrow screens the nav collapses behind a Menu button. A tiny inline script adds a `js` class before first paint, so the menu does not flash open, and without JavaScript the full menu simply stays visible.
 
 ## Privacy and SEO

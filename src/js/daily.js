@@ -2,6 +2,7 @@ import { addDays, dateKey, problemFor } from '../data/problems.js';
 import { formatDate, problemBody, problemCard, problemTags } from './problem-view.js';
 import { mountSolveControls } from './solve-controls.js';
 import { getStreak } from './streak.js';
+import { markScrollableCode } from './scrollable.js';
 
 const ARCHIVE_DAYS = 14;
 const today = new Date();
@@ -43,3 +44,4 @@ function renderArchive(state) {
 
 mountSolveControls(todaySlot.querySelector('[data-solve]'), renderStats);
 renderArchive(getStreak(today));
+markScrollableCode();
