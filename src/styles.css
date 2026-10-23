@@ -837,3 +837,11 @@ details.reveal > .reveal-body > :last-child {
 .not-found {
   padding: 3rem 0;
 }
+
+.problem-meta .tags {
+  margin: 0;
+}
+
+.below-card {
+  margin-top: 0.9rem;
+}
