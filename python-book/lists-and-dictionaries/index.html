@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 6: Python Lists and Dictionaries | mycsmajor Python Book</title>
+    <meta name="description" content="Learn Python lists and dictionaries: indexing, slicing, adding and removing items, list comprehensions and looping over keys and values. Free beginner chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 6</span>
+          <h1>Lists and dictionaries</h1>
+          <p class="lede">Real programs handle many values at once: every student in a class, every word in a file. Lists and dictionaries are Python's everyday tools for that.</p>
+        </header>
+
+        <h2>Lists</h2>
+        <p>A list is an ordered collection, written with square brackets:</p>
+        <pre><code>langs = ["Python", "C", "Java"]
+print(langs[0])    # Python  (counting starts at 0)
+print(langs[-1])   # Java    (negative counts from the end)
+print(len(langs))  # 3</code></pre>
+
+        <h2>Changing a list</h2>
+        <pre><code>langs.append("Rust")    # add to the end
+langs.insert(1, "Go")   # add at position 1
+langs.remove("C")       # remove by value
+last = langs.pop()      # remove and return the last item
+langs[0] = "Python 3"   # replace an item
+print(langs)</code></pre>
+        <p>Use <code>in</code> to check membership: <code>if "Go" in langs:</code>.</p>
+
+        <h2>Slicing</h2>
+        <p>A slice takes part of a list (or a string) with <code>[start:stop]</code>. As with <code>range</code>, the stop index is not included.</p>
+        <pre><code>nums = [10, 20, 30, 40, 50]
+nums[1:3]   # [20, 30]
+nums[:2]    # [10, 20]
+nums[3:]    # [40, 50]
+nums[::-1]  # [50, 40, 30, 20, 10]</code></pre>
+
+        <h2>Looping over a list</h2>
+        <pre><code>scores = [72, 88, 95, 61]
+for s in scores:
+    print(s)
+
+for i, s in enumerate(scores):
+    print(f"Student {i + 1}: {s}")
+
+print(sum(scores) / len(scores))  # average</code></pre>
+
+        <h2>List comprehensions</h2>
+        <p>A comprehension builds a new list from an old one in a single line:</p>
+        <pre><code>squares = [n * n for n in range(6)]
+# [0, 1, 4, 9, 16, 25]
+
+passed = [s for s in scores if s &gt;= 70]
+# [72, 88, 95]</code></pre>
+
+        <h2>Dictionaries</h2>
+        <p>A dictionary maps <em>keys</em> to <em>values</em>, so you can look things up by name instead of position:</p>
+        <pre><code>student = {"name": "Ada", "year": 2, "major": "CS"}
+print(student["name"])        # Ada
+student["year"] = 3           # update
+student["gpa"] = 3.8          # add a new key
+print(student.get("minor"))   # None instead of an error
+print("major" in student)     # True</code></pre>
+        <p>Looking up a key with square brackets raises a <code>KeyError</code> if it is missing. <code>.get()</code> returns <code>None</code>, or a default you choose: <code>student.get("minor", "none")</code>.</p>
+
+        <h2>Looping over a dictionary</h2>
+        <pre><code>for key, value in student.items():
+    print(f"{key}: {value}")</code></pre>
+
+        <h2>Counting with a dictionary</h2>
+        <p>Dictionaries are perfect for counting things:</p>
+        <pre><code>text = "the cat and the hat"
+counts = {}
+for word in text.split():
+    counts[word] = counts.get(word, 0) + 1
+print(counts)
+# {'the': 2, 'cat': 1, 'and': 1, 'hat': 1}</code></pre>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Largest and smallest</h3>
+          <p>Given <code>nums = [4, 17, 2, 9]</code>, print the largest number, the smallest number and the list sorted from high to low.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>print(max(nums))                      # 17
+print(min(nums))                      # 2
+print(sorted(nums, reverse=True))     # [17, 9, 4, 2]</code></pre>
+              <p><code>sorted</code> returns a new list. <code>nums.sort()</code> sorts the original list in place instead.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Phone book</h3>
+          <p>Create a dictionary of three names and phone numbers. Ask the user for a name and print the number, or "Not found" if the name is missing.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>book = {
+    "ada": "555-0101",
+    "grace": "555-0102",
+    "linus": "555-0103",
+}
+name = input("Name: ").lower()
+print(book.get(name, "Not found"))</code></pre>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Comprehension practice</h3>
+          <p>Using a list comprehension, make a list of the lengths of each word in <code>"lists are really useful".split()</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>words = "lists are really useful".split()
+lengths = [len(w) for w in words]
+print(lengths)  # [5, 3, 6, 6]</code></pre>
+            </div>
+          </details>
+        </section>
+
+        <h2>What next?</h2>
+        <p>You now know enough Python to solve many of the <a href="/daily/">daily problems</a>. Try one today, and come back to this book whenever you need a refresher.</p>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/functions/">Previous: Functions</a>
+          <a class="btn" href="/daily/">Try today's problem</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

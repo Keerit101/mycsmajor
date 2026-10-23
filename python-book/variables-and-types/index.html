@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 2: Python Variables and Types | mycsmajor Python Book</title>
+    <meta name="description" content="Learn Python variables, numbers, strings and booleans, how to convert between types, read input and format output with f-strings. Free beginner chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 2</span>
+          <h1>Variables and types</h1>
+          <p class="lede">Programs work with data. This chapter shows how to name it, what kinds of data Python has, and how to move between them.</p>
+        </header>
+
+        <h2>Variables</h2>
+        <p>A variable is a name that refers to a value. You create one with <code>=</code>:</p>
+        <pre><code>name = "Ada"
+age = 19
+print(name)
+print(age)</code></pre>
+        <p><code>=</code> means "make this name refer to this value", not "is equal to". You can point a name at a new value at any time:</p>
+        <pre><code>score = 10
+score = score + 5
+print(score)  # 15</code></pre>
+        <p>Variable names can contain letters, digits and underscores, but cannot start with a digit. Python style is lowercase words joined by underscores, like <code>total_score</code>.</p>
+
+        <h2>The basic types</h2>
+        <ul>
+          <li><strong><code>int</code></strong>: whole numbers like <code>42</code> or <code>-7</code>.</li>
+          <li><strong><code>float</code></strong>: numbers with a decimal point like <code>3.14</code>.</li>
+          <li><strong><code>str</code></strong>: text in quotes, like <code>"hello"</code> or <code>'hello'</code>.</li>
+          <li><strong><code>bool</code></strong>: either <code>True</code> or <code>False</code>.</li>
+        </ul>
+        <p>Use <code>type()</code> to ask Python what type a value has:</p>
+        <pre><code>&gt;&gt;&gt; type(42)
+&lt;class 'int'&gt;
+&gt;&gt;&gt; type(3.14)
+&lt;class 'float'&gt;
+&gt;&gt;&gt; type("hi")
+&lt;class 'str'&gt;</code></pre>
+
+        <h2>Working with numbers</h2>
+        <pre><code>print(10 + 3)   # 13
+print(10 - 3)   # 7
+print(10 * 3)   # 30
+print(10 / 3)   # 3.3333333333333335
+print(10 // 3)  # 3
+print(10 % 3)   # 1
+print(2 ** 10)  # 1024</code></pre>
+        <p><code>/</code> always gives a float. Floats are stored in binary, so some decimals cannot be exact: <code>0.1 + 0.2</code> gives <code>0.30000000000000004</code>. That is normal in every language, not a Python bug.</p>
+
+        <h2>Working with strings</h2>
+        <pre><code>first = "Grace"
+last = "Hopper"
+full = first + " " + last
+print(full)          # Grace Hopper
+print(len(full))     # 12
+print(full.upper())  # GRACE HOPPER
+print("ha" * 3)      # hahaha</code></pre>
+
+        <h2>Converting between types</h2>
+        <p>You cannot add a number to a string directly. <code>"Age: " + 19</code> raises a <code>TypeError</code>. Convert first:</p>
+        <pre><code>int("42")      # 42
+float("3.5")   # 3.5
+str(19)        # "19"
+int(3.9)       # 3 (cuts off the decimal part)</code></pre>
+
+        <h2>Reading input</h2>
+        <p><code>input()</code> shows a prompt and waits for the user to type something. It always returns a string, so convert it if you need a number:</p>
+        <pre><code>name = input("What is your name? ")
+year = int(input("What year were you born? "))
+print("Hello", name)</code></pre>
+
+        <h2>f-strings</h2>
+        <p>The cleanest way to mix values into text is an f-string. Put <code>f</code> before the quote and wrap expressions in braces:</p>
+        <pre><code>name = "Ada"
+age = 19
+print(f"{name} is {age} years old.")
+print(f"Next year: {age + 1}")
+print(f"Pi is about {3.14159:.2f}")  # 3.14</code></pre>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Swap</h3>
+          <p>Given <code>a = 1</code> and <code>b = 2</code>, swap their values so that <code>a</code> is 2 and <code>b</code> is 1.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>a, b = b, a</code></pre>
+              <p>Python evaluates the right side first, then assigns both names at once. In many other languages you need a temporary variable.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Temperature converter</h3>
+          <p>Ask the user for a temperature in Celsius and print it in Fahrenheit with one decimal place. The formula is F = C &times; 9 / 5 + 32.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>c = float(input("Celsius: "))
+f = c * 9 / 5 + 32
+print(f"{c} C is {f:.1f} F")</code></pre>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Predict the output</h3>
+          <p>What does <code>print("5" + "5", 5 + 5, "5" * 3)</code> print?</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p><code>55 10 555</code>. Adding strings joins them, adding numbers does arithmetic, and multiplying a string repeats it. <code>print</code> separates its arguments with spaces.</p>
+            </div>
+          </details>
+        </section>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/getting-started/">Previous: Getting started</a>
+          <a class="btn" href="/python-book/making-decisions/">Next: Making decisions</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

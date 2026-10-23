@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 1: Getting Started with Python | mycsmajor Python Book</title>
+    <meta name="description" content="Install Python, run your first program from a file and the terminal, and learn to use the interactive Python shell. Free beginner chapter with exercises." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 1</span>
+          <h1>Getting started</h1>
+          <p class="lede">By the end of this chapter you will have Python installed, and you will have written and run your first program.</p>
+        </header>
+
+        <h2>Install Python</h2>
+        <ul>
+          <li><strong>Windows:</strong> download the latest Python 3 installer from <a href="https://www.python.org/downloads/" rel="noopener">python.org/downloads</a>. On the first screen, tick <em>Add python.exe to PATH</em> before clicking Install.</li>
+          <li><strong>macOS:</strong> download the installer from the same page, or use Homebrew with <code>brew install python</code>.</li>
+          <li><strong>Linux:</strong> Python 3 is usually installed already. If not, use your package manager, for example <code>sudo apt install python3</code>.</li>
+        </ul>
+        <p>Check that it worked by opening a terminal (Command Prompt or PowerShell on Windows, Terminal on macOS and Linux) and running:</p>
+        <pre><code>python --version</code></pre>
+        <p>You should see something like <code>Python 3.12.4</code>. On macOS and Linux the command may be <code>python3</code> instead of <code>python</code>.</p>
+
+        <h2>Pick an editor</h2>
+        <p>You can write Python in any text editor, but a code editor helps a lot. <a href="https://code.visualstudio.com/" rel="noopener">Visual Studio Code</a> is free and popular; install its Python extension and it will highlight mistakes as you type.</p>
+
+        <h2>Your first program</h2>
+        <p>Create a folder for your work, and inside it a file called <code>hello.py</code> containing:</p>
+        <pre><code>print("Hello, world!")</code></pre>
+        <p>In the terminal, move into that folder with <code>cd</code> and run the file:</p>
+        <pre><code>python hello.py</code></pre>
+        <p>Python reads your file from top to bottom and runs each line. <code>print</code> is a built-in <em>function</em> that shows whatever you give it. The text inside quotes is a <em>string</em>.</p>
+
+        <h2>Comments</h2>
+        <p>Anything after a <code>#</code> on a line is a comment. Python ignores it; it is a note for humans.</p>
+        <pre><code># Greet the user
+print("Hello, world!")  # this also works at the end of a line</code></pre>
+
+        <h2>The interactive shell</h2>
+        <p>Run <code>python</code> with no file name and you get the interactive shell, shown by the <code>&gt;&gt;&gt;</code> prompt. Type a line and Python runs it immediately.</p>
+        <pre><code>&gt;&gt;&gt; 2 + 3
+5
+&gt;&gt;&gt; 7 * 6
+42
+&gt;&gt;&gt; print("hi")
+hi</code></pre>
+        <p>The shell is perfect for quick experiments. Type <code>exit()</code> to leave it.</p>
+
+        <h2>When things go wrong</h2>
+        <p>Mistakes are normal. Python stops and prints an error that tells you what went wrong and on which line:</p>
+        <pre><code>print("Hello)
+SyntaxError: unterminated string literal (detected at line 1)</code></pre>
+        <p>Read the last line of an error first. It names the problem; the lines above show where it happened.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Three lines</h3>
+          <p>Write a program that prints your name, your favourite programming language and the year on three separate lines.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>print("Ada")
+print("Python")
+print(2026)</code></pre>
+              <p>Each <code>print</code> call ends with a new line. Numbers do not need quotes.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Shell arithmetic</h3>
+          <p>In the interactive shell, find out what <code>7 / 2</code>, <code>7 // 2</code> and <code>7 % 2</code> give. What do you think each operator does?</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p><code>7 / 2</code> is <code>3.5</code> (normal division). <code>7 // 2</code> is <code>3</code> (floor division: divide and round down). <code>7 % 2</code> is <code>1</code> (the remainder).</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Break it on purpose</h3>
+          <p>Remove the closing bracket from <code>print("Hello, world!")</code> and run the file. Read the error, then fix it.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>You get a <code>SyntaxError</code> saying a <code>(</code> was never closed. Learning what common errors look like now will save you hours later.</p>
+            </div>
+          </details>
+        </section>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/">All chapters</a>
+          <a class="btn" href="/python-book/variables-and-types/">Next: Variables and types</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

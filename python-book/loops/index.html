@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Chapter 4: Python for and while Loops | mycsmajor Python Book</title>
+    <meta name="description" content="Learn Python loops: for loops with range, while loops, break and continue, and the accumulator pattern. Free beginner chapter with exercises and answers." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/python-book/">Python Book</a> &middot; Chapter 4</span>
+          <h1>Loops</h1>
+          <p class="lede">Computers are good at doing the same thing many times without getting bored. Loops are how you ask them to.</p>
+        </header>
+
+        <h2>for loops and range</h2>
+        <pre><code>for i in range(5):
+    print(i)</code></pre>
+        <p>This prints 0, 1, 2, 3 and 4. <code>range(5)</code> produces the numbers from 0 up to, but not including, 5. You can also give a start, a stop and a step:</p>
+        <pre><code>range(1, 6)      # 1, 2, 3, 4, 5
+range(0, 10, 2)  # 0, 2, 4, 6, 8
+range(5, 0, -1)  # 5, 4, 3, 2, 1</code></pre>
+        <p>A <code>for</code> loop can walk over any sequence, including the characters of a string:</p>
+        <pre><code>for ch in "code":
+    print(ch.upper())</code></pre>
+
+        <h2>The accumulator pattern</h2>
+        <p>A very common job is building up a result one step at a time. Start with an empty value, then update it in the loop:</p>
+        <pre><code>total = 0
+for n in range(1, 101):
+    total += n
+print(total)  # 5050</code></pre>
+        <p><code>total += n</code> is short for <code>total = total + n</code>.</p>
+
+        <h2>while loops</h2>
+        <p>A <code>while</code> loop keeps going as long as its condition is true. Use it when you do not know in advance how many times to loop:</p>
+        <pre><code>n = 1
+while n &lt; 1000:
+    n *= 2
+print(n)  # 1024</code></pre>
+        <p>If the condition never becomes false, the loop runs forever. Press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal to stop a stuck program.</p>
+
+        <h2>break and continue</h2>
+        <p><code>break</code> leaves the loop immediately. <code>continue</code> skips to the next round.</p>
+        <pre><code>while True:
+    word = input("Word (or 'quit'): ")
+    if word == "quit":
+        break
+    if word == "":
+        continue
+    print(word[::-1])</code></pre>
+
+        <h2>Nested loops</h2>
+        <p>A loop inside a loop runs the inner loop completely for every round of the outer one:</p>
+        <pre><code>for row in range(1, 4):
+    line = ""
+    for col in range(1, 4):
+        line += f"{row * col:4}"
+    print(line)</code></pre>
+        <p>This prints a 3 by 3 multiplication table. <code>:4</code> pads each number to four characters so the columns line up.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Countdown</h3>
+          <p>Print the numbers from 10 down to 1, then print "Liftoff!".</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>for i in range(10, 0, -1):
+    print(i)
+print("Liftoff!")</code></pre>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Count the vowels</h3>
+          <p>Ask for a sentence and print how many vowels (a, e, i, o, u) it contains, ignoring case.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>text = input("Sentence: ")
+count = 0
+for ch in text.lower():
+    if ch in "aeiou":
+        count += 1
+print(count)</code></pre>
+              <p><code>in</code> checks whether one string appears inside another.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Guessing game</h3>
+          <p>Pick a secret number with <code>import random</code> and <code>random.randint(1, 100)</code>. Let the user guess until they get it, saying "higher" or "lower" each time, then print how many guesses they took.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>import random
+
+secret = random.randint(1, 100)
+guesses = 0
+while True:
+    guess = int(input("Guess: "))
+    guesses += 1
+    if guess &lt; secret:
+        print("higher")
+    elif guess &gt; secret:
+        print("lower")
+    else:
+        break
+print(f"Got it in {guesses} guesses.")</code></pre>
+              <p>With the best strategy you never need more than 7 guesses for 1 to 100. Why? See the "Guess the number" daily problem.</p>
+            </div>
+          </details>
+        </section>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/python-book/making-decisions/">Previous: Making decisions</a>
+          <a class="btn" href="/python-book/functions/">Next: Functions</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>
