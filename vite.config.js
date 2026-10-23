@@ -7,18 +7,18 @@ const SITE = 'https://mycsmajor.com';
 
 const NAV = [
   { href: '/daily/', label: 'Daily Problem', section: 'daily' },
+  { href: '/problems/', label: 'Problems', section: 'problems' },
+  { href: '/python-book/', label: 'Python Book', section: 'python-book' },
   { href: '/cyber-brief/', label: 'Cyber Brief', section: 'cyber-brief' },
   { href: '/gear/', label: 'Gear Guides', section: 'gear' },
-  { href: '/python-book/', label: 'Python Book', section: 'python-book' },
   { href: '/about/', label: 'About', section: 'about' },
-  { href: '/contact/', label: 'Contact', section: 'contact' },
 ];
 
 // Every .html file outside node_modules/dist is a page.
 function findPages(dir) {
   const pages = [];
   for (const name of readdirSync(dir)) {
-    if (['node_modules', 'dist', 'public', '.git', '.claude', 'src', 'scripts'].includes(name)) continue;
+    if (['node_modules', 'dist', 'public', '.git', '.claude', '.vercel', 'src', 'scripts', 'tests'].includes(name)) continue;
     const full = join(dir, name);
     if (statSync(full).isDirectory()) pages.push(...findPages(full));
     else if (name.endsWith('.html')) pages.push(full);
@@ -54,7 +54,10 @@ function layout() {
         let head = partial('head.html')
           .replaceAll('{{url}}', SITE + path)
           .replaceAll('{{title}}', title)
-          .replaceAll('{{description}}', description);
+          .replaceAll('{{description}}', description)
+          .replaceAll('{{site}}', SITE)
+          // Problem pages and book chapters are articles; everything else is the website.
+          .replaceAll('{{ogType}}', /^\/(problems|python-book)\/[^/]+\/$/.test(path) ? 'article' : 'website');
         // Pages that opt out of indexing get no canonical URL.
         if (html.includes('content="noindex"')) head = head.replace(/\s*<link rel="canonical"[^>]*>/, '');
 

@@ -854,3 +854,22 @@ details.reveal > .reveal-body > :last-child {
 .chapter-list[start='7'] {
   counter-reset: chapter 6;
 }
+
+/* Problem pages */
+
+.breadcrumb {
+  margin-bottom: 1rem;
+  color: var(--muted);
+}
+
+.page-head .tags {
+  margin-top: 0.75rem;
+}
+
+.track-section {
+  scroll-margin-top: 1rem;
+}
+
+.track-section h2 {
+  margin-top: 2.5rem;
+}

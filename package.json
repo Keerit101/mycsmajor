@@ -2,11 +2,14 @@
   "name": "mycsmajor",
   "version": "0.1.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node scripts/generate-problem-pages.mjs && vite",
+    "build": "node scripts/generate-problem-pages.mjs && vite build",
     "preview": "vite preview",
     "check": "node scripts/check-pages.mjs",
-    "test": "node scripts/export-solutions.mjs | python tests/check_solutions.py"
+    "test": "node scripts/export-solutions.mjs | python tests/check_solutions.py",
+    "pages": "node scripts/generate-problem-pages.mjs",
+    "share-image": "node scripts/make-share-image.mjs",
+    "check:seo": "node scripts/check-seo.mjs"
   },
   "type": "module",
   "devDependencies": {
