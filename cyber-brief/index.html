@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <!--head-->
-    <title>Cyber Brief: Security Incidents Explained | mycsmajor</title>
-    <meta name="description" content="Real security incidents like Log4Shell, Heartbleed and the xz backdoor, explained in plain language for computer science students, with the coding lesson behind each one." />
+    <title>Cyber Brief: Exploited Vulnerabilities, Updated Daily | mycsmajor</title>
+    <meta name="description" content="Security bugs attackers are exploiting this month, updated daily from CISA, plus classic incidents like Log4Shell and Heartbleed, with a coding lesson for each." />
   </head>
   <body>
     <!--header-->
@@ -12,13 +12,26 @@
         <header class="page-head">
           <span class="eyebrow">Cyber Brief</span>
           <h1>Security news, explained for CS students</h1>
-          <p class="lede">Twelve real incidents, newest first. Each brief covers what happened, how it worked, and the lesson you can apply to your own code. Every brief links to its official vulnerability record.</p>
+          <p class="lede">The vulnerabilities attackers are exploiting right now, updated every day from official government data, followed by twelve classic incidents explained in depth. Every entry links to its official record and ends with a lesson for your own code.</p>
         </header>
 
+        <ul class="toc" aria-label="On this page">
+          <li><a href="#exploited-title">Exploited this month</a></li>
+          <li><a href="#classics-title">Classic incidents</a></li>
+          <li><a href="#habits-title">Security habits</a></li>
+        </ul>
+
+        <section class="prose" aria-labelledby="exploited-title">
+          <h2 id="exploited-title">Exploited this month</h2>
+        <!--kev-latest-->
+        </section>
+
         <div class="prose">
+          <h2 id="classics-title">Classic incidents, explained</h2>
+          <p>Older incidents that changed how software is built. Each one covers what happened, how it worked and what to do differently.</p>
           <article class="brief" id="regresshion">
             <p class="brief-meta">July 2024 &middot; OpenSSH &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2024-6387" rel="noopener">CVE-2024-6387</a></p>
-            <h2>regreSSHion: an old bug comes back</h2>
+            <h3>regreSSHion: an old bug comes back</h3>
             <p>Researchers at Qualys found a race condition in the OpenSSH server on glibc-based Linux. If a client failed to log in before the timeout, a signal handler ran code that was not safe to run inside a signal handler. With enough attempts, an attacker could get remote code execution as root without logging in.</p>
             <p>The bug was a regression: a fix for a similar 2006 issue (CVE-2006-5051) had been accidentally undone by a later code change.</p>
             <p class="takeaway"><strong>Lesson:</strong> when you fix a bug, add a test that fails if the bug ever returns. Regression tests exist for exactly this.</p>
@@ -26,7 +39,7 @@
 
           <article class="brief" id="xz-backdoor">
             <p class="brief-meta">March 2024 &middot; xz Utils &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2024-3094" rel="noopener">CVE-2024-3094</a></p>
-            <h2>The xz backdoor: a two-year supply chain attack</h2>
+            <h3>The xz backdoor: a two-year supply chain attack</h3>
             <p>A contributor using the name "Jia Tan" spent about two years earning trust as a maintainer of xz, a compression library used by many Linux systems. Versions 5.6.0 and 5.6.1 shipped with a hidden backdoor in the release tarballs, aimed at the SSH server on some distributions.</p>
             <p>It was caught before reaching most stable releases because an engineer, Andres Freund, noticed SSH logins taking about half a second longer than usual and dug into why.</p>
             <p class="takeaway"><strong>Lesson:</strong> your project trusts every dependency and every maintainer behind it. And when something is oddly slow, curiosity is a security skill.</p>
@@ -34,7 +47,7 @@
 
           <article class="brief" id="ivanti-connect-secure">
             <p class="brief-meta">January 2024 &middot; Ivanti Connect Secure &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" rel="noopener">CVE-2023-46805</a> and <a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" rel="noopener">CVE-2024-21887</a></p>
-            <h2>Ivanti Connect Secure: two bugs make one break-in</h2>
+            <h3>Ivanti Connect Secure: two bugs make one break-in</h3>
             <p>Ivanti Connect Secure is a VPN appliance that many organisations use to let staff into their networks. Attackers chained two flaws: an authentication bypass in its web component, and a command injection bug that only logged-in administrators should have been able to reach. Together, they let an attacker with no password run commands on the device.</p>
             <p>Exploitation started before a fix existed, and the US Cybersecurity and Infrastructure Security Agency (CISA) issued Emergency Directive 24-01 ordering federal agencies to act.</p>
             <p class="takeaway"><strong>Lesson:</strong> "only admins can reach that code" is not a security control on its own. Validate input everywhere, because one bug can remove the wall you were relying on to stop another.</p>
@@ -42,7 +55,7 @@
 
           <article class="brief" id="citrix-bleed">
             <p class="brief-meta">October 2023 &middot; Citrix NetScaler &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-4966" rel="noopener">CVE-2023-4966</a></p>
-            <h2>Citrix Bleed: stolen sessions outlive the patch</h2>
+            <h3>Citrix Bleed: stolen sessions outlive the patch</h3>
             <p>A buffer over-read in Citrix NetScaler ADC and Gateway devices let attackers read memory that contained valid session tokens. With a stolen token, an attacker could take over a user's logged-in session, skipping the password and multi-factor authentication entirely. Ransomware groups used it against many organisations.</p>
             <p>Patching closed the hole, but sessions already stolen kept working, so the advice was to patch <em>and</em> end every active session.</p>
             <p class="takeaway"><strong>Lesson:</strong> a session token is as good as a password. Give them expiry times, make them revocable, and think about what an attacker already has when you fix a bug.</p>
@@ -53,7 +66,7 @@
 
           <article class="brief" id="moveit">
             <p class="brief-meta">May 2023 &middot; MOVEit Transfer &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-34362" rel="noopener">CVE-2023-34362</a></p>
-            <h2>MOVEit: SQL injection at scale</h2>
+            <h3>MOVEit: SQL injection at scale</h3>
             <p>MOVEit Transfer is file-transfer software used by many companies and governments. The Cl0p ransomware group exploited a SQL injection flaw in its web application to steal files from a large number of organisations before a patch was available.</p>
             <p>SQL injection has been understood for over twenty years, yet it still turns up in commercial products.</p>
             <p class="takeaway"><strong>Lesson:</strong> never build SQL by gluing strings together. Use parameterised queries, for example <code>cur.execute("SELECT * FROM users WHERE id = ?", (user_id,))</code>.</p>
@@ -61,7 +74,7 @@
 
           <article class="brief" id="log4shell">
             <p class="brief-meta">December 2021 &middot; Apache Log4j &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" rel="noopener">CVE-2021-44228</a></p>
-            <h2>Log4Shell: when logging runs code</h2>
+            <h3>Log4Shell: when logging runs code</h3>
             <p>Log4j 2, a very widely used Java logging library, supported "lookups": special text like <code>${jndi:ldap://...}</code> inside a log message would be interpreted, not just written down. If an attacker could get that text logged (in a username, a chat message or an HTTP header), the server could fetch and run the attacker's code.</p>
             <p>Because Log4j was buried deep in so many dependency trees, many teams first had to work out whether they used it at all.</p>
             <p class="takeaway"><strong>Lesson:</strong> treat all user input as data, never as instructions. And know what is in your dependency tree; tools that generate a software bill of materials (SBOM) help.</p>
@@ -69,14 +82,14 @@
 
           <article class="brief" id="baron-samedit">
             <p class="brief-meta">January 2021 &middot; sudo &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3156" rel="noopener">CVE-2021-3156</a></p>
-            <h2>Baron Samedit: a ten-year-old bug in sudo</h2>
+            <h3>Baron Samedit: a ten-year-old bug in sudo</h3>
             <p>Researchers at Qualys found a heap buffer overflow in sudo, the Unix tool that lets permitted users run commands as root. A mistake in how it handled backslashes in command-line arguments meant any local user, even one not allowed to use sudo at all, could become root. The bug had been in the code since 2011.</p>
             <p class="takeaway"><strong>Lesson:</strong> code that runs with high privileges deserves the most careful review, and age is not proof of safety. Manual memory handling in C is a common source of this kind of bug, which is one reason memory-safe languages are gaining ground in systems code.</p>
           </article>
 
           <article class="brief" id="spectre">
             <p class="brief-meta">January 2018 &middot; Modern CPUs &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2017-5753" rel="noopener">CVE-2017-5753</a></p>
-            <h2>Spectre: when the processor guesses ahead</h2>
+            <h3>Spectre: when the processor guesses ahead</h3>
             <p>To run faster, modern processors guess which way a program will go and start running instructions early ("speculative execution"). If the guess is wrong, the results are thrown away, but traces stay behind in the CPU cache. Spectre showed that a program could trick the processor into speculatively reading secret data, then recover it by timing how fast memory accesses were.</p>
             <p>It affected processors from several major manufacturers, and fixes needed changes to operating systems, browsers and compilers, some at a cost in speed.</p>
             <p class="takeaway"><strong>Lesson:</strong> abstractions leak. Code can be logically correct and still reveal secrets through timing. It is why security-sensitive code, like password comparison, should take the same time whatever the input.</p>
@@ -84,14 +97,14 @@
 
           <article class="brief" id="equifax">
             <p class="brief-meta">2017 &middot; Apache Struts &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2017-5638" rel="noopener">CVE-2017-5638</a></p>
-            <h2>Equifax: the patch that was not applied</h2>
+            <h3>Equifax: the patch that was not applied</h3>
             <p>A remote code execution flaw in the Apache Struts web framework was disclosed and patched in March 2017. Equifax had not updated a public-facing system, and attackers used the flaw to access personal data of roughly 147 million people.</p>
             <p class="takeaway"><strong>Lesson:</strong> a fix only protects you once it is deployed. Keeping dependencies updated is unglamorous, important work; tools like Dependabot make it easier.</p>
           </article>
 
           <article class="brief" id="wannacry">
             <p class="brief-meta">May 2017 &middot; Windows SMBv1 &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0144" rel="noopener">CVE-2017-0144</a></p>
-            <h2>WannaCry: a worm with a kill switch</h2>
+            <h3>WannaCry: a worm with a kill switch</h3>
             <p>WannaCry ransomware spread on its own between Windows machines using the EternalBlue exploit for the old SMBv1 file-sharing protocol. Microsoft had released a patch (MS17-010) two months earlier, but many systems, including parts of the UK's National Health Service, were not updated.</p>
             <p>Its spread slowed when a researcher registered a domain name the malware checked before running, which acted as an accidental kill switch.</p>
             <p class="takeaway"><strong>Lesson:</strong> turn off old protocols you do not need, and read malware the way you would read any program. Its logic can contain its own off switch.</p>
@@ -99,14 +112,14 @@
 
           <article class="brief" id="shellshock">
             <p class="brief-meta">September 2014 &middot; GNU Bash &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2014-6271" rel="noopener">CVE-2014-6271</a></p>
-            <h2>Shellshock: code hidden in environment variables</h2>
+            <h3>Shellshock: code hidden in environment variables</h3>
             <p>Bash could import function definitions from environment variables, but it kept executing any commands placed after the function body. Web servers running CGI scripts copied HTTP headers into environment variables, so a crafted header could run commands on the server.</p>
             <p class="takeaway"><strong>Lesson:</strong> parsers are an attack surface. Anything that reads untrusted text needs to stop exactly where the valid input ends.</p>
           </article>
 
           <article class="brief" id="heartbleed">
             <p class="brief-meta">April 2014 &middot; OpenSSL &middot; <a href="https://nvd.nist.gov/vuln/detail/CVE-2014-0160" rel="noopener">CVE-2014-0160</a></p>
-            <h2>Heartbleed: trusting a length field</h2>
+            <h3>Heartbleed: trusting a length field</h3>
             <p>OpenSSL's TLS "heartbeat" feature let one side send a message and its length, and the other side echoed it back. OpenSSL trusted the stated length without checking it against the real message, so a request claiming to be large returned up to 64 KB of whatever sat next to it in the server's memory, including private keys and passwords.</p>
             <p class="takeaway"><strong>Lesson:</strong> never trust a length, index or size that came from outside your program. Check bounds, or use memory-safe languages and APIs that check them for you.</p>
           </article>

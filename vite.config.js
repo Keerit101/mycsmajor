@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, relative, join } from 'node:path';
+import { renderKevSection } from './src/build/cyber-brief.js';
 
 const root = import.meta.dirname;
 const SITE = 'https://mycsmajor.com';
@@ -64,7 +65,8 @@ function layout() {
         return html
           .replace('<!--head-->', head)
           .replace('<!--header-->', partial('header.html').replace('{{nav}}', navLinks))
-          .replace('<!--footer-->', partial('footer.html'));
+          .replace('<!--footer-->', partial('footer.html'))
+          .replace('<!--kev-latest-->', () => renderKevSection());
       },
     },
   };

@@ -37,6 +37,7 @@ function pages(dir) {
 }
 
 const browserPaths = [
+  process.env.CHROME_PATH,
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
@@ -44,7 +45,7 @@ const browserPaths = [
   '/usr/bin/google-chrome',
   '/usr/bin/chromium',
 ];
-const executablePath = browserPaths.find((p) => existsSync(p));
+const executablePath = browserPaths.find((p) => p && existsSync(p));
 if (!executablePath) throw new Error('No Edge or Chrome found.');
 
 if (shotDir) mkdirSync(shotDir, { recursive: true });

@@ -1,0 +1,57 @@
+# Refreshes the "Exploited this month" section of /cyber-brief/ every day from
+# CISA's Known Exploited Vulnerabilities catalog. When CISA has published a new
+# catalog version, it commits the updated src/data/kev-latest.json to main,
+# and Vercel redeploys the site from that commit.
+name: Update Cyber Brief
+
+on:
+  schedule:
+    # 22:30 UTC is 6:30 PM in Toronto (5:30 PM in winter), after CISA's usual
+    # US working-day updates.
+    - cron: '30 22 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-cyber-brief
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Download the latest KEV catalog
+        run: node scripts/update-cyber-brief.mjs
+
+      - name: Check the site still builds
+        run: |
+          if git diff --quiet -- src/data/kev-latest.json; then
+            echo "No new entries today."
+          else
+            npm ci
+            npm run build
+          fi
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- src/data/kev-latest.json; then
+            exit 0
+          fi
+          version=$(node -p "require('./src/data/kev-latest.json').catalogVersion")
+          # Commits use the site owner's GitHub no-reply address, like every
+          # other commit in this repo, so Vercel deploys them.
+          git config user.name "Keerit101"
+          git config user.email "180261002+Keerit101@users.noreply.github.com"
+          git add src/data/kev-latest.json
+          git commit -m "Update Cyber Brief from CISA KEV catalog $version"
+          git push

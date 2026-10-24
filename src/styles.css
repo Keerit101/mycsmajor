@@ -918,3 +918,23 @@ details.reveal > .reveal-body > :last-child {
     visibility: visible;
   }
 }
+
+.brief h3,
+.brief h4 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.kev-date {
+  margin: 2rem 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.brief-links {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
