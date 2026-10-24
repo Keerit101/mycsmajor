@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>How Attacks Actually Start | mycsmajor</title>
+    <meta name="description" content="Trust boundaries, attack surface and threat modelling for programmers, with a worked example on a small web app. Free sample chapter of Security basics." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/security-basics/">Security basics for programmers</a> &middot; Chapter 1</span>
+          <h1>How attacks actually start</h1>
+          <p class="lede">Almost every breach you read about began with input someone trusted. This chapter teaches you to find the places your own code trusts, which is the skill every later chapter builds on.</p>
+        </header>
+
+        <h2>Nobody picks a lock they can walk around</h2>
+        <p>Real attacks are rarely clever. They are usually one of these:</p>
+        <ul>
+          <li>Software that was never updated, with a public exploit available.</li>
+          <li>Input that was used as instructions instead of being treated as data.</li>
+          <li>A credential that leaked, was reused, or was never changed from the default.</li>
+          <li>A check that happened in the browser instead of on the server.</li>
+          <li>A dependency nobody looked at.</li>
+        </ul>
+        <p>You can see this for yourself. Scroll the <a href="/cyber-brief/">Cyber Brief</a> on this site, which lists the vulnerabilities being actively exploited each month, straight from CISA's catalogue. Most entries are command injection, path traversal, authentication bypass or a memory bug. The same handful of mistakes, in different products, every single month.</p>
+        <p>That is good news for a student. You do not have to learn everything. You have to learn these.</p>
+
+        <h2>Trust boundaries</h2>
+        <p>A <strong>trust boundary</strong> is any line where data moves from somewhere you do not control to somewhere you do. At that line, data is guilty until proven innocent.</p>
+        <p>In a small web application the boundaries are:</p>
+        <pre><code>  browser ─────▶ your server        form fields, URL parameters, headers,
+                                    cookies, uploaded files, JSON bodies
+
+  internet ────▶ your server        anything fetched from another API
+
+  your server ─▶ the database       values put into queries
+
+  your server ─▶ the shell          arguments passed to other programs
+
+  your server ─▶ the browser        values written back into HTML
+
+  disk / env ──▶ your program       config files, environment variables</code></pre>
+        <p>Notice that the boundaries point both ways. Data coming <em>in</em> needs validating. Data going <em>out</em> needs encoding for wherever it lands: quoting for SQL, escaping for HTML, argument lists for the shell. Most vulnerability classes in this book are one of those two steps missing.</p>
+
+        <h3>The browser is not part of your program</h3>
+        <p>This deserves its own line. JavaScript validation, disabled buttons, hidden fields and <code>maxlength</code> are user-interface features, not security. Anyone can open developer tools, or skip the page entirely:</p>
+        <pre><code>curl -X POST https://example.com/api/order \
+  -H "Content-Type: application/json" \
+  -d '{"item": 7, "quantity": -5, "price": 0}'</code></pre>
+        <p>If your server accepts a negative quantity because the form would never send one, you have a bug, and someone will find it. <strong>Every check that matters happens on the server.</strong> Client-side checks exist to be helpful, not to be trusted.</p>
+
+        <h2>Attack surface</h2>
+        <p>Your <strong>attack surface</strong> is everything an attacker can reach: every route, every parameter, every port, every file upload, every dependency, every admin page, every API key in a config file. The practical advice is simply to make it smaller.</p>
+        <ul>
+          <li>Delete routes you no longer use, especially debug and test endpoints.</li>
+          <li>Turn off debug mode in anything public. A stack trace tells an attacker your framework, version, file paths and sometimes your database schema.</li>
+          <li>Do not install a package to do something a few lines can do.</li>
+          <li>Do not expose a database, a Redis instance or an admin panel to the internet.</li>
+          <li>Give each account, service and key the smallest permissions it can work with. This is <em>least privilege</em>, and it is what turns a break-in into a contained one.</li>
+        </ul>
+
+        <h2>Thinking like the person testing your code</h2>
+        <p>For any feature, ask four questions. Writing the answers down is a basic <strong>threat model</strong>, and even a scrappy one finds real bugs.</p>
+        <ol>
+          <li><strong>What are we protecting?</strong> Passwords, personal data, marks, money, the ability to post as someone else.</li>
+          <li><strong>Who might want it?</strong> A curious classmate, an automated scanner, a bored user, someone with a grudge. You do not need spies in your model; the automated scanner is enough to motivate every control in this book.</li>
+          <li><strong>Where does untrusted data enter?</strong> List every input, including ones you did not design: headers, cookies, file names, image metadata.</li>
+          <li><strong>What happens if each input is hostile?</strong> Go one at a time, and assume the worst plausible value.</li>
+        </ol>
+
+        <h3>A worked example</h3>
+        <p>A class project: students upload a profile photo and the site shows it on a public page. Four inputs: the file itself, its name, its size, and the logged-in user ID the upload is recorded against.</p>
+        <table>
+          <thead>
+            <tr><th>Hostile input</th><th>What could happen</th><th>The control</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>File named <code>../../app/main.py</code></td><td>overwrites your code</td><td>never use the uploaded name; generate your own</td></tr>
+            <tr><td>A <code>.php</code> or <code>.py</code> file renamed to <code>.jpg</code></td><td>the server runs it</td><td>check the real content, store uploads outside any executable folder</td></tr>
+            <tr><td>A 4 GB file, or ten thousand small ones</td><td>disk and bandwidth gone</td><td>size and rate limits</td></tr>
+            <tr><td>A user ID sent by the client</td><td>upload as somebody else</td><td>take the ID from the session, never from the request</td></tr>
+            <tr><td>A name containing <code>&lt;script&gt;</code></td><td>script runs for every visitor</td><td>escape on output (chapter 7)</td></tr>
+          </tbody>
+        </table>
+        <p>Five controls, from one feature, in about ten minutes. Compare that with finding the same five in production.</p>
+
+        <h2>CIA, and why availability counts</h2>
+        <p>Security is usually split three ways: <strong>confidentiality</strong> (only the right people can read it), <strong>integrity</strong> (only the right people can change it, and you can tell if they did) and <strong>availability</strong> (it works when needed). Students tend to focus on the first. A marking system that loses an assignment has an integrity failure; one that falls over on the due date has an availability failure. Both are security problems.</p>
+
+        <h2>Staying legal while you learn</h2>
+        <p>This is not a footnote. Testing a system you do not own, or do not have written permission to test, is a criminal offence in Canada and nearly everywhere else, however harmless your intent and however obvious the bug. "I was only looking" is not a defence, and a student record is easy to ruin.</p>
+        <p>Practise on things built for it: your own applications, deliberately vulnerable apps you run locally such as OWASP Juice Shop, capture-the-flag competitions, and bug bounty programmes, strictly inside their published scope. Chapter 12 covers this properly. Everything in this book can be learned entirely on your own machine.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Map your own boundaries</h3>
+          <p>Take a project you have written, even a small one, and list every place data enters it. For each, write who controls that data.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>A typical list for a beginner web app: form fields and URL parameters (the user), cookies and headers (the user, including ones your framework sets), uploaded files (the user), a third-party API response (that company, plus anyone who can intercept an unencrypted connection), a config file or environment variable (you, unless the server is shared), and command-line arguments (whoever starts the program).</p>
+              <p>The useful surprise for most people is how much of it the <em>user</em> controls. Cookies and headers are sent by the browser, so they are user input too, even though you wrote the code that sets them.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Find the trusted input</h3>
+          <p>What is wrong with this Flask route, and what would you change?</p>
+          <pre><code>@app.route("/profile")
+def profile():
+    user_id = request.args.get("user_id")
+    user = db.get_user(user_id)
+    return render_template("profile.html", user=user)</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>The user ID comes from the query string, so visiting <code>/profile?user_id=2</code> shows somebody else's profile. This is a broken access control bug, specifically an insecure direct object reference, and it is one of the most common findings in real web applications because the code looks perfectly reasonable.</p>
+              <pre><code>@app.route("/profile")
+@login_required
+def profile():
+    user = db.get_user(session["user_id"])   # identity from the session
+    return render_template("profile.html", user=user)</code></pre>
+              <p>Identity comes from the session, never from the request. If a route genuinely needs to show another user's page, it must check that the logged-in user is allowed to see it &mdash; on the server, on every request.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Read this month's attacks</h3>
+          <p>Open the <a href="/cyber-brief/">Cyber Brief</a> and look at the entries added in the last month. Group them by weakness type. Which three types appear most?</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>The exact answer changes every month, which is the point of doing it on live data rather than reading a fixed list here. Across 2026 the most common weaknesses in that catalogue have been code and command injection, authentication bypass, and path traversal, with memory-safety bugs close behind.</p>
+              <p>All three of the leaders are covered in this book, and all three come down to the same sentence: data from outside was used as an instruction. If the exercise makes that feel repetitive, it has worked.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:security-basics-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/security-basics/">All chapters</a>
+          <a class="btn" href="/books/security-basics/passwords/">Next: Passwords done properly</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

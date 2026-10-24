@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Arrays, Lists and When Each Wins | mycsmajor</title>
+    <meta name="description" content="What an index really costs, why inserting at the front is expensive, and how a dynamic array grows. Measured in Python, explained with diagrams. Free sample chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/data-structures/">Data structures and algorithms, by hand</a> &middot; Chapter 2</span>
+          <h1>Arrays, lists and when each wins</h1>
+          <p class="lede">A Python list looks like one thing that does everything. Underneath it is a specific data structure with specific costs, and knowing them explains most "why is my code slow" questions.</p>
+        </header>
+
+        <h2>An array is a row of boxes</h2>
+        <p>An array is a block of memory holding equal-sized slots, one after another. Because the slots are equal and adjacent, the computer can find slot <var>i</var> by arithmetic:</p>
+        <pre><code>address of xs[i]  =  address of xs[0]  +  i &times; size of one slot</code></pre>
+        <p>One multiplication and one addition, whatever <var>i</var> is. That is why <code>xs[0]</code> and <code>xs[999_999]</code> cost the same: <strong>O(1)</strong>. Everything else about arrays follows from this one fact.</p>
+        <p>It also explains why C arrays need a fixed element type: if the slots were different sizes, the arithmetic would not work and the computer would have to walk the array to find anything.</p>
+
+        <h2>What a Python list really is</h2>
+        <p>A Python list is a <strong>dynamic array</strong>: an array with spare room on the end, plus a stored length. When the spare room runs out, Python allocates a bigger block, copies everything over, and frees the old one.</p>
+        <pre><code>xs = [10, 20, 30]        # length 3, capacity maybe 4
+
+    index:     0    1    2    3
+    slots:  [ 10 | 20 | 30 |    ]
+                              spare</code></pre>
+        <p>So <code>append</code> is usually one write into the spare slot, and occasionally a full copy. Averaged out, it is <strong>O(1) amortised</strong>. The growth is by a factor, not by a fixed amount, which is what keeps the average constant: doubling means the expensive copies get rarer exactly as fast as they get bigger.</p>
+
+        <h2>The costs, and why</h2>
+        <table>
+          <thead>
+            <tr><th>Operation</th><th>Cost</th><th>Why</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>xs[i]</code></td><td>O(1)</td><td>address arithmetic</td></tr>
+            <tr><td><code>xs[i] = v</code></td><td>O(1)</td><td>same</td></tr>
+            <tr><td><code>len(xs)</code></td><td>O(1)</td><td>the length is stored, not counted</td></tr>
+            <tr><td><code>xs.append(v)</code></td><td>O(1) amortised</td><td>writes into spare space</td></tr>
+            <tr><td><code>xs.pop()</code></td><td>O(1)</td><td>shortens by one</td></tr>
+            <tr><td><code>xs.insert(0, v)</code></td><td>O(n)</td><td>every later item shifts up one slot</td></tr>
+            <tr><td><code>xs.pop(0)</code></td><td>O(n)</td><td>every later item shifts down one slot</td></tr>
+            <tr><td><code>v in xs</code></td><td>O(n)</td><td>compares items one by one</td></tr>
+            <tr><td><code>xs[a:b]</code></td><td>O(b &minus; a)</td><td>builds a new list and copies</td></tr>
+            <tr><td><code>xs.sort()</code></td><td>O(n log n)</td><td>Timsort</td></tr>
+          </tbody>
+        </table>
+        <p>Three of these cause almost all real slowness: <code>pop(0)</code>, <code>insert(0, v)</code> and <code>in</code>.</p>
+
+        <h2>Why the front is expensive</h2>
+        <p>Inserting at index 0 means every existing item must move up one slot to make room, because the index of an item <em>is</em> its position in the block.</p>
+        <pre><code>before:  [ 10 | 20 | 30 |    ]
+insert 5 at 0
+after:   [  5 | 10 | 20 | 30 ]
+              every item shifted right</code></pre>
+        <p>Measured over 100,000 operations on an empty list, on the machine these pages were written on:</p>
+        <pre><code>import timeit
+print(timeit.timeit("xs.append(1)",    setup="xs=[]", number=100_000))   # about 0.002 s
+print(timeit.timeit("xs.insert(0,1)",  setup="xs=[]", number=100_000))   # about 0.9 s</code></pre>
+        <p>Several hundred times slower, and the gap widens as the list grows, because each insert shifts a longer list. Building a list by inserting at the front is O(n&sup2;) overall.</p>
+        <p>Two fixes. If you want newest-first, <code>append</code> and then <code>reverse()</code> once at the end, which is O(n) in total. If you genuinely need to add and remove at both ends, use a deque:</p>
+        <pre><code>from collections import deque
+
+q = deque([10, 20, 30])
+q.appendleft(5)      # O(1)
+q.popleft()          # O(1)</code></pre>
+        <p>A <code>deque</code> is a doubly linked list of small blocks, so both ends are cheap &mdash; but <code>q[i]</code> in the middle becomes O(n). You never get everything; you choose what to pay for.</p>
+
+        <h2>Choosing between the four everyday structures</h2>
+        <table>
+          <thead>
+            <tr><th>You need to</th><th>Use</th><th>Cost</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>keep order, read by position</td><td><code>list</code></td><td>O(1) by index</td></tr>
+            <tr><td>ask "is this in there?"</td><td><code>set</code></td><td>O(1)</td></tr>
+            <tr><td>look something up by a key</td><td><code>dict</code></td><td>O(1)</td></tr>
+            <tr><td>add and remove at both ends</td><td><code>deque</code></td><td>O(1) at the ends</td></tr>
+          </tbody>
+        </table>
+        <p>The most common upgrade a beginner can make is replacing <code>if x in some_list</code> with a set built once, outside the loop. It usually takes two lines and turns quadratic code linear.</p>
+
+        <h2>Two-dimensional lists, and the trap</h2>
+        <pre><code>grid = [[0] * 3 for _ in range(3)]   # three separate rows: correct
+bad  = [[0] * 3] * 3                 # three references to ONE row
+
+bad[0][0] = 9
+print(bad)    # [[9, 0, 0], [9, 0, 0], [9, 0, 0]]</code></pre>
+        <p><code>* 3</code> on a list copies references, not the rows. The comprehension builds a new inner list each time round, which is what you almost always want. This one catches nearly everybody once.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Name the cost</h3>
+          <p>Give the total time complexity of each loop, in terms of <code>n = len(data)</code>.</p>
+          <pre><code># (a)
+out = []
+for x in data:
+    out.insert(0, x)
+
+# (b)
+out = []
+for x in data:
+    out.append(x)
+out.reverse()
+
+# (c)
+result = []
+for x in data:
+    if x not in result:
+        result.append(x)</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>(a) <strong>O(n&sup2;)</strong>. Each <code>insert(0, x)</code> shifts everything already there, so the total is 0 + 1 + 2 + ... + (n&minus;1) shifts.</p>
+              <p>(b) <strong>O(n)</strong>. Each append is amortised O(1), and one reverse is O(n). Same result as (a), hundreds of times faster.</p>
+              <p>(c) <strong>O(n&sup2;)</strong>. <code>x not in result</code> scans the list each time. To deduplicate while keeping order, use <code>dict.fromkeys(data)</code>, which is O(n) and preserves insertion order.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Build a dynamic array yourself</h3>
+          <p>Using a fixed-size array as the only storage, write a class with <code>append</code> and <code>get</code> that grows by doubling. Use <code>[None] * capacity</code> as your "fixed array" and never resize it in place.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>class DynamicArray:
+    def __init__(self):
+        self._capacity = 1
+        self._size = 0
+        self._slots = [None] * self._capacity
+
+    def __len__(self):
+        return self._size
+
+    def get(self, i):
+        if not 0 &lt;= i &lt; self._size:
+            raise IndexError(i)
+        return self._slots[i]
+
+    def append(self, value):
+        if self._size == self._capacity:
+            self._grow()
+        self._slots[self._size] = value
+        self._size += 1
+
+    def _grow(self):
+        self._capacity *= 2
+        bigger = [None] * self._capacity
+        for i in range(self._size):      # the expensive copy
+            bigger[i] = self._slots[i]
+        self._slots = bigger</code></pre>
+              <p>Add a <code>print</code> inside <code>_grow</code> and append 100 items: it fires at sizes 1, 2, 4, 8, 16, 32 and 64, seven times for a hundred appends. That is why the average stays constant. Change <code>*= 2</code> to <code>+= 1</code> and it fires every single time, making <code>append</code> O(n) and the whole loop O(n&sup2;).</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Pick the structure</h3>
+          <p>For each job, name the structure and the cost: (a) the last 50 pages a user visited, newest first; (b) checking whether a username is taken, from 2 million names; (c) counting how many times each word appears in an essay.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>(a) <code>deque(maxlen=50)</code> with <code>appendleft</code>: O(1) per page, and it drops the oldest automatically.</p>
+              <p>(b) a <code>set</code> of names: O(1) per check. In a list this is O(n), which at two million names is the difference between instant and noticeable on every sign-up.</p>
+              <p>(c) <code>collections.Counter(words)</code>, a dict underneath: O(n) in total, O(1) per word. Writing <code>counts[w] = counts.get(w, 0) + 1</code> by hand is the same cost and worth doing once to see why.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:data-structures-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/data-structures/big-o/">Back: Big O without a maths degree</a>
+          <a class="btn" href="/books/data-structures/">All chapters</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

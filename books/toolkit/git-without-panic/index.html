@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Git Without Panic: A Student Guide | mycsmajor</title>
+    <meta name="description" content="Commits, branches, the staging area, and what to do when Git says something frightening. The Git a first-year student actually needs. Free sample chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/toolkit/">Git, Linux and the terminal</a> &middot; Chapter 2</span>
+          <h1>Git without panic</h1>
+          <p class="lede">Git is frightening because its messages are written for people who already understand it. Learn the model first and the commands stop being magic spells.</p>
+        </header>
+
+        <h2>The model: three places your work can be</h2>
+        <pre><code>  working directory  ──git add──▶  staging area  ──git commit──▶  repository
+  (your files, as                 (what will go in                (permanent
+   they are now)                   the next commit)                 history)</code></pre>
+        <p>Most confusion comes from the middle box. Editing a file changes the working directory only. <code>git add</code> copies the current state of that file into the staging area. <code>git commit</code> turns whatever is staged into a permanent snapshot. Edit the file again after staging and you now have two versions in play, which is exactly what <code>git status</code> is telling you when it lists the same file twice.</p>
+        <p>A <strong>commit</strong> is a full snapshot of the project plus a message, an author and a pointer to its parent. A <strong>branch</strong> is just a movable label pointing at one commit. That is the entire data model.</p>
+
+        <h2>Starting out</h2>
+        <pre><code>git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main
+
+git init                       # start a repository in this folder
+git clone &lt;url&gt;                # or copy an existing one</code></pre>
+        <p>Set the name and email before your first commit; they are recorded in every commit and are tedious to change afterwards.</p>
+
+        <h2>The daily loop</h2>
+        <pre><code>git status                     # what has changed, and what is staged
+git diff                        # changes not yet staged
+git diff --staged               # changes that are staged
+git add main.py                 # stage one file
+git add .                       # stage everything here and below
+git commit -m "Add input validation to the parser"
+git log --oneline -10           # the last ten commits</code></pre>
+        <p><strong>Run <code>git status</code> constantly.</strong> It is not just a report: it names the command for whatever you probably want to do next. Reading it carefully solves most Git problems before they become problems.</p>
+        <p>On messages: say what the commit does, in the imperative, in one line under about 70 characters. "Fix off-by-one in the loop bound" is useful in six months; "stuff", "fix", "asdf" and "final final v2" are not. Commit when a piece of work makes sense on its own, not once a day.</p>
+
+        <h2>Branches</h2>
+        <pre><code>git switch -c feature-login     # create a branch and move onto it
+git switch main                 # back to main
+git branch                      # list branches, * marks the current one
+git merge feature-login         # bring that branch's work into this one
+git branch -d feature-login     # delete it once merged</code></pre>
+        <p><code>switch</code> and <code>restore</code> are the modern commands; older material uses <code>git checkout</code> for both jobs, which is part of why it felt confusing. Both still work.</p>
+        <p>Work on a branch whenever you are trying something you might abandon. If it fails, delete the branch and nothing was lost. That is the point.</p>
+
+        <h2>Working with GitHub</h2>
+        <pre><code>git remote -v                   # where "origin" points
+git push -u origin main         # push and remember the link (first time)
+git push                        # after that
+git pull                        # fetch and merge others' work
+git fetch                       # fetch without merging, to look first</code></pre>
+        <p>Pull before you start work and push when you finish, every session. Most merge pain is the result of a branch that sat untouched for two weeks.</p>
+
+        <h2>What to do when Git says something frightening</h2>
+        <h3>"Your branch and 'origin/main' have diverged"</h3>
+        <p>You committed locally and someone else pushed. Bring their work in and put yours on top:</p>
+        <pre><code>git pull --rebase</code></pre>
+        <p>This replays your commits after theirs, giving one straight line instead of a merge commit. Safe while your commits are still only on your machine.</p>
+
+        <h3>A merge conflict</h3>
+        <p>Git stops and marks the clashing region in the file:</p>
+        <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+total = price * 1.13
+=======
+total = price * TAX_RATE
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-tax</code></pre>
+        <p>Above the <code>=======</code> is your side, below it is theirs. Edit the file into what it should actually be, delete all three marker lines, then:</p>
+        <pre><code>git add the-file.py
+git commit                      # finishes the merge</code></pre>
+        <p>Nothing is broken and nothing is lost. A conflict only means two people changed the same lines, and Git is sensibly refusing to guess. To abandon the attempt entirely, <code>git merge --abort</code> puts everything back.</p>
+
+        <h3>"detached HEAD"</h3>
+        <p>You checked out a commit rather than a branch, so new commits would have no label and would be hard to find later. If you have not committed anything, <code>git switch main</code> fixes it. If you have, <code>git switch -c rescue-branch</code> keeps that work by giving it a name.</p>
+
+        <h3>I committed something I should not have</h3>
+        <pre><code>git restore main.py                 # discard unstaged changes to a file
+git restore --staged main.py        # unstage, keep the edits
+git commit --amend -m "Better message"   # fix the last commit (not pushed yet)
+git revert &lt;hash&gt;                   # undo a pushed commit with a new commit
+git reset --soft HEAD~1             # undo the last commit, keep the changes staged</code></pre>
+        <p>Use <code>revert</code> for anything already pushed: it adds a commit that undoes the change, so nobody else's history breaks. Keep <code>reset</code> for commits that are still local, and <strong>be careful with <code>--hard</code></strong>, which throws your edits away with no copy anywhere.</p>
+        <p>One serious exception: if you committed a password or an API key, removing the commit is not enough, because it still exists in the history and in every clone. Treat the secret as leaked, revoke it immediately, then clean the history. Add the file to <code>.gitignore</code> and keep secrets in environment variables so it cannot happen twice.</p>
+
+        <h3>I have genuinely lost a commit</h3>
+        <pre><code>git reflog</code></pre>
+        <p>This lists everywhere <code>HEAD</code> has been for the last 90 days, including commits that no branch points at any more. Find the hash and <code>git switch -c rescue &lt;hash&gt;</code>. Git almost never deletes a commit you made; it loses the <em>label</em>. Knowing <code>reflog</code> exists is what turns Git from frightening into merely fiddly.</p>
+
+        <h2>.gitignore</h2>
+        <pre><code># Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+
+# Editors and systems
+.vscode/
+.DS_Store
+
+# Secrets
+.env</code></pre>
+        <p>Commit this file first, before anything else. Once <code>node_modules</code> or a <code>.env</code> is in the history, getting it out is real work. <a href="https://github.com/github/gitignore" rel="noopener">github/gitignore</a> has a ready-made file for every language.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. The staging area, proved</h3>
+          <p>Create a file, stage it, then edit it again without staging. Run <code>git status</code>, <code>git diff</code> and <code>git diff --staged</code>. Explain what each shows.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p><code>git status</code> lists the file twice: once under "Changes to be committed" and once under "Changes not staged for commit". Both are true &mdash; the staged version and the current version differ.</p>
+              <p><code>git diff</code> shows only the second edit, the difference between the staging area and your working file. <code>git diff --staged</code> shows the first version, the difference between the last commit and the staging area.</p>
+              <p>If you commit now, only the staged version is recorded. This is the mechanism behind <code>git add -p</code>, which lets you stage some of your changes and leave the rest for another commit.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Cause a conflict and fix it</h3>
+          <p>On a branch, change line 1 of a file and commit. On <code>main</code>, change the same line differently and commit. Merge. Resolve it.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>git switch -c experiment
+# edit line 1
+git commit -am "Change the greeting on the branch"
+git switch main
+# edit line 1 differently
+git commit -am "Change the greeting on main"
+git merge experiment            # CONFLICT
+# edit the file: keep what you actually want, delete the &lt;&lt;&lt; === &gt;&gt;&gt; lines
+git add the-file.txt
+git commit</code></pre>
+              <p>Doing this once on purpose, on a throwaway repository, is worth more than reading about it ten times. The mystery disappears, and you will not panic when it happens the night before a deadline.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Rescue a lost commit</h3>
+          <p>Commit some work on a branch, switch to <code>main</code>, delete the branch with <code>git branch -D</code>, then get the commit back.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>git reflog                      # find the line for your commit
+git switch -c recovered &lt;hash&gt;  # give it a label again
+git log --oneline -3            # confirm the work is there</code></pre>
+              <p>The commit was never deleted. <code>git branch -D</code> only removed the label pointing at it, leaving it unreachable but still stored, and Git keeps unreachable commits for about 90 days before garbage collection.</p>
+              <p>So the honest summary of Git safety is: once you have committed, your work is very hard to actually lose. Work that was never committed has no such protection, which is the real argument for committing often.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:toolkit-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/toolkit/twelve-commands/">Back: The twelve commands you need</a>
+          <a class="btn" href="/books/toolkit/">All chapters</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Pointers Without Fear: C Explained | mycsmajor</title>
+    <meta name="description" content="Addresses, dereferencing, pointer parameters and the diagrams that make C pointers obvious, including why a swap function needs them. Free sample chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/c-and-memory/">C and how memory really works</a> &middot; Chapter 2</span>
+          <h1>Pointers without fear</h1>
+          <p class="lede">A pointer is a variable that holds an address. That is the whole idea. Everything confusing about pointers is notation, so this chapter goes slowly through the notation.</p>
+        </header>
+
+        <h2>Memory is a very long street</h2>
+        <p>Think of memory as a street of numbered boxes, one byte each. A variable is a label your program puts on a box, or on several boxes in a row. The number of the first box is the variable's <strong>address</strong>.</p>
+        <p>Two operators do everything:</p>
+        <ul>
+          <li><code>&amp;x</code> gives the address of <code>x</code>. Read it as "address of".</li>
+          <li><code>*p</code> gives the value stored at the address in <code>p</code>. Read it as "the thing at".</li>
+        </ul>
+        <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    int x = 42;
+    int *p = &amp;x;        /* p holds the address of x */
+
+    printf("%d\n", x);   /* 42 */
+    printf("%d\n", *p);  /* 42, the thing at that address */
+
+    *p = 7;              /* write through the pointer */
+    printf("%d\n", x);   /* 7, because p pointed at x */
+    return 0;
+}</code></pre>
+        <p>Drawn out, after <code>int *p = &amp;x;</code>:</p>
+        <pre><code>    address      contents     label
+    0x7ffd1004 | 42        | x
+    0x7ffd1008 | 0x7ffd1004| p     (p's contents are x's address)</code></pre>
+        <p>The actual addresses differ on every run; only the relationship matters. <code>*p = 7</code> does not change <code>p</code> at all. It changes the box <code>p</code> is pointing at.</p>
+
+        <h2>The star means two different things</h2>
+        <p>This is the single biggest source of confusion, and it is worth being blunt about.</p>
+        <pre><code>int *p;      /* DECLARATION: p is a pointer to an int */
+*p = 7;      /* STATEMENT:   write 7 into the int that p points at */</code></pre>
+        <p>In a declaration, <code>*</code> is part of the type. In an expression, <code>*</code> is the dereference operator. The compiler always knows which is which from context; you have to as well. A habit that helps: read declarations from the variable outwards. <code>int *p</code> is "<code>*p</code> is an <code>int</code>", so <code>p</code> must be a pointer to an <code>int</code>.</p>
+        <p>Print an address with <code>%p</code>:</p>
+        <pre><code>printf("%p\n", (void *) &amp;x);   /* e.g. 0x7ffd1004 */</code></pre>
+
+        <h2>Why pointers exist: changing a caller's variable</h2>
+        <p>C passes every argument <em>by value</em>: the function gets a copy. So this classic swap does nothing at all.</p>
+        <pre><code>void bad_swap(int a, int b) {
+    int t = a;
+    a = b;
+    b = t;              /* swaps the copies, then they are thrown away */
+}
+
+int x = 1, y = 2;
+bad_swap(x, y);
+printf("%d %d\n", x, y);   /* 1 2 */</code></pre>
+        <p>Pass the addresses instead, and the function can reach the originals:</p>
+        <pre><code>void good_swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+good_swap(&amp;x, &amp;y);
+printf("%d %d\n", x, y);   /* 2 1 */</code></pre>
+        <p>This is why <code>scanf</code> takes an <code>&amp;</code>: <code>scanf("%d", &amp;n)</code> hands it the address of <code>n</code> so it can fill it in. Forgetting the <code>&amp;</code> passes whatever rubbish is in <code>n</code> as an address and corrupts memory there. Compilers warn about it, which is one more reason for <code>-Wall</code>.</p>
+        <p>Python does not need any of this because every Python variable is already a reference to an object. C makes the choice explicit on every parameter.</p>
+
+        <h2>Arrays are nearly pointers</h2>
+        <pre><code>int nums[5] = {1, 2, 3, 4, 5};
+printf("%d\n", nums[2]);        /* 3 */
+printf("%d\n", *(nums + 2));    /* 3, the same thing */</code></pre>
+        <p>In almost every expression, an array's name becomes a pointer to its first element. So <code>nums[2]</code> is defined as <code>*(nums + 2)</code>: start at the beginning and move two elements along. Note <em>elements</em>, not bytes: adding 1 to an <code>int *</code> moves 4 bytes, because the compiler knows what it points at. That is pointer arithmetic, and it is why the type of a pointer matters.</p>
+        <p>This decay is also why an array forgets its length when you pass it:</p>
+        <pre><code>void print_all(int values[], int n) {   /* values is really an int *   */
+    for (int i = 0; i &lt; n; i++) {       /* so n has to come along too   */
+        printf("%d ", values[i]);
+    }
+    printf("\n");
+}</code></pre>
+        <p>Inside <code>print_all</code>, <code>sizeof(values)</code> is the size of a pointer, not of the array. Every C function that takes an array takes a length beside it. When you see that pattern in the standard library, now you know why.</p>
+
+        <h2>Pointers to pointers, and const</h2>
+        <pre><code>char *name = "Keerit";        /* pointer to the first character       */
+char **list;                  /* pointer to a pointer: an array of     */
+                              /* strings is usually written this way    */
+
+const char *msg = "cannot change this text through msg";</code></pre>
+        <p><code>const</code> is a promise to the compiler, and it is checked. Mark a pointer parameter <code>const</code> whenever the function only reads through it, and the compiler will stop you writing through it by accident. String literals in particular live in read-only memory: writing to one is undefined behaviour and usually crashes, so always point at them with a <code>const char *</code>.</p>
+
+        <h2>NULL, and the three ways pointers go wrong</h2>
+        <p><code>NULL</code> is the address zero, used to mean "points at nothing". Dereferencing it is a segmentation fault, which, as crashes go, is the good outcome: it stops immediately instead of corrupting something.</p>
+        <p>The three classic failures, each covered in full later in the book:</p>
+        <ol>
+          <li><strong>Uninitialised pointer.</strong> <code>int *p;</code> then <code>*p = 5;</code> writes to a random address. Always initialise: <code>int *p = NULL;</code></li>
+          <li><strong>Dangling pointer.</strong> The thing it pointed at is gone, because a function returned or the memory was freed. Chapters 4 and 5.</li>
+          <li><strong>Out of bounds.</strong> Pointer arithmetic that walks past the end of an array. No check happens.</li>
+        </ol>
+        <p>Two habits prevent most of this: initialise every pointer, and test with <code>gcc -fsanitize=address,undefined</code> while you are learning.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Predict the output</h3>
+          <pre><code>int a = 5;
+int b = 10;
+int *p = &amp;a;
+int *q = &amp;b;
+*p = *q;
+p = q;
+*p = 20;
+printf("%d %d\n", a, b);</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p><code>10 20</code>.</p>
+              <p><code>*p = *q</code> copies the <em>value</em>, so <code>a</code> becomes 10. <code>p = q</code> copies the <em>pointer</em>, so <code>p</code> now points at <code>b</code>. <code>*p = 20</code> therefore writes into <code>b</code>, leaving <code>a</code> at 10.</p>
+              <p>If you got this right, you understand pointers. The rest of the book is detail.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Two results from one function</h3>
+          <p>Write <code>void min_max(const int values[], int n, int *min, int *max)</code> that fills in both answers through its pointer parameters.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>void min_max(const int values[], int n, int *min, int *max) {
+    *min = values[0];
+    *max = values[0];
+    for (int i = 1; i &lt; n; i++) {
+        if (values[i] &lt; *min) *min = values[i];
+        if (values[i] &gt; *max) *max = values[i];
+    }
+}
+
+/* called like this: */
+int lo, hi;
+int data[5] = {4, 9, 1, 7, 3};
+min_max(data, 5, &amp;lo, &amp;hi);
+printf("%d %d\n", lo, hi);   /* 1 9 */</code></pre>
+              <p>A C function returns one value, so when you need two, you pass pointers to where the answers should go. This pattern is everywhere in C libraries. Starting at <code>values[0]</code> rather than at zero matters: with all-negative input, a maximum initialised to 0 would be wrong.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Write your own strlen</h3>
+          <p>Write <code>size_t my_strlen(const char *s)</code> using pointer arithmetic, without using <code>strlen</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>size_t my_strlen(const char *s) {
+    const char *start = s;
+    while (*s != '\0') {
+        s++;
+    }
+    return (size_t)(s - start);
+}</code></pre>
+              <p>Walk forward until the terminating zero byte, then subtract the starting address from the final one: the difference between two pointers into the same array is the number of elements between them. This is, give or take some optimisation, exactly what the real <code>strlen</code> does &mdash; and it shows why a string with no terminator makes it run off the end of memory.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:c-and-memory-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/c-and-memory/from-python-to-c/">Back: From Python to C</a>
+          <a class="btn" href="/books/c-and-memory/">All chapters</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

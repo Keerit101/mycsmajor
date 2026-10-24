@@ -722,7 +722,8 @@ details.reveal > .reveal-body > :last-child {
   border-top: 1px solid var(--line);
 }
 
-.chapter-list a {
+.chapter-list a,
+.chapter-list .chapter-locked {
   display: grid;
   grid-template-columns: 2.25rem minmax(0, 1fr);
   gap: 0.25rem 0.5rem;
@@ -731,12 +732,17 @@ details.reveal > .reveal-body > :last-child {
   color: var(--text);
 }
 
-.chapter-list a::before {
+.chapter-list a::before,
+.chapter-list .chapter-locked::before {
   content: counter(chapter, decimal-leading-zero);
-  grid-row: span 2;
+  grid-row: 1 / span 10;
   font-weight: 700;
   color: var(--accent);
   font-feature-settings: 'tnum';
+}
+
+.chapter-list .chapter-locked::before {
+  color: var(--muted);
 }
 
 .chapter-list .chapter-title {
@@ -937,4 +943,63 @@ details.reveal > .reveal-body > :last-child {
 .brief-links {
   color: var(--muted);
   overflow-wrap: anywhere;
+}
+
+/* Books */
+
+.chapter-tag {
+  grid-column: 2;
+}
+
+.book-shelf {
+  margin: 2rem 0;
+}
+
+.book-card h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.book-course {
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.book-price {
+  margin-bottom: 1rem;
+}
+
+.buy-box {
+  margin: 2rem 0;
+}
+
+.buy-box h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.buy-strip p {
+  margin-top: 0;
+}
+
+.chapter-tag {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 0.35rem;
+}
+
+.chapter-tag-paid {
+  color: var(--muted);
+}
+
+.chapter-list .chapter-locked .chapter-title {
+  color: var(--text);
 }

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Sets, Properly: Notation and Proofs | mycsmajor</title>
+    <meta name="description" content="Set notation, subsets, unions and intersections, power sets and the element-versus-subset mistake, with exam-style practice and answers. Free sample chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/discrete-math/">Discrete math and logic</a> &middot; Chapter 2</span>
+          <h1>Sets, properly</h1>
+          <p class="lede">Most lost marks on sets come from notation rather than ideas. This chapter is about getting the notation exactly right, because the ideas are not hard.</p>
+        </header>
+
+        <h2>What a set is</h2>
+        <p>A set is an unordered collection of distinct things, called its elements. Two sets are equal when they have exactly the same elements, so:</p>
+        <pre><code>{1, 2, 3} = {3, 2, 1} = {1, 2, 2, 3}</code></pre>
+        <p>Order carries no information and repeats carry no information. Python agrees: <code>{1, 2, 2, 3} == {3, 2, 1}</code> is <code>True</code>.</p>
+        <p>Two ways to write a set down:</p>
+        <ul>
+          <li><strong>Roster:</strong> list the elements. <code>A = {2, 4, 6, 8}</code>.</li>
+          <li><strong>Set-builder:</strong> state the rule. <code>A = {x &isin; &#8484; : x is even and 0 &lt; x &lt; 10}</code>, read as "the set of integers <var>x</var> such that...". The colon (or a vertical bar) means "such that".</li>
+        </ul>
+        <p>Names you are expected to know: &#8469; the natural numbers, &#8484; the integers, &#8474; the rationals, &#8477; the reals, and &empty; or <code>{}</code> the empty set.</p>
+
+        <h2>Element or subset? The mistake worth fixing now</h2>
+        <p>Two different relations, two different symbols:</p>
+        <ul>
+          <li><strong>&isin; is for elements.</strong> <code>2 &isin; {1, 2, 3}</code>. The left side is a <em>thing</em>.</li>
+          <li><strong>&sube; is for subsets.</strong> <code>{2} &sube; {1, 2, 3}</code>. The left side is a <em>set</em>.</li>
+        </ul>
+        <p>So <code>2 &sube; {1, 2, 3}</code> is wrong, and <code>{2} &isin; {1, 2, 3}</code> is also wrong (the set <code>{2}</code> is not one of the three elements). Writing the wrong symbol costs marks even when the reasoning is right, so check every one.</p>
+        <p>It gets interesting when sets contain sets. For <code>A = {1, {2, 3}}</code>, A has exactly <strong>two</strong> elements: the number 1 and the set <code>{2, 3}</code>. So <code>{2, 3} &isin; A</code> is true, while <code>2 &isin; A</code> is false and <code>{1} &sube; A</code> is true.</p>
+
+        <h3>Subset, proper subset, equality</h3>
+        <p><code>A &sube; B</code> means every element of A is in B. A set is a subset of itself, and &empty; is a subset of every set. <code>A &sub; B</code> (proper subset) means <code>A &sube; B</code> and <code>A &ne; B</code>.</p>
+        <p>This gives the standard way to prove two sets are equal: show <code>A &sube; B</code> and <code>B &sube; A</code>. Chapter 4 does that properly; for now, note that it is the set version of proving a biconditional in two directions.</p>
+
+        <h2>Operations</h2>
+        <p>With <code>A = {1, 2, 3, 4}</code>, <code>B = {3, 4, 5}</code> and a universal set <code>U = {1, ..., 6}</code>:</p>
+        <table>
+          <thead>
+            <tr><th>Operation</th><th>Meaning</th><th>Result</th><th>Python</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>A &cup; B</td><td>in A or in B</td><td><code>{1,2,3,4,5}</code></td><td><code>A | B</code></td></tr>
+            <tr><td>A &cap; B</td><td>in both</td><td><code>{3,4}</code></td><td><code>A &amp; B</code></td></tr>
+            <tr><td>A &minus; B</td><td>in A but not B</td><td><code>{1,2}</code></td><td><code>A - B</code></td></tr>
+            <tr><td>A &#8710; B</td><td>in exactly one</td><td><code>{1,2,5}</code></td><td><code>A ^ B</code></td></tr>
+            <tr><td>A&#773; (complement)</td><td>in U but not A</td><td><code>{5,6}</code></td><td><code>U - A</code></td></tr>
+          </tbody>
+        </table>
+        <p>A complement only means something once the universal set is stated. "Everything that is not in A" is not a set until you say what "everything" is.</p>
+        <p>Sets are <strong>disjoint</strong> when <code>A &cap; B = &empty;</code>. The cardinality <code>|A|</code> is the number of elements, so <code>|{1, 2, 3}| = 3</code> and <code>|&empty;| = 0</code>.</p>
+
+        <h2>The same laws as logic</h2>
+        <p>Set operations obey the laws from chapter 1, with &cup; for &or;, &cap; for &and; and complement for &not;. That is not a coincidence: <code>x &isin; A &cup; B</code> is <em>defined</em> as <code>(x &isin; A) &or; (x &isin; B)</code>, so every set identity is a logical identity about membership.</p>
+        <pre><code>De Morgan:      (A &cup; B)&#773; = A&#773; &cap; B&#773;        (A &cap; B)&#773; = A&#773; &cup; B&#773;
+Distributive:   A &cap; (B &cup; C) = (A &cap; B) &cup; (A &cap; C)
+Identity:       A &cup; &empty; = A              A &cap; U = A
+Domination:     A &cup; U = U              A &cap; &empty; = &empty;
+Idempotent:     A &cup; A = A              A &cap; A = A
+Absorption:     A &cup; (A &cap; B) = A</code></pre>
+        <p>When your course asks for an identity proof "from LHS to RHS", this is the toolkit: rewrite one side step by step, naming the law each time, until it reads as the other side. No truth table, no elements, just the laws.</p>
+
+        <h2>Power sets</h2>
+        <p>The power set <code>&weierp;(A)</code> is the set of <em>all</em> subsets of A, including &empty; and A itself.</p>
+        <pre><code>A = {1, 2}
+&weierp;(A) = { &empty;, {1}, {2}, {1, 2} }</code></pre>
+        <p>If <code>|A| = n</code> then <code>|&weierp;(A)| = 2&#8319;</code>, because each element is either in a given subset or not: <var>n</var> independent two-way choices. That is the same 2&#8319; as the rows of a truth table, for exactly the same reason.</p>
+        <p>Two traps. <code>&weierp;(&empty;) = {&empty;}</code>, a set with one element, so its cardinality is 1 and not 0. And the elements of a power set are <em>sets</em>, so you write <code>{1} &isin; &weierp;(A)</code>, with &isin;, not &sube;.</p>
+
+        <h2>Cartesian products</h2>
+        <p><code>A &times; B</code> is the set of ordered pairs <code>(a, b)</code> with <code>a &isin; A</code> and <code>b &isin; B</code>. Here order <em>does</em> matter, and <code>|A &times; B| = |A| &times; |B|</code>.</p>
+        <pre><code>{1, 2} &times; {x, y} = { (1,x), (1,y), (2,x), (2,y) }</code></pre>
+        <p>Products are how relations and functions are defined in chapter 7, and how database joins work in practice.</p>
+
+        <h2>Checking yourself in Python</h2>
+        <p>Python's sets use the same operations, which makes them a fast way to check an answer:</p>
+        <pre><code>A = {1, 2, 3, 4}
+B = {3, 4, 5}
+U = set(range(1, 7))
+
+print(A | B)                    # {1, 2, 3, 4, 5}
+print(A &amp; B)                    # {3, 4}
+print(A - B)                    # {1, 2}
+print(A ^ B)                    # {1, 2, 5}
+print((U - (A | B)) == ((U - A) &amp; (U - B)))   # True: De Morgan</code></pre>
+        <p>Checking an identity on one example does not prove it, and a marker will not accept it. It does catch a misread question in ten seconds, which is worth a lot in revision.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. True or false</h3>
+          <p>Let <code>A = {1, 2, {3}}</code>. Decide each: (a) <code>3 &isin; A</code>; (b) <code>{3} &isin; A</code>; (c) <code>{3} &sube; A</code>; (d) <code>{{3}} &sube; A</code>; (e) <code>&empty; &sube; A</code>; (f) <code>|A| = 4</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>(a) <strong>False.</strong> The element is <code>{3}</code>, not <code>3</code>.</p>
+              <p>(b) <strong>True.</strong> <code>{3}</code> is literally one of the three elements.</p>
+              <p>(c) <strong>False.</strong> <code>{3} &sube; A</code> would need <code>3 &isin; A</code>, and it is not.</p>
+              <p>(d) <strong>True.</strong> The only element of <code>{{3}}</code> is <code>{3}</code>, which is in A.</p>
+              <p>(e) <strong>True.</strong> The empty set is a subset of every set, vacuously: there is no element of &empty; that could fail to be in A.</p>
+              <p>(f) <strong>False.</strong> <code>|A| = 3</code>. A nested set counts as one element.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Prove an identity</h3>
+          <p>Show that <code>A &minus; (B &cup; C) = (A &minus; B) &cap; (A &minus; C)</code>, working from the left side with named laws.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>A &minus; (B &cup; C)
+= A &cap; (B &cup; C)&#773;              definition of difference
+= A &cap; (B&#773; &cap; C&#773;)             De Morgan
+= (A &cap; A) &cap; (B&#773; &cap; C&#773;)      idempotent, to get a second copy of A
+= (A &cap; B&#773;) &cap; (A &cap; C&#773;)      commutative and associative
+= (A &minus; B) &cap; (A &minus; C)         definition of difference</code></pre>
+              <p>The step that looks like a trick is using <code>A = A &cap; A</code> to produce the second A. It is a standard move whenever the right-hand side mentions a set more often than the left-hand side does.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Counting with sets</h3>
+          <p>In a class of 30, 18 take Python, 15 take Java and 7 take both. How many take neither? Then write the general rule you used.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>By inclusion-exclusion, <code>|P &cup; J| = |P| + |J| &minus; |P &cap; J| = 18 + 15 &minus; 7 = 26</code>. So <code>30 &minus; 26 = 4</code> take neither.</p>
+              <p>Subtracting the intersection is the whole point: the 7 students taking both were counted twice, once in each total. The rule generalises to three sets as <code>|A &cup; B &cup; C| = |A| + |B| + |C| &minus; |A &cap; B| &minus; |A &cap; C| &minus; |B &cap; C| + |A &cap; B &cap; C|</code>, which chapter 8 derives and uses.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:discrete-math-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/discrete-math/logic-and-truth-tables/">Back: Logic and truth tables</a>
+          <a class="btn" href="/books/discrete-math/">All chapters</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

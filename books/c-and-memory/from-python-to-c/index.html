@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>From Python to C: Your First Program | mycsmajor</title>
+    <meta name="description" content="Compile and run your first C program, learn what the compiler is doing, and see which Python habits C will not let you keep. Free sample chapter on C and memory." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/c-and-memory/">C and how memory really works</a> &middot; Chapter 1</span>
+          <h1>From Python to C</h1>
+          <p class="lede">C gives you almost nothing and checks almost nothing. That is why learning it teaches you what a computer is actually doing with your program.</p>
+        </header>
+
+        <h2>Get a compiler</h2>
+        <ul>
+          <li><strong>Linux:</strong> <code>sudo apt install build-essential</code> (or your distribution's equivalent) gives you <code>gcc</code>.</li>
+          <li><strong>macOS:</strong> run <code>xcode-select --install</code> to get <code>clang</code>, which answers to <code>gcc</code> too.</li>
+          <li><strong>Windows:</strong> install the Windows Subsystem for Linux and work inside it, or install MSYS2 and use its <code>gcc</code>. Working in a Unix-like shell is worth it: almost all C teaching material assumes one.</li>
+        </ul>
+        <pre><code>gcc --version</code></pre>
+
+        <h2>Hello, C</h2>
+        <p>Put this in <code>hello.c</code>:</p>
+        <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("Hello, world!\n");
+    return 0;
+}</code></pre>
+        <p>Compile it and run it:</p>
+        <pre><code>gcc -Wall -Wextra -o hello hello.c
+./hello</code></pre>
+        <pre><code>Hello, world!</code></pre>
+        <p>Line by line:</p>
+        <ul>
+          <li><code>#include &lt;stdio.h&gt;</code> pastes in the declarations for the standard input and output functions, <code>printf</code> among them. It is not an import; it is a literal copy and paste done by the preprocessor before compiling.</li>
+          <li><code>int main(void)</code> is where the program starts. It returns an <code>int</code> to the operating system: <code>0</code> means success, anything else means failure. <code>void</code> means it takes no arguments.</li>
+          <li><code>printf</code> prints. There is no automatic newline, so you write <code>\n</code> yourself.</li>
+        </ul>
+        <p><strong>Always compile with <code>-Wall -Wextra</code>.</strong> C will happily compile code that is broken; those two flags make the compiler tell you about the obvious cases. Treat every warning as an error you have not hit yet.</p>
+
+        <h2>printf is not print</h2>
+        <p>Python's <code>print</code> works out how to display anything. <code>printf</code> does not: you tell it, with a placeholder for each value, and it trusts you.</p>
+        <pre><code>int marks = 90;
+double average = 84.6666;
+char grade = 'A';
+char name[] = "Keerit";
+
+printf("%d\n", marks);           // 90
+printf("%.2f\n", average);       // 84.67
+printf("%c\n", grade);           // A
+printf("%s\n", name);            // Keerit
+printf("%d%%\n", marks);         // 90%   (%% prints one percent sign)</code></pre>
+        <p>The common ones are <code>%d</code> for <code>int</code>, <code>%f</code> for <code>double</code> (<code>%.2f</code> for two decimals), <code>%c</code> for a character, <code>%s</code> for a string and <code>%zu</code> for a size. Use the wrong one and C does not complain at run time; it reinterprets the bytes and prints nonsense. This is your first lesson in what "no safety net" means.</p>
+
+        <h2>Types are not optional</h2>
+        <pre><code>int count = 3;          /* whole number, 4 bytes on almost every machine */
+double ratio = 0.75;    /* decimal, 8 bytes */
+char letter = 'x';      /* one byte */
+int marks[5];           /* room for five ints, contents undefined */</code></pre>
+        <p>Three differences from Python will catch you:</p>
+        <ol>
+          <li><strong>A variable has a fixed size.</strong> <code>sizeof(int)</code> is 4 bytes on a normal desktop, so an <code>int</code> stops at about 2.1 billion and then wraps around silently.</li>
+          <li><strong>A declared variable is not empty, it is undefined.</strong> <code>int x;</code> contains whatever bytes were already at that address. Reading it before assigning is undefined behaviour, and the value may differ every run. Always initialise: <code>int x = 0;</code></li>
+          <li><strong>Integer division truncates</strong>, as in Java: <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <code>3.50</code>.</li>
+        </ol>
+
+        <h2>There are no real strings</h2>
+        <p>A C string is an array of characters with a zero byte on the end, written <code>'\0'</code>. The functions in <code>&lt;string.h&gt;</code> find the end by looking for that byte.</p>
+        <pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(void) {
+    char word[] = "hi";
+    printf("%zu %zu\n", sizeof(word), strlen(word));   /* 3 2 */
+    return 0;
+}</code></pre>
+        <p><code>sizeof</code> is 3 because the array holds <code>'h'</code>, <code>'i'</code> and <code>'\0'</code>. <code>strlen</code> is 2 because it counts up to, but not including, the terminator. If that zero byte goes missing, <code>strlen</code> keeps reading past the end of your array into memory that is not yours. That single design decision is behind a remarkable number of real security vulnerabilities.</p>
+        <p>You cannot join strings with <code>+</code>, compare them with <code>==</code>, or ask one how long it is. You call functions: <code>strlen</code>, <code>strcmp</code>, <code>strcpy</code>, <code>snprintf</code>. Chapter 3 covers them, including which ones are dangerous.</p>
+
+        <h2>Arrays do not know their own length</h2>
+        <pre><code>int nums[5] = {1, 2, 3, 4, 5};
+printf("%d\n", nums[2]);     /* 3 */
+printf("%d\n", nums[7]);     /* no error: reads whatever is 7 ints along */</code></pre>
+        <p>There is no <code>len()</code> and no bounds check. <code>nums[7]</code> compiles, runs, and prints whatever happened to be in that memory. Sometimes it crashes; more often it quietly returns rubbish, or overwrites a variable you care about. You carry the length yourself:</p>
+        <pre><code>int nums[5] = {1, 2, 3, 4, 5};
+int n = 5;                                   /* pass n everywhere you pass nums */
+for (int i = 0; i &lt; n; i++) {
+    printf("%d ", nums[i]);
+}
+printf("\n");                                /* 1 2 3 4 5 */</code></pre>
+        <p>Inside the function that declares the array you can compute the length with <code>sizeof(nums) / sizeof(nums[0])</code>, but once the array is passed to another function that trick silently stops working, for a reason that chapter 3 makes clear.</p>
+
+        <h2>The whole build in one line</h2>
+        <p>What <code>gcc -o hello hello.c</code> actually does, in order:</p>
+        <ol>
+          <li><strong>Preprocess:</strong> paste in every <code>#include</code>, expand every <code>#define</code>.</li>
+          <li><strong>Compile:</strong> turn the result into assembly for your processor.</li>
+          <li><strong>Assemble:</strong> turn assembly into an object file of machine code.</li>
+          <li><strong>Link:</strong> join your object file to the standard library (that is where <code>printf</code> really lives) and produce one executable.</li>
+        </ol>
+        <p>You can see the stages with <code>gcc -E hello.c</code> (preprocessed source, usually hundreds of lines) and <code>gcc -c hello.c</code> (object file only). Knowing these four steps turns "undefined reference to printf" from a mystery into a linking problem.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Sizes on your machine</h3>
+          <p>Print the size in bytes of <code>char</code>, <code>int</code>, <code>long</code>, <code>double</code> and a pointer.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("char   %zu\n", sizeof(char));
+    printf("int    %zu\n", sizeof(int));
+    printf("long   %zu\n", sizeof(long));
+    printf("double %zu\n", sizeof(double));
+    printf("int *  %zu\n", sizeof(int *));
+    return 0;
+}</code></pre>
+              <p>On a 64-bit Linux or macOS machine this prints 1, 4, 8, 8 and 8. <code>char</code> is 1 byte by definition; the rest depend on the platform, which is why portable code uses the fixed-width types in <code>&lt;stdint.h&gt;</code> such as <code>int32_t</code>.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. The average, again</h3>
+          <p>Store three marks in an array, then print their average to two decimal places.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    int marks[3] = {90, 80, 84};
+    int total = 0;
+    for (int i = 0; i &lt; 3; i++) {
+        total += marks[i];
+    }
+    printf("Average: %.2f\n", total / 3.0);   /* Average: 84.67 */
+    return 0;
+}</code></pre>
+              <p>Divide by <code>3.0</code>, not <code>3</code>. With <code>3</code> the division happens in integers, giving 84, and <code>%.2f</code> would then be given an <code>int</code> where it expects a <code>double</code> &mdash; undefined behaviour, and usually a nonsense number.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Walk off the end</h3>
+          <p>Declare <code>int nums[3] = {1, 2, 3};</code> and print <code>nums[5]</code> and <code>nums[50]</code>. Run it several times. Then compile with <code>gcc -fsanitize=address</code> and run it again.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>Without the sanitiser you usually get a number that means nothing, and it may change between runs or between machines. <code>nums[50]</code> is more likely to crash with a segmentation fault, because it reaches further outside the memory your program was given.</p>
+              <p>With <code>-fsanitize=address</code> the program stops and prints a report naming the file, the line and how far past the end of the array you read. Use that flag while you are learning: it turns silent corruption into a clear error, which is exactly what C otherwise refuses to do for you.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:c-and-memory-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/c-and-memory/">All chapters</a>
+          <a class="btn" href="/books/c-and-memory/pointers-without-fear/">Next: Pointers without fear</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

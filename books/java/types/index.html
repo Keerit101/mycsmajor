@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Java Types, Casting and Equality | mycsmajor Java Book</title>
+    <meta name="description" content="Primitives and objects, integer division, casting, overflow, and why you compare strings with equals and not double equals. Free sample chapter of Java after Python." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/java/">Java after Python</a> &middot; Chapter 2</span>
+          <h1>Types, and why Java insists</h1>
+          <p class="lede">The rules in this chapter cause most of the marks lost in a first Java course. None of them are hard; they are just unfamiliar if you learned Python first.</p>
+        </header>
+
+        <h2>Two kinds of value</h2>
+        <p>In Python everything is an object. In Java there are two families.</p>
+        <p><strong>Primitives</strong> hold a value directly and are written in lower case: <code>int</code>, <code>long</code>, <code>double</code>, <code>float</code>, <code>boolean</code>, <code>char</code>, <code>byte</code>, <code>short</code>. They are fast, they cannot be <code>null</code>, and they have no methods.</p>
+        <p><strong>Reference types</strong> are objects, and their names are capitalised: <code>String</code>, <code>Integer</code>, <code>ArrayList</code>, and every class you write. A variable of a reference type holds a reference to an object elsewhere in memory, or <code>null</code>.</p>
+        <pre><code>int count = 3;              // a primitive, the value 3 itself
+String name = "Keerit";     // a reference to a String object
+int[] marks = new int[5];   // a reference to an array of five ints</code></pre>
+        <p>Every variable states its type, and that type never changes. <code>count = "three";</code> does not fail at run time as it would in Python. It fails to compile.</p>
+
+        <h2>The sizes that matter</h2>
+        <table>
+          <thead>
+            <tr><th>Type</th><th>Holds</th><th>Range</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>int</code></td><td>whole numbers</td><td>about &minus;2.1 billion to 2.1 billion</td></tr>
+            <tr><td><code>long</code></td><td>whole numbers</td><td>about &plusmn;9.2 quintillion</td></tr>
+            <tr><td><code>double</code></td><td>decimals</td><td>about 15 significant digits</td></tr>
+            <tr><td><code>boolean</code></td><td><code>true</code> or <code>false</code></td><td>nothing else, ever</td></tr>
+            <tr><td><code>char</code></td><td>one character</td><td>single quotes: <code>'A'</code></td></tr>
+          </tbody>
+        </table>
+        <p>Use <code>int</code> for counting and <code>double</code> for measuring. Reach for <code>long</code> when a count might pass two billion, and write the literal with an <code>L</code>:</p>
+        <pre><code>long big = 3_000_000_000L;   // underscores are allowed, for readability
+System.out.println(big);     // 3000000000</code></pre>
+        <p>Leave off the <code>L</code> and the compiler rejects the line, because the number does not fit in an <code>int</code> before it is assigned.</p>
+
+        <h3>Overflow is silent</h3>
+        <pre><code>System.out.println(Integer.MAX_VALUE + 1);   // -2147483648</code></pre>
+        <p>Python grows integers as large as your memory allows. Java does not: an <code>int</code> is 32 bits, and one past the top wraps around to the bottom. No exception, no warning. When a value could get large, use <code>long</code>.</p>
+
+        <h2>Integer division</h2>
+        <pre><code>int a = 7, b = 2;
+System.out.println(a / b);            // 3
+System.out.println(a % b);            // 1
+System.out.println((double) a / b);   // 3.5
+System.out.println(5 / 2.0);          // 2.5</code></pre>
+        <p>Two integers divide to an integer, with the remainder thrown away. Python spells this <code>7 // 2</code>; Java reuses <code>/</code>, which is why so many Java averages come out wrong. If either side is a <code>double</code>, the result is a <code>double</code>.</p>
+        <p><code>(double) a</code> is a <strong>cast</strong>: it tells the compiler to treat that value as another type. Casting the other way loses information, and Java makes you say so explicitly:</p>
+        <pre><code>double price = 19.99;
+int rounded = (int) price;      // 19, the decimal part is cut off, not rounded
+int better = (int) Math.round(price);   // 20</code></pre>
+        <p>And decimals are still binary approximations, exactly as in Python:</p>
+        <pre><code>System.out.println(0.1 + 0.2);   // 0.30000000000000004</code></pre>
+        <p>Never use <code>double</code> for money. Count cents in an <code>int</code> or a <code>long</code>, or use <code>BigDecimal</code>.</p>
+
+        <h2>Characters are numbers</h2>
+        <pre><code>char c = 'A';
+System.out.println((int) c);        // 65
+System.out.println(c + 1);          // 66   (char promoted to int)
+System.out.println((char)(c + 1));  // B</code></pre>
+        <p>Use single quotes for a <code>char</code> and double quotes for a <code>String</code>. They are not interchangeable: <code>"A"</code> is an object, <code>'A'</code> is a number.</p>
+
+        <h2>Strings and numbers</h2>
+        <pre><code>String s = "42";
+System.out.println(Integer.parseInt(s) + 1);   // 43
+System.out.println(s + 1);                     // 421</code></pre>
+        <p>The second line is the classic bug. <code>+</code> with a string on one side means "join", so the number becomes text. Python would have thrown a <code>TypeError</code> and saved you; Java prints <code>421</code> and lets you find out in the marking.</p>
+        <p>Going the other way, <code>String.valueOf(n)</code> or <code>"" + n</code> turns a number into text, and <code>Double.parseDouble</code> handles decimals. If the text is not a number, <code>parseInt</code> throws <code>NumberFormatException</code>, which chapter 9 shows how to handle.</p>
+
+        <h2>Comparing: == against equals</h2>
+        <p>This is the rule to memorise. For primitives, <code>==</code> compares values. For objects, <code>==</code> compares <em>references</em>: it asks whether the two variables point at the same object, not whether the objects look the same.</p>
+        <pre><code>String x = "hi";
+String y = "h" + "i";
+String z = new String("hi");
+
+System.out.println(x == y);        // true   (both are the same literal, joined at compile time)
+System.out.println(x == z);        // false  (a different object, same text)
+System.out.println(x.equals(z));   // true   (same characters)</code></pre>
+        <p>So: <strong>compare objects with <code>.equals()</code></strong>, always. The fact that <code>x == y</code> happened to be <code>true</code> above is an optimisation, not a rule you can rely on; read a line of text from the user and it will be <code>false</code>. Comparing strings with <code>==</code> is the single most common bug in first-year Java.</p>
+        <p>For a case-insensitive comparison use <code>x.equalsIgnoreCase(z)</code>, and to sort, <code>x.compareTo(z)</code>, which returns a negative number, zero or a positive number.</p>
+
+        <h2>null, and the exception named after it</h2>
+        <p>A reference variable that points at nothing holds <code>null</code>. Calling a method on it throws a <code>NullPointerException</code>, the most common crash in Java:</p>
+        <pre><code>String name = null;
+System.out.println(name.length());   // NullPointerException</code></pre>
+        <p>Check first (<code>if (name != null)</code>), or avoid holding <code>null</code> at all by giving variables a real value when you declare them. Primitives cannot be <code>null</code>, which is one reason to prefer <code>int</code> over <code>Integer</code> unless you need an object.</p>
+
+        <h2>Boxing</h2>
+        <p>Each primitive has a matching class: <code>int</code> and <code>Integer</code>, <code>double</code> and <code>Double</code>, <code>boolean</code> and <code>Boolean</code>. Java converts between them automatically, which is called boxing:</p>
+        <pre><code>Integer boxed = 5;                 // boxed from int
+System.out.println(boxed + 5);     // 10, unboxed again</code></pre>
+        <p>You need the class versions because collections such as <code>ArrayList&lt;Integer&gt;</code> can only hold objects. Watch out: two <code>Integer</code> objects must also be compared with <code>.equals()</code>, for the same reason strings must.</p>
+
+        <h2>var, and when to use it</h2>
+        <pre><code>var total = 0;                        // an int
+var names = new ArrayList&lt;String&gt;();  // an ArrayList&lt;String&gt;</code></pre>
+        <p><code>var</code> lets the compiler work out the type from the right-hand side. The variable is still statically typed and the type still cannot change: this is shorthand, not Python. Use it when the type is obvious from the same line, and write the type out when it is not.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. The average that lies</h3>
+          <p>This prints <code>84</code>, not <code>84.666...</code>. Explain why, then fix it so it prints the real average.</p>
+          <pre><code>int a = 90, b = 80, c = 84;
+System.out.println("Average: " + (a + b + c) / 3);</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p><code>a + b + c</code> is 254, an <code>int</code>, and <code>254 / 3</code> is integer division, giving 84 with the remainder discarded. Make one side a <code>double</code>:</p>
+              <pre><code>System.out.println("Average: " + (a + b + c) / 3.0);   // 84.66666666666667</code></pre>
+              <p>To show two decimal places, use <code>System.out.printf("Average: %.2f%n", (a + b + c) / 3.0);</code>, which prints <code>Average: 84.67</code>.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Predict the output</h3>
+          <p>Write down what each line prints before running it.</p>
+          <pre><code>System.out.println(10 / 4 * 4);
+System.out.println(1.0 / 3);
+System.out.println(Math.round(2.5) + " " + Math.round(-2.5));
+System.out.println((char) 66);</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p><code>8</code> &mdash; <code>10 / 4</code> is 2, then times 4.</p>
+              <p><code>0.3333333333333333</code> &mdash; one side is a double, so the division is real.</p>
+              <p><code>3 -2</code> &mdash; <code>Math.round</code> rounds half <em>up</em>, towards positive infinity, so &minus;2.5 becomes &minus;2 and not &minus;3.</p>
+              <p><code>B</code> &mdash; the cast turns the number back into a character.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Read a name and compare it</h3>
+          <p>Use a <code>Scanner</code> to read a word from the keyboard and print whether it is <code>"java"</code>, ignoring capitals. Try it first with <code>==</code> and see what happens.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>import java.util.Scanner;
+
+public class Compare {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        System.out.print("Type a word: ");
+        String word = in.next();
+        System.out.println(word == "java");                // always false
+        System.out.println(word.equalsIgnoreCase("java")); // what you meant
+    }
+}</code></pre>
+              <p>The typed word is a new <code>String</code> object built at run time, so it is never the same object as the literal in your code. This is exactly why <code>==</code> is the wrong tool for objects.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:java-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/java/your-first-java-program/">Back: Your first Java program</a>
+          <a class="btn" href="/books/java/">All chapters</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

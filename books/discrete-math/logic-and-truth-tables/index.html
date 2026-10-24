@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Logic and Truth Tables Explained | mycsmajor</title>
+    <meta name="description" content="Statements, connectives, truth tables and the logical equivalences your discrete maths course expects, with worked examples and exam practice. Free sample chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/discrete-math/">Discrete math and logic</a> &middot; Chapter 1</span>
+          <h1>Logic and truth tables</h1>
+          <p class="lede">Everything in a discrete maths course is built on this chapter, and so is every <code>if</code> statement you will ever write. It is worth being properly comfortable here.</p>
+        </header>
+
+        <h2>Statements</h2>
+        <p>A <strong>statement</strong> (or proposition) is a sentence that is either true or false, not both. "7 is prime" is a statement. "Close the door" and "x &gt; 3" are not: the first is a command, the second depends on <var>x</var>, which makes it a <em>predicate</em>, the subject of chapter 3.</p>
+        <p>Letters stand for statements: <var>p</var>, <var>q</var>, <var>r</var>. From them you build compound statements with connectives.</p>
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Symbol</th><th>English</th><th>In code</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>negation</td><td>&not;p</td><td>not p</td><td><code>not p</code></td></tr>
+            <tr><td>conjunction</td><td>p &and; q</td><td>p and q</td><td><code>p and q</code></td></tr>
+            <tr><td>disjunction</td><td>p &or; q</td><td>p or q</td><td><code>p or q</code></td></tr>
+            <tr><td>implication</td><td>p &rarr; q</td><td>if p then q</td><td><code>(not p) or q</code></td></tr>
+            <tr><td>biconditional</td><td>p &harr; q</td><td>p if and only if q</td><td><code>p == q</code></td></tr>
+            <tr><td>exclusive or</td><td>p &oplus; q</td><td>p or q but not both</td><td><code>p != q</code></td></tr>
+          </tbody>
+        </table>
+        <p>One warning about English: "or" in logic is <em>inclusive</em>. "Tea or coffee" in a caf&eacute; means one of them; <var>p</var> &or; <var>q</var> in maths is true when both are true.</p>
+
+        <h2>Truth tables</h2>
+        <p>A truth table lists every combination of truth values. With <var>n</var> letters there are 2<sup>n</sup> rows, so two letters give four rows and three give eight.</p>
+        <pre><code>p   q  | p&and;q | p&or;q | p&rarr;q | p&harr;q | p&oplus;q
+-------+-----+-----+-----+-----+-----
+T   T  |  T  |  T  |  T  |  T  |  F
+T   F  |  F  |  T  |  F  |  F  |  T
+F   T  |  F  |  T  |  T  |  F  |  T
+F   F  |  F  |  F  |  T  |  T  |  F</code></pre>
+        <p>Write the rows in that order every time (TT, TF, FT, FF). Markers scan for the pattern, and a consistent order makes your own mistakes easier to spot.</p>
+
+        <h3>The row everybody argues about</h3>
+        <p>Look at <var>p</var> &rarr; <var>q</var> when <var>p</var> is false: the implication is <strong>true</strong>, both times. This feels wrong until you read an implication as a promise.</p>
+        <p>"If it rains, I will bring an umbrella." You only broke that promise in one situation: it rained and you did not bring one. If it did not rain, you kept the promise whatever you carried. An implication is false in exactly one row, <var>p</var> true and <var>q</var> false, and true everywhere else. A promise about a situation that never happened is said to be <em>vacuously true</em>.</p>
+        <p>This also gives you the most useful identity in the chapter:</p>
+        <pre><code>p &rarr; q  &equiv;  &not;p &or; q</code></pre>
+        <p>Check it against the table above, row by row. Any time an implication is hard to work with, rewrite it this way.</p>
+
+        <h2>Building a table for something bigger</h2>
+        <p>Show that &not;(<var>p</var> &and; <var>q</var>) &equiv; &not;<var>p</var> &or; &not;<var>q</var>, one of De Morgan's laws. Add a column per piece:</p>
+        <pre><code>p   q  | p&and;q | &not;(p&and;q) | &not;p | &not;q | &not;p&or;&not;q
+-------+-----+--------+----+----+-------
+T   T  |  T  |   F    | F  | F  |   F
+T   F  |  F  |   T    | F  | T  |   T
+F   T  |  F  |   T    | T  | F  |   T
+F   F  |  F  |   T    | T  | T  |   T</code></pre>
+        <p>The fourth and seventh columns match in every row, so the two statements are <strong>logically equivalent</strong>, written with &equiv;. That is what a truth-table proof is: identical columns.</p>
+        <p>Three words for the shape of the final column: a <strong>tautology</strong> is true in every row, a <strong>contradiction</strong> is false in every row, and a <strong>contingency</strong> is sometimes each.</p>
+
+        <h2>The laws worth knowing by name</h2>
+        <p>Every one of these can be proved with a truth table, and your course will expect you to use them to simplify expressions without one.</p>
+        <table>
+          <thead>
+            <tr><th>Law</th><th>Form</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Identity</td><td>p &and; T &equiv; p, &nbsp; p &or; F &equiv; p</td></tr>
+            <tr><td>Domination</td><td>p &or; T &equiv; T, &nbsp; p &and; F &equiv; F</td></tr>
+            <tr><td>Idempotent</td><td>p &and; p &equiv; p, &nbsp; p &or; p &equiv; p</td></tr>
+            <tr><td>Double negation</td><td>&not;(&not;p) &equiv; p</td></tr>
+            <tr><td>Complement</td><td>p &or; &not;p &equiv; T, &nbsp; p &and; &not;p &equiv; F</td></tr>
+            <tr><td>Commutative</td><td>p &and; q &equiv; q &and; p</td></tr>
+            <tr><td>Associative</td><td>(p &and; q) &and; r &equiv; p &and; (q &and; r)</td></tr>
+            <tr><td>Distributive</td><td>p &and; (q &or; r) &equiv; (p &and; q) &or; (p &and; r)</td></tr>
+            <tr><td>De Morgan</td><td>&not;(p &and; q) &equiv; &not;p &or; &not;q, &nbsp; &not;(p &or; q) &equiv; &not;p &and; &not;q</td></tr>
+            <tr><td>Absorption</td><td>p &or; (p &and; q) &equiv; p</td></tr>
+            <tr><td>Contrapositive</td><td>p &rarr; q &equiv; &not;q &rarr; &not;p</td></tr>
+          </tbody>
+        </table>
+        <p>De Morgan's laws are the ones you will use most, in maths and in code. "Not (logged in and verified)" is the same as "not logged in or not verified": negation flips the connective.</p>
+
+        <h2>A simplification, step by step</h2>
+        <p>Simplify &not;(<var>p</var> &or; (&not;<var>p</var> &and; <var>q</var>)). Name the law at each step, because that is what the marks are for.</p>
+        <pre><code>&not;(p &or; (&not;p &and; q))
+&equiv; &not;p &and; &not;(&not;p &and; q)        De Morgan
+&equiv; &not;p &and; (p &or; &not;q)           De Morgan, then double negation
+&equiv; (&not;p &and; p) &or; (&not;p &and; &not;q)  Distributive
+&equiv; F &or; (&not;p &and; &not;q)            Complement
+&equiv; &not;p &and; &not;q                   Identity</code></pre>
+        <p>Check the answer with a truth table if you have time in an exam. It is four rows and it catches a dropped negation immediately.</p>
+
+        <h2>The same logic, in your code</h2>
+        <p>Simplifying conditions is the same operation:</p>
+        <pre><code>if not (age &gt;= 18 and has_id):          # hard to read
+if age &lt; 18 or not has_id:             # De Morgan, same meaning</code></pre>
+        <p>One real difference: Python and Java <em>short-circuit</em>. In <code>p and q</code>, <code>q</code> is only evaluated if <code>p</code> is true, which is why <code>if user is not None and user.name == "x"</code> is safe. Truth tables say nothing about evaluation order, so simplifying a condition can change which side runs. Keep the null check on the left.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Build the table</h3>
+          <p>Show with a truth table whether (<var>p</var> &rarr; <var>q</var>) &and; (<var>q</var> &rarr; <var>p</var>) is equivalent to <var>p</var> &harr; <var>q</var>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>p   q  | p&rarr;q | q&rarr;p | (p&rarr;q)&and;(q&rarr;p) | p&harr;q
+-------+-----+-----+---------------+-----
+T   T  |  T  |  T  |       T       |  T
+T   F  |  F  |  T  |       F       |  F
+F   T  |  T  |  F  |       F       |  F
+F   F  |  T  |  T  |       T       |  T</code></pre>
+              <p>The last two columns match, so yes, they are equivalent. This is why "if and only if" is proved in two directions: you show <var>p</var> &rarr; <var>q</var> and then <var>q</var> &rarr; <var>p</var>, and together they give the biconditional.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Converse, inverse, contrapositive</h3>
+          <p>For "if a number is divisible by 4, then it is even", write the converse, the inverse and the contrapositive, and say which are true.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>Original, <var>p</var> &rarr; <var>q</var>: if divisible by 4, then even. <strong>True.</strong></p>
+              <p>Converse, <var>q</var> &rarr; <var>p</var>: if even, then divisible by 4. <strong>False</strong> &mdash; 6 is even and not divisible by 4.</p>
+              <p>Inverse, &not;<var>p</var> &rarr; &not;<var>q</var>: if not divisible by 4, then not even. <strong>False</strong> &mdash; 6 again.</p>
+              <p>Contrapositive, &not;<var>q</var> &rarr; &not;<var>p</var>: if not even, then not divisible by 4. <strong>True.</strong></p>
+              <p>The pattern is the point: a statement and its contrapositive are always equivalent, so proving one proves the other. The converse and the inverse are equivalent to each other but <em>not</em> to the original. Assuming the converse is the most common logical error in first-year proofs.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Simplify with named laws</h3>
+          <p>Simplify (<var>p</var> &and; <var>q</var>) &or; (<var>p</var> &and; &not;<var>q</var>), naming the law at each step.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>(p &and; q) &or; (p &and; &not;q)
+&equiv; p &and; (q &or; &not;q)      Distributive
+&equiv; p &and; T               Complement
+&equiv; p                     Identity</code></pre>
+              <p>In code this is the refactor from <code>if (logged_in and admin) or (logged_in and not admin)</code> down to <code>if logged_in</code>. Conditions in real programs grow exactly this way, and the laws are how you cut them back.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:discrete-math-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/discrete-math/">All chapters</a>
+          <a class="btn" href="/books/discrete-math/sets/">Next: Sets, properly</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

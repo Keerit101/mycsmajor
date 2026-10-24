@@ -11,6 +11,90 @@
   - `privacy/index.html`
 - [ ] **Read the privacy policy** (`privacy/index.html`) and make sure it matches how you will run the site. Update the "Last updated" date if you change it.
 
+## Selling the books (do this first if you want income)
+
+The site has no backend, so the books are sold through an outside checkout that
+handles payment, tax and delivery of the files. **Nothing can be bought until you
+create that account**, and nothing on the site costs money or publishes anything
+in your name before you do. Every price below is a suggestion to confirm or change.
+
+### 1. Choose the checkout (15 minutes)
+
+| | Fee per sale | Handles sales tax for you | Payout |
+|---|---|---|---|
+| **Lemon Squeezy** (recommended) | 5% + 50c | Yes: it is the merchant of record, so it files GST/HST and EU VAT | to your bank |
+| **Gumroad** | 10% flat | Yes, merchant of record | to your bank |
+| **Stripe Payment Links** | about 2.9% + 30c | No: you are responsible for tax registration and filing | to your bank |
+
+Lemon Squeezy or Gumroad being the merchant of record is the reason to prefer
+them as a student: they collect and remit the sales tax on every country's
+behalf, which is otherwise real paperwork. Stripe is cheaper and more work.
+
+### 2. Create the account (you must do this yourself)
+
+I cannot create an account, accept terms or receive money on your behalf.
+
+- [ ] Sign up, confirm your email, and check you meet the age requirement (both
+      Lemon Squeezy and Gumroad require you to be 18, or to use a parent's or
+      guardian's account, so confirm this before you build on it).
+- [ ] Add your payout bank details.
+- [ ] Fill in the tax form it asks for (as a Canadian resident this is normally a
+      W-8BEN for a US-based platform).
+- [ ] Create one product per book, priced as in `src/data/books.js`, plus one
+      bundle product.
+- [ ] Upload the PDF and EPUB for each book as the deliverable.
+- [ ] Turn on the 30-day refund policy, since `/books/` promises one.
+- [ ] Copy each product's checkout URL.
+
+### 3. Put the links in (two minutes, or ask me)
+
+Open `src/data/books.js` and paste each URL into that book's `checkoutUrl`, plus
+the bundle's into `BUNDLE.checkoutUrl`. Find them all with:
+
+```sh
+grep -n "TODO(payments)" src/data/books.js
+```
+
+Every "not on sale yet" note on the site turns into a Buy button automatically.
+Nothing else needs editing: prices, chapter lists and buy boxes all come from
+that one file. Then commit and push, and Vercel deploys it.
+
+### 4. Before the first sale
+
+- [ ] **Write the paid chapters.** The site currently has the free sample
+      chapters only (2 per book, 12 in total). The locked chapters are real
+      outlines, not finished text, so there is no PDF to deliver yet. Tell me
+      which book to write next and I will draft it.
+- [ ] **Keep the full books out of this public repo.** Anyone can read it.
+      Put the manuscripts in a private repo or a folder on your machine, and
+      upload only the finished PDFs to the checkout.
+- [ ] **Read `/books/`, `/affiliate-disclosure/` and `/privacy/`.** They promise
+      a 30-day refund, one copy per person, and that payment happens on the
+      provider's pages. Change anything you do not want to promise.
+- [ ] **Name the provider in the privacy policy** once you have chosen it. The
+      "Buying a book" section leaves a space for it.
+- [ ] Decide whether to charge in Canadian dollars. The site says CAD; most
+      student buyers abroad will see a converted price.
+
+## Cyber Brief daily updates
+
+The "Exploited this month" section of `/cyber-brief/` updates itself. There is
+nothing to do unless it stops working.
+
+- A GitHub Action (`.github/workflows/update-cyber-brief.yml`) runs at 22:30 UTC
+  daily, downloads CISA's Known Exploited Vulnerabilities catalog, and commits
+  `src/data/kev-latest.json` when CISA has published a new version. Vercel then
+  deploys the new page. Days with no new entries produce no commit.
+- [ ] **Check it ran** after a day or two: the Actions tab of the repo, and the
+      "Last CISA update" line at the top of the section.
+- [ ] If Actions are disabled on the repo, enable them in **Settings > Actions >
+      General**, and make sure workflows have read and write permission.
+- To run it by hand: the Actions tab, "Update Cyber Brief", "Run workflow". Or
+  locally, `node scripts/update-cyber-brief.mjs`.
+- The lessons attached to each entry are written per weakness type in
+  `src/build/cyber-brief.js`. Everything else is CISA's own wording, so the
+  section cannot invent an incident.
+
 ## Affiliate links
 
 - [ ] **Join affiliate programs** for the products you want to link, for example Amazon Associates or the brands' own programs. Most require a live site with some content first.
@@ -49,7 +133,6 @@ Empty, hidden ad slots are already on the home page, every problem page, the pro
 
 - [ ] **About page bio.** `about/index.html` describes the site but not who runs it. Add a short paragraph about yourself if you want a personal touch.
 - [ ] **Search engines.** After launch, add the site to Google Search Console and Bing Webmaster Tools and submit `https://mycsmajor.com/sitemap.xml`.
-- [ ] **Current security news.** Cyber Brief covers well-known past incidents. To add current news, either write new `<article class="brief">` entries yourself (newest at the top) or set up a news API. Most need an API key and a server or a scheduled build.
 - [ ] **More problems.** There are 90, so the cycle repeats every 90 days. To add more, append to the end of a track in `src/data/tracks/` (keep the three tracks the same length so the rotation stays even), add a check for any Python solution in `tests/check_solutions.py`, and run `npm test`.
 - [ ] **Per-problem share images** (optional). Every page currently shares one image (`public/og.png`). Separate images per problem would look better on social media but add about 3 MB of PNGs; `scripts/make-share-image.mjs` is the starting point.
 - [ ] **Content-Security-Policy header** (optional hardening). Add one to `vercel.json` once you have decided on analytics and ads, since both need entries in it.

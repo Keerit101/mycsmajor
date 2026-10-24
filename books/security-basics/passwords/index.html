@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Passwords Done Properly: Hashing and Salt | mycsmajor</title>
+    <meta name="description" content="Why fast hashes lose, what a salt is for, and the few lines of Python that store a password correctly, with runnable examples. Free sample chapter on security." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/security-basics/">Security basics for programmers</a> &middot; Chapter 2</span>
+          <h1>Passwords done properly</h1>
+          <p class="lede">Storing a password is a solved problem that student projects keep getting wrong. The correct version is about five lines long, and understanding why it looks like that teaches you most of applied cryptography.</p>
+        </header>
+
+        <h2>Start from the assumption that your database leaks</h2>
+        <p>Design as if an attacker will one day get a copy of your user table: through SQL injection, a stolen backup, a misconfigured cloud bucket or a laptop left on a train. All of those happen regularly. The question is not whether you can prevent it with certainty, but how much damage the copy does.</p>
+        <p>If passwords are stored as text, the damage is enormous, and not only to your site. People reuse passwords, so your leak becomes a break-in at their email, which is the master key to everything else.</p>
+
+        <h2>Hashing, and why it is not enough on its own</h2>
+        <p>A cryptographic hash turns input into a fixed-size value, cannot be reversed, and changes completely if the input changes at all.</p>
+        <pre><code>import hashlib
+print(hashlib.sha256(b"password").hexdigest())
+# 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</code></pre>
+        <p>You store the hash, and at login you hash what was typed and compare. The password itself is never kept. So far so good &mdash; and still broken, for two reasons.</p>
+        <p><strong>Reason one: identical passwords give identical hashes.</strong> That hash of <code>password</code> is the same on every site in the world. Attackers keep precomputed tables of hashes for billions of common passwords, so a lookup, not a calculation, recovers it instantly. The line above appears in those tables.</p>
+        <p><strong>Reason two: SHA-256 is designed to be fast.</strong> Fast is exactly what you do not want here. A single modern GPU can try billions of SHA-256 guesses per second, so the whole dictionary falls in minutes.</p>
+
+        <h2>Salt fixes the first problem</h2>
+        <p>A <strong>salt</strong> is random data, unique per user, stored alongside the hash and mixed in before hashing. It is not a secret; its job is to make every stored hash different even when two users chose the same password. That breaks precomputed tables, because the attacker would need a separate table per salt.</p>
+        <p>Generate it with a cryptographically secure source, never with <code>random</code>:</p>
+        <pre><code>import os
+salt = os.urandom(16)      # 16 random bytes, unique per user</code></pre>
+        <p>Python's <code>random</code> module is predictable by design and must never be used for anything security-related. Use <code>os.urandom</code> or the <code>secrets</code> module (<code>secrets.token_hex(16)</code>) instead.</p>
+
+        <h2>Slowness fixes the second</h2>
+        <p>A <strong>password hashing function</strong> is deliberately expensive: it repeats work many times, and the good ones also demand a lot of memory, which makes custom cracking hardware far less effective. Four acceptable choices today:</p>
+        <table>
+          <thead>
+            <tr><th>Function</th><th>Use when</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Argon2id</strong></td><td>first choice for new code; memory-hard and current</td></tr>
+            <tr><td><strong>scrypt</strong></td><td>also memory-hard, available in Python's standard library</td></tr>
+            <tr><td><strong>bcrypt</strong></td><td>well understood, everywhere; note its 72-byte input limit</td></tr>
+            <tr><td><strong>PBKDF2</strong></td><td>when you cannot install anything: in the standard library, acceptable with a high iteration count</td></tr>
+          </tbody>
+        </table>
+        <p>Anything else &mdash; MD5, SHA-1, SHA-256, SHA-512 on its own, or your own scheme of hashing twice with some text mixed in &mdash; is wrong for passwords. Not "old fashioned": wrong.</p>
+
+        <h2>The whole thing, in the standard library</h2>
+        <p>PBKDF2 with SHA-256, no packages needed:</p>
+        <pre><code>import hashlib, os, hmac
+
+ITERATIONS = 600_000      # OWASP's current floor for PBKDF2-HMAC-SHA256
+
+def hash_password(password: str) -&gt; tuple[bytes, bytes]:
+    salt = os.urandom(16)
+    key = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, ITERATIONS)
+    return salt, key      # store BOTH, plus the iteration count
+
+def verify(password: str, salt: bytes, expected: bytes) -&gt; bool:
+    key = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, ITERATIONS)
+    return hmac.compare_digest(key, expected)</code></pre>
+        <p>Three details that are easy to miss:</p>
+        <ul>
+          <li><strong>Store the iteration count</strong> with each hash. Hardware gets faster, so you will raise it, and old rows must still verify. Many libraries pack algorithm, cost, salt and hash into one string for exactly this reason.</li>
+          <li><strong><code>hmac.compare_digest</code>, not <code>==</code>.</strong> A normal comparison stops at the first differing byte, so how long it takes leaks how much of the value was right. That is a <em>timing attack</em>, and the fix is a comparison that always takes the same time.</li>
+          <li><strong>The salt is not secret</strong> and goes in the same table. Only the password is a secret, and you never have it.</li>
+        </ul>
+        <p>On the machine these pages were written on, 600,000 iterations took about 0.15 seconds. That is unnoticeable at a login and ruinous for an attacker trying a billion guesses. Tune the cost so a login takes a few hundred milliseconds on your real server.</p>
+
+        <h3>If you can install a package</h3>
+        <pre><code>from argon2 import PasswordHasher       # pip install argon2-cffi
+from argon2.exceptions import VerifyMismatchError
+
+ph = PasswordHasher()
+stored = ph.hash("correct horse battery staple")   # salt is inside the string
+
+try:
+    ph.verify(stored, typed_password)
+    if ph.check_needs_rehash(stored):              # parameters have moved on
+        stored = ph.hash(typed_password)
+except VerifyMismatchError:
+    pass   # wrong password</code></pre>
+        <p>This is the version to prefer in real projects: the salt, the algorithm and the cost parameters all live inside the stored string, and the library upgrades them for you. Better still, use whatever your web framework already provides &mdash; Django's <code>make_password</code>, Rails' <code>has_secure_password</code> &mdash; because it is maintained by people who follow this subject full time.</p>
+
+        <h2>The rest of the login</h2>
+        <p>Hashing is necessary, not sufficient. The same page needs:</p>
+        <ul>
+          <li><strong>One error message.</strong> "Wrong email or password", never "no such user", which otherwise tells an attacker which addresses are registered.</li>
+          <li><strong>Rate limiting.</strong> Slow down or lock out after repeated failures, per account <em>and</em> per IP address. Without this, an attacker does not need your database at all.</li>
+          <li><strong>Length over complexity.</strong> Require at least 8 characters, allow very long ones, allow spaces and symbols, and do not force mixtures or expiry. Modern guidance (NIST SP 800-63B) says those rules push people towards <code>Password1!</code> and annual increments.</li>
+          <li><strong>A check against known-breached passwords</strong>, for example Have I Been Pwned's range API, which lets you check without sending the password.</li>
+          <li><strong>HTTPS everywhere.</strong> Careful hashing is pointless if the password crosses the network in the clear.</li>
+          <li><strong>Never log it.</strong> Debug logging of request bodies is a classic way for plaintext passwords to end up in a file anyone can read.</li>
+        </ul>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Find every mistake</h3>
+          <p>How many things are wrong here?</p>
+          <pre><code>import hashlib, random
+
+def register(username, password):
+    salt = str(random.randint(1000, 9999))
+    digest = hashlib.md5((password + salt).encode()).hexdigest()
+    db.execute(f"INSERT INTO users VALUES ('{username}', '{digest}', '{salt}')")
+    print(f"registered {username} with password {password}")</code></pre>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>Six, at least:</p>
+              <ol>
+                <li><strong>MD5</strong> is broken and far too fast for passwords.</li>
+                <li><strong><code>random</code></strong> is predictable; use <code>os.urandom</code> or <code>secrets</code>.</li>
+                <li><strong>A four-digit salt</strong> has only 9,000 values, so one set of tables covers them all. Use at least 16 bytes.</li>
+                <li><strong>No iteration count or cost parameter</strong>: a single pass of a fast hash.</li>
+                <li><strong>SQL injection</strong>: the username is pasted into the query. A username of <code>', '', '') --</code> rewrites it. Use parameters.</li>
+                <li><strong>The password is printed</strong>, so it lands in the logs in plain text.</li>
+              </ol>
+              <p>Every one of these has appeared in a real breach report.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Measure the cost</h3>
+          <p>Time <code>pbkdf2_hmac</code> with 1,000, 100,000 and 600,000 iterations, then work out how many guesses per second an attacker with a thousand times your hardware would manage at each setting.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>import hashlib, os, time
+
+for iters in (1_000, 100_000, 600_000):
+    salt = os.urandom(16)
+    start = time.perf_counter()
+    hashlib.pbkdf2_hmac("sha256", b"hunter2", salt, iters)
+    elapsed = time.perf_counter() - start
+    print(f"{iters:>7} iterations: {elapsed*1000:6.1f} ms -&gt; {1/elapsed:,.0f} guesses/sec")</code></pre>
+              <p>The time scales almost exactly with the iteration count, which is the whole design. Suppose 600,000 iterations takes 0.15 s, so about 7 guesses per second for you; an attacker a thousand times faster manages roughly 7,000 per second. A six-character lower-case password is about 300 million combinations, which at that rate takes over a year rather than the few seconds an unsalted SHA-256 would need.</p>
+              <p>This is also the argument for length: every extra character multiplies the work, while raising the iteration count only doubles it.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Write the login</h3>
+          <p>Using the <code>hash_password</code> and <code>verify</code> functions above, write <code>login(email, password)</code> that returns <code>True</code> or <code>False</code> and leaks nothing about which emails exist.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>DUMMY_SALT = os.urandom(16)
+DUMMY_HASH = hashlib.pbkdf2_hmac("sha256", b"not a real password", DUMMY_SALT, ITERATIONS)
+
+def login(email: str, password: str) -&gt; bool:
+    row = db.get_user_by_email(email)              # parameterised query
+    if row is None:
+        verify(password, DUMMY_SALT, DUMMY_HASH)   # same work either way
+        return False
+    return verify(password, row.salt, row.password_hash)</code></pre>
+              <p>Hashing against a dummy value for unknown emails keeps the response time the same whether or not the account exists. Without it, a missing account answers in microseconds and a real one in 150 milliseconds, and that difference is enough to enumerate your users. Pair it with one generic error message and rate limiting, and the login page is in reasonable shape.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:security-basics-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/security-basics/how-attacks-start/">Back: How attacks actually start</a>
+          <a class="btn" href="/books/security-basics/">All chapters</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

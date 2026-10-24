@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>Your First Java Program | mycsmajor Java Book</title>
+    <meta name="description" content="Install a JDK, compile and run your first Java program, and understand why Java needs a class and a main method just to print one line. Free sample chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/java/">Java after Python</a> &middot; Chapter 1</span>
+          <h1>Your first Java program</h1>
+          <p class="lede">By the end of this chapter you will have compiled and run a Java program, and you will know what every word in it is doing.</p>
+        </header>
+
+        <h2>Install a JDK</h2>
+        <p>Python comes as one program. Java comes as a kit: a compiler that turns your source code into bytecode, and a virtual machine that runs the bytecode. Together they are the JDK, the Java Development Kit.</p>
+        <p>Install a current long-term-support release, Java 21 or newer. <a href="https://adoptium.net/" rel="noopener">Adoptium Temurin</a> is a free, open-source build for Windows, macOS and Linux. On Linux you can also use your package manager, for example <code>sudo apt install default-jdk</code>.</p>
+        <p>Check both tools are there:</p>
+        <pre><code>javac --version
+java --version</code></pre>
+        <p>Both should print a version number. If <code>java</code> works and <code>javac</code> does not, you installed a runtime rather than a development kit. Install the JDK.</p>
+
+        <h2>Hello, from Java</h2>
+        <p>Create a file called <code>Hello.java</code>. The name matters: a public class must live in a file with exactly the same name.</p>
+        <pre><code>public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+}</code></pre>
+        <p>Compile it, then run it:</p>
+        <pre><code>javac Hello.java
+java Hello</code></pre>
+        <p>You get:</p>
+        <pre><code>Hello, world!</code></pre>
+        <p>Notice what happened in between. <code>javac</code> produced a new file, <code>Hello.class</code>, holding bytecode. <code>java Hello</code> starts the virtual machine and asks it to run the class called <code>Hello</code> &mdash; the class name, not the file name, which is why there is no <code>.class</code> on that line.</p>
+        <p>Since Java 11 you can skip the compile step for a single file while you are experimenting:</p>
+        <pre><code>java Hello.java</code></pre>
+        <p>That compiles in memory and runs it. Handy for a quick test, but your courses will expect you to know the two-step version.</p>
+
+        <h2>Reading the six words</h2>
+        <p>Python needed one line for this. Java needed five. Here is what each part is for.</p>
+        <ul>
+          <li><strong><code>public class Hello</code></strong>: all Java code lives inside a class. A class is a named box for code and data. <code>public</code> means other code is allowed to use it.</li>
+          <li><strong><code>static</code></strong>: this method belongs to the class itself, not to an object made from the class. The virtual machine has to call <code>main</code> before any object exists, so <code>main</code> must be static.</li>
+          <li><strong><code>void</code></strong>: the method returns nothing. Java wants the return type of every method stated up front.</li>
+          <li><strong><code>main</code></strong>: the name the virtual machine looks for when you run a class.</li>
+          <li><strong><code>String[] args</code></strong>: an array of strings, holding anything typed after the class name on the command line. Python calls the same thing <code>sys.argv</code>.</li>
+          <li><strong><code>System.out.println(...)</code></strong>: <code>System</code> is a built-in class, <code>out</code> is its standard output stream, and <code>println</code> prints with a newline. <code>print</code> prints without one.</li>
+        </ul>
+        <p>Nothing here is decoration. Java is <em>statically typed</em>: the compiler wants to know the type of every variable, parameter and return value before the program runs, so it can refuse to compile code that would fail. That is the trade. You write more; the compiler catches more.</p>
+
+        <h2>Semicolons, braces and indentation</h2>
+        <p>Python uses indentation to show what belongs to what. Java uses braces, <code>{</code> and <code>}</code>, and ends each statement with a semicolon. Indentation in Java is purely for humans: the compiler ignores it, but a marker will not.</p>
+        <pre><code>public class Greet {
+    public static void main(String[] args) {
+        String name = "Keerit";          // declare the type, then the name
+        int year = 1;
+        System.out.println("Hi " + name + ", year " + year);
+    }
+}</code></pre>
+        <p>That prints:</p>
+        <pre><code>Hi Keerit, year 1</code></pre>
+        <p>The <code>+</code> joins strings. When one side is a string, Java converts the other side to a string too, which is why <code>year</code> prints fine without any conversion.</p>
+
+        <h2>Reading the compiler's complaints</h2>
+        <p>Delete the semicolon after the <code>println</code> line and compile again:</p>
+        <pre><code>Hello.java:3: error: ';' expected
+        System.out.println("Hello, world!")
+                                           ^
+1 error</code></pre>
+        <p>Java errors name the file, the line, the problem and point at the column. Read them from the top: the first error often causes the ones below it, so fix one and recompile rather than trying to fix all of them at once.</p>
+        <p>A different mistake, misspelling a variable, gives:</p>
+        <pre><code>Greet.java:5: error: cannot find symbol
+        System.out.println("Hi " + nme);
+                                   ^
+  symbol:   variable nme
+  location: class Greet</code></pre>
+        <p>This is the compiler earning its keep. In Python the same typo would wait until that line ran, possibly in front of a marker.</p>
+
+        <h2>Comments</h2>
+        <pre><code>// one line
+
+/* several
+   lines */
+
+/**
+ * A documentation comment. Tools turn these into HTML docs,
+ * and your IDE shows them when you hover over the method.
+ */</code></pre>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. Three lines</h3>
+          <p>Write and run a class called <code>About</code> that prints your name, your programme and the year on three separate lines.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>public class About {
+    public static void main(String[] args) {
+        System.out.println("Ada Lovelace");
+        System.out.println("Computer Science");
+        System.out.println(2026);
+    }
+}</code></pre>
+              <p>Save it as <code>About.java</code>, then <code>javac About.java</code> and <code>java About</code>. The file name must match the public class name exactly, capital letter included.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Use the arguments</h3>
+          <p>Change your program to greet whoever is named on the command line, so that <code>java About Keerit</code> prints <code>Hello, Keerit</code>.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>public class About {
+    public static void main(String[] args) {
+        System.out.println("Hello, " + args[0]);
+    }
+}</code></pre>
+              <p>Running it with no argument throws <code>ArrayIndexOutOfBoundsException</code>, because <code>args</code> is empty and there is no <code>args[0]</code>. Guarding against that is what <code>if (args.length &gt; 0)</code> is for, and it is the subject of chapter 3.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Break it on purpose</h3>
+          <p>Rename the file to <code>hello.java</code>, with a lower-case h, while the class inside stays <code>Hello</code>. Compile it. Then rename the class instead and compile again. What does each error tell you?</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <p>With a public class <code>Hello</code> in <code>hello.java</code> the compiler says <code>class Hello is public, should be declared in a file named Hello.java</code>. That rule exists so that the compiler can find a class by its name without reading every file in your project.</p>
+              <p>If instead you rename the class to <code>hello</code>, it compiles, and <code>java hello</code> runs. It works, but every Java codebase you will ever read capitalises class names, so do the same.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:java-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/java/">All chapters</a>
+          <a class="btn" href="/books/java/types/">Next: Types, and why Java insists</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

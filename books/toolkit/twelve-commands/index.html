@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--head-->
+    <title>The Twelve Terminal Commands You Need | mycsmajor</title>
+    <meta name="description" content="Move around, find things and read files from the command line, with the twelve commands that cover almost everything a CS student does. Free sample chapter." />
+  </head>
+  <body>
+    <!--header-->
+    <main id="main">
+      <article class="wrap prose">
+        <header class="page-head">
+          <span class="eyebrow"><a href="/books/toolkit/">Git, Linux and the terminal</a> &middot; Chapter 1</span>
+          <h1>The twelve commands you need</h1>
+          <p class="lede">You will spend four years in a terminal. An hour spent on these twelve commands pays for itself in the first week.</p>
+        </header>
+
+        <h2>Getting a terminal</h2>
+        <ul>
+          <li><strong>macOS:</strong> Terminal, already installed. Everything here works.</li>
+          <li><strong>Linux:</strong> likewise.</li>
+          <li><strong>Windows:</strong> install the Windows Subsystem for Linux (<code>wsl --install</code> in PowerShell as administrator, then restart). You get a real Ubuntu shell alongside Windows, and your course materials will assume one.</li>
+        </ul>
+        <p>Three keys to know before anything else: <kbd>Tab</kbd> completes a name you have half typed, the up arrow recalls the previous command, and <kbd>Ctrl</kbd>+<kbd>C</kbd> stops whatever is running. Use Tab constantly; it is faster and it prevents typos in file names.</p>
+
+        <h2>Where am I, and what is here</h2>
+        <pre><code>pwd                  # print working directory: where you are
+ls                   # list the files here
+ls -l                # long: permissions, owner, size, date
+ls -la               # also hidden files, the ones starting with a dot
+cd projects          # change directory, into projects
+cd ..                # up one level
+cd ~                 # your home folder
+cd -                 # back to the previous folder</code></pre>
+        <p>The shell always has a "current folder", and almost every command works relative to it. Two paths you will type constantly: <code>.</code> means here, <code>..</code> means the folder above.</p>
+        <p>Relative paths start from where you are (<code>src/main.py</code>); absolute paths start from the root (<code>/home/keerit/src/main.py</code>). When a tutorial command fails, being in the wrong folder is the most likely reason, so check with <code>pwd</code> first.</p>
+
+        <h2>Making and moving things</h2>
+        <pre><code>mkdir notes              # make a folder
+mkdir -p a/b/c           # make the whole chain, no error if it exists
+touch main.py            # create an empty file, or update its timestamp
+cp main.py backup.py     # copy
+cp -r src/ src-copy/     # copy a folder and everything in it
+mv old.py new.py         # rename
+mv main.py src/          # move into a folder
+rm notes.txt             # delete a file
+rm -r old-project/       # delete a folder and its contents</code></pre>
+        <p><strong>There is no recycle bin.</strong> <code>rm</code> deletes immediately and permanently. Before any <code>rm -r</code>, run the same path through <code>ls</code> first and read what comes back. Never type <code>rm -rf /</code> or <code>rm -rf ~</code>, and be suspicious of any instruction on the internet that tells you to.</p>
+
+        <h2>Reading files</h2>
+        <pre><code>cat notes.txt            # print the whole file
+less big.log             # page through it: arrows to scroll, / to search, q to quit
+head -20 data.csv        # first 20 lines
+tail -20 data.csv        # last 20 lines
+tail -f server.log       # keep printing as the file grows: Ctrl+C to stop
+wc -l data.csv           # count lines</code></pre>
+        <p><code>tail -f</code> is how you watch a server's log while you reproduce a bug, and it is worth remembering on its own.</p>
+
+        <h2>Finding things</h2>
+        <p>Two commands, and knowing which is which saves a lot of time: <code>find</code> searches for files <em>by name</em>, <code>grep</code> searches <em>inside</em> files.</p>
+        <pre><code>find . -name "*.py"                  # every Python file from here down
+find . -name "*.pyc" -delete         # and delete them
+find . -type d -name "node_modules"  # folders with that name
+
+grep "TODO" main.py                  # lines containing TODO
+grep -r "TODO" .                     # search every file from here down
+grep -rn "parse_args" src/           # with line numbers: file:line:text
+grep -ri "password" .                # ignore case
+grep -rn --include="*.py" "def " .   # only Python files</code></pre>
+        <p><code>grep -rn</code> is the single most useful command in this chapter. Dropped into an unfamiliar codebase, it is how you find where something is defined, and it is faster than any search box.</p>
+
+        <h2>Joining commands with pipes</h2>
+        <p>Each command writes to standard output; a pipe, <code>|</code>, feeds that into the next one. Small tools joined up answer surprisingly specific questions.</p>
+        <pre><code>grep -r "TODO" . | wc -l            # how many TODOs in the project
+ls -l | head -5                     # the first five entries
+history | grep git                  # git commands you ran earlier
+cat access.log | cut -d' ' -f1 | sort | uniq -c | sort -rn | head
+#    ^ read       ^ first field  ^ group identical  ^ count  ^ biggest first</code></pre>
+        <p>That last line gives the ten busiest IP addresses in a web server log. Note that <code>uniq</code> only collapses <em>adjacent</em> duplicates, which is why <code>sort</code> always comes first; forgetting it is the classic pipeline bug.</p>
+        <p>Redirection writes to a file instead of the screen: <code>&gt;</code> overwrites, <code>&gt;&gt;</code> appends.</p>
+        <pre><code>python main.py &gt; output.txt         # replace output.txt
+python main.py &gt;&gt; log.txt           # add to the end
+python main.py &gt; out.txt 2&gt;&amp;1       # errors go to the same file</code></pre>
+
+        <h2>Running and stopping programs</h2>
+        <pre><code>python3 main.py          # run it
+./script.sh              # run an executable in this folder
+chmod +x script.sh       # make it executable first
+python3 main.py &amp;        # run in the background
+jobs                     # what is running in the background
+fg                       # bring it back
+Ctrl+C                   # stop the thing in the foreground
+Ctrl+Z then bg           # pause it, then continue it in the background</code></pre>
+        <p><code>./</code> is not decoration. The shell looks for programs in the folders listed in <code>PATH</code>, and the current folder is deliberately not one of them &mdash; otherwise a downloaded file called <code>ls</code> could replace the real one. <code>./script.sh</code> says "this exact file, here".</p>
+
+        <h2>Reading the manual</h2>
+        <pre><code>man grep                 # the full manual: q to quit, / to search
+grep --help              # the short version
+which python3            # which program actually runs
+type cd                  # and what kind of thing it is</code></pre>
+        <p>Manual pages are dense, but the <code>EXAMPLES</code> section near the bottom usually answers the question you actually had. Press <kbd>/</kbd>, type <code>EXAMPLES</code> and press <kbd>Enter</kbd>.</p>
+
+        <h2>Exercises</h2>
+        <section class="card exercise">
+          <h3>1. One line each</h3>
+          <p>Write a single command for: (a) count the Python files in a project; (b) find every file mentioning <code>import requests</code>, with line numbers; (c) show the 20 largest files in the current folder, biggest first.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code># (a)
+find . -name "*.py" | wc -l
+
+# (b)
+grep -rn "import requests" .
+
+# (c)
+ls -lhS | head -21          # -h human-readable sizes, -S sort by size</code></pre>
+              <p>In (c) the 21 is not a typo: <code>ls -l</code> prints a total line first. For a recursive version, <code>du -ah . | sort -rh | head -20</code> works across subfolders too.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>2. Clean up a project</h3>
+          <p>Write commands to delete every <code>__pycache__</code> folder and every <code>.pyc</code> file under the current directory, after checking what will go.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>find . -type d -name "__pycache__"      # look first
+find . -type f -name "*.pyc"           # and at these
+
+find . -type d -name "__pycache__" -exec rm -r {} +
+find . -name "*.pyc" -delete</code></pre>
+              <p>Always run the <code>find</code> without the deleting part first and read the list. <code>-exec rm -r {} +</code> passes the matches to <code>rm</code> in batches; <code>{}</code> stands for each match and the <code>+</code> ends the command. Better still, add both patterns to <code>.gitignore</code> so they never reach a commit.</p>
+            </div>
+          </details>
+        </section>
+        <section class="card exercise">
+          <h3>3. Build a pipeline</h3>
+          <p>Given a file of one word per line, print the ten most common words with their counts.</p>
+          <details class="reveal">
+            <summary>Show answer</summary>
+            <div class="reveal-body">
+              <pre><code>sort words.txt | uniq -c | sort -rn | head -10</code></pre>
+              <p>Sort so identical words sit together, <code>uniq -c</code> collapses each run into a count, <code>sort -rn</code> orders by that count numerically and in reverse, and <code>head</code> takes the top ten.</p>
+              <p>If the file is real prose rather than one word per line, split it first: <code>tr -s '[:space:][:punct:]' '\n' &lt; essay.txt | tr 'A-Z' 'a-z' | sort | uniq -c | sort -rn | head -10</code>. Four small programs, one real answer, no script written.</p>
+            </div>
+          </details>
+        </section>
+
+        <!--buy-strip:toolkit-->
+
+        <!-- AD SLOT: book-chapter-end. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
+        <aside class="ad-slot" data-ad-slot="book-chapter-end" aria-label="Advertisement" hidden></aside>
+
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a class="btn btn-ghost" href="/books/toolkit/">All chapters</a>
+          <a class="btn" href="/books/toolkit/git-without-panic/">Next: Git without panic</a>
+        </nav>
+      </article>
+    </main>
+    <!--footer-->
+  </body>
+</html>

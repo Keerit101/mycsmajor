@@ -1,6 +1,6 @@
 # mycsmajor.com
 
-A static site for computer science students: one CS problem a day with a streak counter, security briefs, gear guides and a free beginner Python book.
+A static site for computer science students: one CS problem a day with a streak counter, a daily security brief, gear guides and seven short books for first-year courses.
 
 Built with Vite, vanilla JavaScript and plain CSS. There is no backend, database or framework.
 

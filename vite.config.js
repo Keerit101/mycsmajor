@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, relative, join } from 'node:path';
 import { renderKevSection } from './src/build/cyber-brief.js';
+import { renderBookPlaceholders } from './src/build/books.js';
 
 const root = import.meta.dirname;
 const SITE = 'https://mycsmajor.com';
@@ -9,7 +10,7 @@ const SITE = 'https://mycsmajor.com';
 const NAV = [
   { href: '/daily/', label: 'Daily Problem', section: 'daily' },
   { href: '/problems/', label: 'Problems', section: 'problems' },
-  { href: '/python-book/', label: 'Python Book', section: 'python-book' },
+  { href: '/books/', label: 'Books', section: 'books' },
   { href: '/cyber-brief/', label: 'Cyber Brief', section: 'cyber-brief' },
   { href: '/gear/', label: 'Gear Guides', section: 'gear' },
   { href: '/about/', label: 'About', section: 'about' },
@@ -44,7 +45,8 @@ function layout() {
       order: 'pre',
       handler(html, ctx) {
         const path = urlPath(ctx.filename);
-        const section = path.split('/')[1];
+        let section = path.split('/')[1];
+        if (section === 'python-book') section = 'books';
         const navLinks = NAV.map(({ href, label, section: s }) => {
           const current = s === section ? ' aria-current="page"' : '';
           return `<li><a href="${href}"${current}>${label}</a></li>`;
@@ -58,11 +60,11 @@ function layout() {
           .replaceAll('{{description}}', description)
           .replaceAll('{{site}}', SITE)
           // Problem pages and book chapters are articles; everything else is the website.
-          .replaceAll('{{ogType}}', /^\/(problems|python-book)\/[^/]+\/$/.test(path) ? 'article' : 'website');
+          .replaceAll('{{ogType}}', /^\/(problems|python-book)\/[^/]+\/$|^\/books\/[^/]+\/[^/]+\/$/.test(path) ? 'article' : 'website');
         // Pages that opt out of indexing get no canonical URL.
         if (html.includes('content="noindex"')) head = head.replace(/\s*<link rel="canonical"[^>]*>/, '');
 
-        return html
+        return renderBookPlaceholders(html)
           .replace('<!--head-->', head)
           .replace('<!--header-->', partial('header.html').replace('{{nav}}', navLinks))
           .replace('<!--footer-->', partial('footer.html'))
