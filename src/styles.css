@@ -1003,3 +1003,36 @@ details.reveal > .reveal-body > :last-child {
 .chapter-list .chapter-locked .chapter-title {
   color: var(--text);
 }
+
+/* Tables (book chapters) */
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.92rem;
+}
+
+.prose th,
+.prose td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5rem 0.6rem 0.5rem 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+.prose th {
+  font-weight: 650;
+}
+
+@media (max-width: 480px) {
+  .prose table {
+    font-size: 0.82rem;
+  }
+
+  .prose th,
+  .prose td {
+    padding-right: 0.4rem;
+  }
+}

@@ -77,3 +77,15 @@ Choices made while building the site without asking, and the reasoning behind ea
 - **Keyboard focus**: every focusable element type (skip link, menu, links, cards, buttons, `<summary>`, form fields and scrollable code blocks) shows a 2px blue focus ring, checked by tabbing through the pages.
 - **Contrast** (WCAG AA needs 4.5:1 for body text): text #111 on the background is about 18:1, the muted grey 8.4:1, the blue accent 6.4:1 on the background and 5.8:1 on the pale blue, and white on blue buttons 6.7:1.
 - **Alt text**: the site has no `<img>` elements; the only images are the favicon and the social share image, which has `og:image:alt` and `twitter:image:alt` text.
+
+## Round 3 (24 to 27 October 2026)
+
+- **Books are a shelf, not one book.** `/books/` lists seven books. The six new ones live at `/books/<slug>/`; the Python Book keeps its old URLs so existing links and search results still work, and the menu item "Python Book" became "Books".
+- **Every price and checkout link is in `src/data/books.js`.** `src/build/books.js` renders the shelf, each chapter list and each buy box from it at build time, through `<!--books-shelf-->`, `<!--chapters:slug-->`, `<!--buy:slug-->` and `<!--buy-strip:slug-->` comments. With no checkout URL a buy box says "not on sale yet" instead of showing a dead button, so the site is safe to deploy before the payment account exists.
+- **Two free sample chapters per new book; the rest are outlines.** Free chapters are complete. Locked chapters show their title and summary only. Full manuscripts must never be committed here, because the repo is public. Every code sample in the 12 sample chapters was run (javac, gcc with -Wall -Wextra, Python 3.13) and the outputs on the page are the real ones; timings are labelled as measured on one machine.
+- **The Python Book stays free to read.** Its twelve chapters were already public and indexed, so pulling them would only lose traffic. It is sold as a downloadable PDF/EPUB edition instead, and its page says so plainly.
+- **Prices are suggestions** (CAD $10 to $14 a book, $39 for all of them). Checkout fees were checked on 24 October 2026: Lemon Squeezy 5% + 50c, Gumroad 10% + $0.50, both merchant of record; Stripe 2.9% + CA$0.30 without tax handling.
+- **Cyber Brief now leads with CISA's Known Exploited Vulnerabilities catalog**, refreshed daily by `.github/workflows/update-cyber-brief.yml`. Descriptions are CISA's own words; the only text written here is one lesson per weakness type (CWE), in `src/build/cyber-brief.js`, so the section cannot invent an incident. The twelve older incidents moved below it as "Classic incidents, explained".
+- **The daily job commits only when CISA publishes a new catalog version**, builds the site before committing, and commits as Keerit101 with the no-reply email like every other commit, so Vercel deploys it.
+- **Tables** in book chapters got styles for the first time, sized so they fit a 320px phone without sideways scroll.
+- `scripts/check-pages.mjs` also accepts a `CHROME_PATH` environment variable, for machines where Chrome is not in a standard place.
