@@ -1,10 +1,41 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.10.26",
-  "dateReleased": "2026-10-26T22:24:24.6101Z",
-  "totalInCatalog": 1758,
+  "catalogVersion": "2026.10.27",
+  "dateReleased": "2026-10-27T19:00:02.2307Z",
+  "totalInCatalog": 1760,
   "items": [
+    {
+      "cveID": "CVE-2026-111497",
+      "vendorProject": "Google",
+      "product": "Brotli",
+      "vulnerabilityName": "Google Brotli Unchecked Return Value Vulnerability",
+      "dateAdded": "2026-10-27",
+      "shortDescription": "Google Brotli contains an unchecked return value vulnerability that allows a remote unauthenticated attacker to corrupt adjacent decoder state memory, disclose sensitive memory contents, cause a denial of service, or potentially execute arbitrary code using a crafted Brotli-compressed stream.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-252",
+        "CWE-787"
+      ],
+      "links": [
+        "https://github.com/google/brotli/releases/tag/v1.2.1"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-48356",
+      "vendorProject": "Adobe",
+      "product": "Commerce and Magento",
+      "vulnerabilityName": "Adobe Commerce and Magento Unrestricted Upload of File with Dangerous Type Vulnerability",
+      "dateAdded": "2026-10-27",
+      "shortDescription": "Adobe Commerce and Magento contain an unrestricted upload of file with dangerous type vulnerability that could result in arbitrary code execution in the context of the current user, potentially gaining elevated access or control over the victim's account or session.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-434"
+      ],
+      "links": [
+        "https://www.adobe.com/trust/security/products/commerce/apsb26-73.html"
+      ]
+    },
     {
       "cveID": "CVE-2026-109619",
       "vendorProject": "PHP Group",
@@ -474,40 +505,6 @@
         "https://support.apple.com/en-us/149226",
         "https://support.apple.com/en-us/149228",
         "https://support.apple.com/en-us/149229"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-88772",
-      "vendorProject": "Citrix",
-      "product": "NetScaler",
-      "vulnerabilityName": "Citrix NetScaler Improper Restriction of Operations within the Bounds of a Memory Buffer Vulnerability",
-      "dateAdded": "2026-09-27",
-      "shortDescription": "Citrix NetScaler ADC and NetScaler Gateway contain an improper restriction of operations within the bounds of a memory buffer vulnerability that could allow for remote code execution or denial of service",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-119"
-      ],
-      "links": [
-        "https://community.citrix.com/techzone-blogs/110_security-updates/netscaler-adc-and-netscaler-gateway-security-bulletin-for-cve-2026-88771-through-cve-2026-88778",
-        "https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX697096",
-        "https://support.citrix.com/external/article/CTX694799/steps-to-take-if-netscaler-adc-is-suspec.html"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-88771",
-      "vendorProject": "Citrix",
-      "product": "NetScaler",
-      "vulnerabilityName": "Citrix NetScaler Improper Input Validation Vulnerability",
-      "dateAdded": "2026-09-27",
-      "shortDescription": "Citrix NetScaler ADC and NetScaler Gateway contain an improper input validation vulnerability that could allow an unauthenticated attacker to execute arbitrary commands.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-119"
-      ],
-      "links": [
-        "https://community.citrix.com/techzone-blogs/110_security-updates/netscaler-adc-and-netscaler-gateway-security-bulletin-for-cve-2026-88771-through-cve-2026-88778",
-        "https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX697096",
-        "https://support.citrix.com/external/article/CTX694799/steps-to-take-if-netscaler-adc-is-suspec.html"
       ]
     }
   ]
