@@ -1036,3 +1036,454 @@ details.reveal > .reveal-body > :last-child {
     padding-right: 0.4rem;
   }
 }
+
+/* ------------------------------------------------------------------
+   Refresh (October 2026): a bolder look to match the memes and the shop.
+   Thick ink borders, hard offset shadows and a duck-yellow highlight.
+   Everything above still applies; this layer only restyles it.
+   ------------------------------------------------------------------ */
+
+:root {
+  --ink: #141414;
+  --duck: #ffd43b;
+  --duck-soft: #fff3c4;
+  --radius: 14px;
+  --hard-shadow: 4px 4px 0 var(--ink);
+}
+
+body {
+  background-color: var(--bg);
+  background-image: radial-gradient(#e4e1d8 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+h1 {
+  font-weight: 850;
+  letter-spacing: -0.035em;
+}
+
+.hl {
+  background: linear-gradient(transparent 55%, var(--duck) 55%, var(--duck) 92%, transparent 92%);
+  padding: 0 0.1em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Header: sticky, with the duck next to the name. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(250, 249, 246, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--ink);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 850;
+  font-size: 1.25rem;
+}
+
+.brand img {
+  display: block;
+}
+
+.site-nav a {
+  font-weight: 600;
+}
+
+.menu-toggle {
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+}
+
+/* Buttons: pills with a hard shadow that press in. */
+.btn {
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.75rem 1.3rem;
+  font-weight: 700;
+  box-shadow: var(--hard-shadow);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn:hover {
+  border-color: var(--ink);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.btn-ghost {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.btn-ghost:hover {
+  background: var(--duck);
+  border-color: var(--ink);
+}
+
+/* Cards */
+.card {
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--hard-shadow);
+}
+
+.card-link {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-link:hover {
+  border-color: var(--ink);
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+.card-link h3 {
+  color: var(--ink);
+}
+
+.problem {
+  border-top: 2px solid var(--ink);
+  background: var(--surface);
+}
+
+details.reveal {
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+}
+
+details.reveal[open] > summary {
+  border-bottom: 2px solid var(--ink);
+}
+
+pre {
+  border: 2px solid var(--ink);
+  border-left: 6px solid var(--accent);
+  border-radius: 10px;
+}
+
+code {
+  background: var(--duck-soft);
+}
+
+.tag-accent {
+  background: var(--duck);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* Home hero */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-bottom: 1.75rem;
+}
+
+.hero-split h1 {
+  font-size: clamp(2.3rem, 8vw, 4.2rem);
+  line-height: 1.02;
+  margin-bottom: 0.4em;
+}
+
+.hero-split p {
+  font-size: 1.2rem;
+}
+
+.hero-chip {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--duck);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.hero-duck {
+  width: min(40vw, 160px);
+  grid-row: 1;
+  justify-self: center;
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-10px) rotate(-3deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-duck,
+  .btn,
+  .card-link {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (min-width: 52rem) {
+  .hero-split {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .hero-duck {
+    width: 320px;
+    grid-row: auto;
+  }
+}
+
+.stat-strip {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.stat-strip li {
+  background: var(--duck);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.stat-strip strong {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 52rem) {
+  .stat-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-head h2 {
+  margin: 0;
+}
+
+.section-head a {
+  font-weight: 700;
+}
+
+/* Shop */
+.shop-head {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.shop-head-duck {
+  display: none;
+  width: 180px;
+}
+
+@media (min-width: 52rem) {
+  .shop-head {
+    grid-template-columns: 1fr auto;
+  }
+
+  .shop-head-duck {
+    display: block;
+  }
+}
+
+.shop-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  margin: 2rem 0 3rem;
+}
+
+@media (min-width: 52rem) {
+  .shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.shop-card,
+.bundle-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  scroll-margin-top: 5rem;
+}
+
+.shop-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 2px solid var(--ink);
+}
+
+.shop-body {
+  padding: 1.25rem 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.shop-body h2 {
+  margin: 0 0 0.4em;
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.shop-kicker {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.shop-buy {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.shop-buy .not-on-sale {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.price-pill {
+  display: inline-block;
+  background: var(--duck);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-weight: 850;
+  font-size: 1.1rem;
+}
+
+.bundle-card {
+  margin-top: 1rem;
+  background: var(--duck-soft);
+}
+
+@media (min-width: 52rem) {
+  .bundle-card {
+    flex-direction: row;
+  }
+
+  .bundle-card .shop-img {
+    width: 48%;
+    border-bottom: 0;
+    border-right: 2px solid var(--ink);
+  }
+
+  .bundle-card .shop-body {
+    justify-content: center;
+  }
+}
+
+.teaser-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 60rem) {
+  .teaser-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.teaser {
+  padding: 0;
+  overflow: hidden;
+}
+
+.teaser img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 2px solid var(--ink);
+}
+
+.teaser-name {
+  display: block;
+  font-weight: 850;
+  font-size: 1.1rem;
+  padding: 0.7rem 0.9rem 0;
+  letter-spacing: -0.02em;
+}
+
+.teaser-meta {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--muted);
+  padding: 0 0.9rem 0.8rem;
+}
+
+.meme-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+}
+
+.meme-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--hard-shadow);
+  background: #fff;
+}
+
+/* Footer: dark, so the page has an ending. */
+.site-footer {
+  background: var(--ink);
+  color: #d6d3cb;
+  border-top: 0;
+  margin-top: 2rem;
+}
+
+.site-footer a,
+.footer-brand a,
+.footer-links a {
+  color: var(--duck);
+}

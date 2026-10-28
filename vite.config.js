@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, relative, join } from 'node:path';
 import { renderKevSection } from './src/build/cyber-brief.js';
 import { renderBookPlaceholders } from './src/build/books.js';
+import { renderTemplatePlaceholders } from './src/build/templates.js';
 
 const root = import.meta.dirname;
 const SITE = 'https://mycsmajor.com';
@@ -11,6 +12,7 @@ const NAV = [
   { href: '/daily/', label: 'Daily Problem', section: 'daily' },
   { href: '/problems/', label: 'Problems', section: 'problems' },
   { href: '/books/', label: 'Books', section: 'books' },
+  { href: '/templates/', label: 'Shop', section: 'templates' },
   { href: '/cyber-brief/', label: 'Cyber Brief', section: 'cyber-brief' },
   { href: '/gear/', label: 'Gear Guides', section: 'gear' },
   { href: '/about/', label: 'About', section: 'about' },
@@ -64,7 +66,7 @@ function layout() {
         // Pages that opt out of indexing get no canonical URL.
         if (html.includes('content="noindex"')) head = head.replace(/\s*<link rel="canonical"[^>]*>/, '');
 
-        return renderBookPlaceholders(html)
+        return renderTemplatePlaceholders(renderBookPlaceholders(html))
           .replace('<!--head-->', head)
           .replace('<!--header-->', partial('header.html').replace('{{nav}}', navLinks))
           .replace('<!--footer-->', partial('footer.html'))

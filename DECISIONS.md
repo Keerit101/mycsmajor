@@ -56,6 +56,15 @@ Choices made while building the site without asking, and the reasoning behind ea
 - **No sideways scrolling on the page**: grids collapse to one column on phones and `overflow-x: clip` on the body is a safety net. **Code blocks keep their real indentation** (`white-space: pre`) and scroll sideways *inside the block* when a line is too long, instead of wrapping, because wrapped Python lines look like wrong indentation. A scrolling code block gets `tabindex="0"` and a label (`src/js/scrollable.js`) so keyboard users can scroll it. The check script verifies at 320px, 360px and 1366px, with all `<details>` opened, that the page never scrolls sideways (content inside a `<pre>` is allowed to).
 - **Mobile menu**: on narrow screens the nav collapses behind a Menu button. A tiny inline script adds a `js` class before first paint, so the menu does not flash open, and without JavaScript the full menu simply stays visible.
 
+## Design refresh and template shop (October 2026)
+
+- **The owner asked for a less plain site**, so the design rules above were loosened on purpose: 2px near-black borders, hard offset shadows on cards and buttons (no soft blur shadows), pill buttons, a duck-yellow `#ffd43b` highlight beside the blue accent, a faint dotted page background, a sticky header and a dark footer. All of it is one layer at the end of `src/styles.css`, so it can be removed in one go. Animations respect `prefers-reduced-motion`.
+- **Mascot: Byte, a rubber debugging duck**, drawn as SVG for this site (`public/duck-*.svg`). Still no emoji anywhere.
+- **Memes are original drawings**, not meme-template photos, so they can be posted and sold without copyright problems. They live in `public/memes/` as 800px WebP with descriptive alt text.
+- **`/templates/` is the shop**, rendered at build time from `src/data/templates.js` by `src/build/templates.js`, the same pattern as the books: every `checkoutUrl` is empty with a `TODO(payments)` comment, and an empty URL shows "Not on sale yet" instead of a dead button. "Shop" was added to the menu (seven items).
+- **The product files are not in this repo**, because it is public. Only preview images are. Suggested prices (CAD): Lock In 9, Grade Glow-Up 7, Exam Szn 6, Hire Me Pls 8, bundle 19.
+- Verified on 28 October 2026: `npm run build`, `npm run check:seo` (133 pages) and `npm run check` (layout at 320, 360 and 1366px plus axe WCAG 2.1 AA on every page) all pass.
+
 ## Privacy and SEO
 
 - **No analytics and no cookies.** The privacy policy says so and promises an update before that changes.
