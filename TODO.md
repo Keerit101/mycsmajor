@@ -49,15 +49,28 @@ I cannot create an account, accept terms or receive money on your behalf.
 ### 3. Put the links in (two minutes, or ask me)
 
 Open `src/data/books.js` and paste each URL into that book's `checkoutUrl`, plus
-the bundle's into `BUNDLE.checkoutUrl`. Find them all with:
+the bundle's into `BUNDLE.checkoutUrl`, and your tip jar link into `SUPPORT.url`.
+Find them all with:
 
 ```sh
 grep -n "TODO(payments)" src/data/books.js
 ```
 
-Every "not on sale yet" note on the site turns into a Buy button automatically.
+Every greyed-out "Checkout opens soon" button on the site (book cards, buy
+boxes, the bundle on the home page, `/books/` and `/support/`) turns into a real
+Buy button automatically, and "Tip jar opens soon" becomes the tip button.
 Nothing else needs editing: prices, chapter lists and buy boxes all come from
 that one file. Then commit and push, and Vercel deploys it.
+
+### 3b. Tip jar (optional, 10 minutes)
+
+For people who want to chip in without buying a book. Easiest options:
+**Ko-fi** (low or no platform fee on one-off tips; check its current terms),
+**Buy Me a Coffee**, or a **Stripe Payment Link** with "let customers choose
+what to pay". Lemon Squeezy and Gumroad can also do a pay-what-you-want product.
+The same age rule applies: most of these need you to be 18, or a parent's or
+guardian's account. Paste the page link into `SUPPORT.url` in
+`src/data/books.js`.
 
 ### 4. Before the first sale
 

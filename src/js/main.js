@@ -1,4 +1,5 @@
 import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
 import '../styles.css';
 import { markScrollableCode } from './scrollable.js';
 import { initAds } from './ads.js';

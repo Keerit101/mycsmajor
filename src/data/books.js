@@ -15,6 +15,7 @@
 //               is on the site; the rest come with the paid download.
 //   checkoutUrl '' until the payment account exists. See TODO.md.
 //   formats     what the buyer gets.
+//   cover       emoji and colour (0-360 hue) for the drawn cover on the shelf.
 
 export const CURRENCY = 'CAD';
 
@@ -22,13 +23,24 @@ export const CURRENCY = 'CAD';
 export const BUNDLE = {
   title: 'The whole shelf',
   price: 39,
-  summary: 'Every book on this page, including anything added later this year.',
+  summary: 'Every book on the site, including anything added later this year.',
   checkoutUrl: '', // TODO(payments): bundle checkout URL
+};
+
+// Tip jar: a "pay what you want" link for people who want to support the site
+// without buying a book. Any of these work: a Ko-fi page, a Buy Me a Coffee
+// page, a Stripe Payment Link with "customer chooses price", or a Lemon
+// Squeezy / Gumroad product set to pay-what-you-want. Until `url` is set, the
+// tip boxes say the tip jar is coming instead of showing a dead button.
+export const SUPPORT = {
+  url: '', // TODO(payments): tip jar URL (Ko-fi, Buy Me a Coffee or Stripe)
+  label: 'Buy me a coffee',
 };
 
 export const books = [
   {
     slug: 'python-book',
+    cover: { emoji: '🐍', hue: 150 },
     path: '/python-book/',
     title: 'Python for your first year',
     tagline: 'From your first program to classes and testing.',
@@ -56,6 +68,7 @@ export const books = [
   },
   {
     slug: 'java',
+    cover: { emoji: '☕', hue: 20 },
     title: 'Java after Python',
     tagline: 'The language your second programming course is taught in.',
     summary:
@@ -81,6 +94,7 @@ export const books = [
   },
   {
     slug: 'c-and-memory',
+    cover: { emoji: '🧠', hue: 200 },
     title: 'C and how memory really works',
     tagline: 'Pointers, the stack, the heap, and what your computer is actually doing.',
     summary:
@@ -105,6 +119,7 @@ export const books = [
   },
   {
     slug: 'data-structures',
+    cover: { emoji: '🌳', hue: 110 },
     title: 'Data structures and algorithms, by hand',
     tagline: 'Build each one yourself before you ever import it.',
     summary:
@@ -131,6 +146,7 @@ export const books = [
   },
   {
     slug: 'discrete-math',
+    cover: { emoji: '🤔', hue: 280 },
     title: 'Discrete math and logic',
     tagline: 'The proofs and the logic your first-year maths course assumes you can do.',
     summary:
@@ -156,6 +172,7 @@ export const books = [
   },
   {
     slug: 'security-basics',
+    cover: { emoji: '🔐', hue: 330 },
     title: 'Security basics for programmers',
     tagline: 'Write code that does not become next month’s Cyber Brief.',
     summary:
@@ -181,6 +198,7 @@ export const books = [
   },
   {
     slug: 'toolkit',
+    cover: { emoji: '💻', hue: 230 },
     title: 'Git, Linux and the terminal',
     tagline: 'The tools nobody teaches you but every course expects.',
     summary:

@@ -9,12 +9,23 @@
     <!--header-->
     <main id="main">
       <div class="wrap">
-        <header class="hero">
-          <h1>One CS problem a day</h1>
-          <p>A short Python, logic or data structures problem every day. Solve it, check the solution, and keep your streak going.</p>
+        <header class="hero hero-xl">
+          <p class="sticker">New problem drops every day &middot; free forever</p>
+          <h1>One CS problem a day.<br /><span class="grad">Zero brain rot.</span></h1>
+          <p>Python, logic and data structures in five-minute bites, with hints, full solutions and a streak counter that judges you (lovingly).</p>
+          <div class="btn-row">
+            <a class="btn btn-lg" href="#today">Solve today's problem</a>
+            <a class="btn btn-ghost btn-lg" href="/books/">Browse the books</a>
+          </div>
+          <ul class="hero-stats">
+            <li><strong>90</strong> daily problems</li>
+            <li><strong>7</strong> short CS books</li>
+            <li><strong>24</strong> free chapters</li>
+            <li><strong>Daily</strong> security brief</li>
+          </ul>
         </header>
 
-        <section aria-label="Today's problem" data-today>
+        <section aria-label="Today's problem" data-today id="today">
           <noscript>
             <p class="card">Today's problem needs JavaScript to pick the question for your date. <a href="/daily/">Open the Daily Problem page</a> after enabling it.</p>
           </noscript>
@@ -25,23 +36,75 @@
         <!-- AD SLOT: home-below-problem. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
         <aside class="ad-slot" data-ad-slot="home-below-problem" aria-label="Advertisement" hidden></aside>
 
-        <section class="home-sections" aria-labelledby="explore-title">
-          <h2 id="explore-title">More for CS students</h2>
+        <section class="home-block" aria-labelledby="memes-title">
+          <div class="section-head">
+            <h2 id="memes-title">Certified CS moments 💀</h2>
+            <p>Every meme comes with the chapter that fixes it.</p>
+          </div>
+          <div class="memes">
+            <figure class="meme-card">
+              <ul class="meme-lines">
+                <li class="meme-dim">nobody:</li>
+                <li class="meme-dim">absolutely nobody:</li>
+                <li>Python at 2am: <code>IndentationError: unexpected indent</code></li>
+              </ul>
+              <figcaption>One space. It was one space. <a href="/python-book/making-decisions/">Why indents matter</a></figcaption>
+            </figure>
+            <figure class="meme-card">
+              <div class="meme-panels">
+                <p aria-hidden="true">🙅</p>
+                <p>Reading the error message</p>
+                <p aria-hidden="true">😌</p>
+                <p>Adding <code>print("here")</code> forty times</p>
+              </div>
+              <figcaption>Tracebacks are free answers. <a href="/python-book/errors-and-exceptions/">Learn to read them</a></figcaption>
+            </figure>
+            <figure class="meme-card">
+              <ol class="meme-brain">
+                <li><span aria-hidden="true">🧠</span><code>for i in range(len(xs))</code></li>
+                <li><span aria-hidden="true">💡</span><code>for x in xs</code></li>
+                <li><span aria-hidden="true">✨</span><code>total = sum(xs)</code></li>
+                <li><span aria-hidden="true">🌌</span>knowing why it's O(n) anyway</li>
+              </ol>
+              <figcaption>Galaxy brain, but make it Big O. <a href="/books/data-structures/big-o/">Get there</a></figcaption>
+            </figure>
+            <figure class="meme-card">
+              <div class="meme-chat">
+                <p><b>Prof</b>This will be on the exam.</p>
+                <p><b>Me</b>Bet. I'll learn it the night before.</p>
+                <p><b>Streak counter</b>0 days 💀</p>
+              </div>
+              <figcaption>Five minutes a day beats one all-nighter. <a href="/daily/">Start a streak</a></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="home-block" aria-labelledby="explore-title">
+          <div class="section-head">
+            <h2 id="explore-title">More for CS students</h2>
+          </div>
           <div class="grid grid-3">
             <a class="card card-link" href="/cyber-brief/">
+              <span class="card-emoji" aria-hidden="true">🛡️</span>
               <h3>Cyber Brief</h3>
               <p>The vulnerabilities attackers are exploiting right now, updated daily, each with the lesson for your own code.</p>
             </a>
             <a class="card card-link" href="/books/">
+              <span class="card-emoji" aria-hidden="true">📚</span>
               <h3>Books</h3>
               <p>Seven short books for first year: Python, Java, C, data structures, discrete maths, security and the terminal. Free chapters in every one.</p>
             </a>
             <a class="card card-link" href="/gear/">
+              <span class="card-emoji" aria-hidden="true">🎧</span>
               <h3>Gear Guides</h3>
               <p>What actually matters in a laptop, keyboard and headphones for a CS degree, and what you can skip.</p>
             </a>
           </div>
         </section>
+
+        <div class="home-block">
+          <!--books-bundle-->
+        </div>
       </div>
     </main>
     <!--footer-->

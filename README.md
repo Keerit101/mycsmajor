@@ -61,6 +61,7 @@ cyber-brief/index.html     Cyber Brief
 gear/index.html            Gear Guides
 python-book/               Python Book index and one folder per chapter
 about/ contact/ privacy/   Other pages
+support/index.html         Ways to pay: books, bundle, tip jar, sharing
 404.html                   Not found page
 
 src/partials/              Shared <head>, header and footer, injected at build time
@@ -80,7 +81,9 @@ vite.config.js             Page discovery, layout injection, sitemap generation
 
 **Hide a page from search engines.** Add `<meta name="robots" content="noindex" />` to its `<head>`. It is then left out of the sitemap and gets no canonical link.
 
-**Change the accent colour or font.** Edit the variables at the top of `src/styles.css`.
+**Change the colours or fonts.** Edit the variables at the top of `src/styles.css`. The site is dark-only; headings use Space Grotesk and body text Inter, both self-hosted from npm.
+
+**Turn on payments.** Paste checkout links into `src/data/books.js` (`checkoutUrl` per book, `BUNDLE.checkoutUrl`, `SUPPORT.url` for tips). Every buy button reads from there. Step by step in `TODO.md`.
 
 **Turn on analytics.** Vercel Web Analytics (cookieless) is ready but commented out in `src/partials/head.html`. Enable it in the Vercel dashboard, paste the script path it gives you over `UNIQUE-PATH`, uncomment the two script tags and update the privacy policy. Step by step in `TODO.md`.
 
