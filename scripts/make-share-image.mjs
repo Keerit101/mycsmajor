@@ -8,35 +8,42 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..');
-const font = readFileSync(
-  join(root, 'node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2'),
-).toString('base64');
+const fontFile = (pkg, file) =>
+  readFileSync(join(root, 'node_modules/@fontsource-variable', pkg, 'files', file)).toString('base64');
+const inter = fontFile('inter', 'inter-latin-wght-normal.woff2');
+const grotesk = fontFile('space-grotesk', 'space-grotesk-latin-wght-normal.woff2');
 
 const html = `<!doctype html>
 <html><head><style>
-  @font-face { font-family: Inter; src: url(data:font/woff2;base64,${font}) format('woff2'); font-weight: 100 900; }
+  @font-face { font-family: Inter; src: url(data:font/woff2;base64,${inter}) format('woff2'); font-weight: 100 900; }
+  @font-face { font-family: Grotesk; src: url(data:font/woff2;base64,${grotesk}) format('woff2'); font-weight: 300 700; }
   * { margin: 0; box-sizing: border-box; }
-  body { width: 1200px; height: 630px; background: #faf9f6; color: #111; font-family: Inter, sans-serif;
-         display: flex; flex-direction: column; justify-content: space-between; padding: 72px 80px;
-         border-top: 14px solid #1d4ed8; }
-  .brand { font-size: 34px; font-weight: 750; letter-spacing: -0.02em; }
-  h1 { font-size: 104px; font-weight: 780; letter-spacing: -0.035em; line-height: 1.02; max-width: 960px; }
+  body { width: 1200px; height: 630px; color: #f5f3ff; font-family: Inter, sans-serif;
+         background: radial-gradient(900px 600px at 100% 0%, rgba(157,123,255,.45), transparent 60%),
+                     radial-gradient(700px 500px at 0% 100%, rgba(94,227,255,.22), transparent 60%), #0b0a14;
+         display: flex; flex-direction: column; justify-content: space-between; padding: 64px 80px; }
+  .brand { font-family: Grotesk; font-size: 36px; font-weight: 700; display: flex; align-items: center; gap: 16px; }
+  .mark { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 14px; background: #c4f542;
+          color: #0b0a14; font: 800 26px ui-monospace, monospace; transform: rotate(-6deg); }
+  h1 { font-family: Grotesk; font-size: 96px; font-weight: 700; letter-spacing: -0.04em; line-height: 0.98; }
+  .grad { background: linear-gradient(100deg, #c4f542, #5ee3ff 45%, #ff6ad5); -webkit-background-clip: text; color: transparent; }
   .row { display: flex; justify-content: space-between; align-items: flex-end; }
-  .tracks { display: flex; gap: 14px; }
-  .tag { font-size: 26px; font-weight: 600; padding: 8px 22px; border-radius: 999px; border: 2px solid #e2e0d9; color: #4a4a4a; background: #fff; }
-  .tag.accent { border-color: #1d4ed8; color: #1d4ed8; background: #e8eefc; }
-  .url { font-size: 30px; font-weight: 600; color: #1d4ed8; }
+  .tracks { display: flex; gap: 12px; }
+  .tag { font-size: 24px; font-weight: 600; padding: 8px 20px; border-radius: 999px; border: 2px solid #2c2843; color: #b4afc9; }
+  .tag.accent { border-color: #c4f542; color: #0b0a14; background: #c4f542; }
+  .url { font-family: Grotesk; font-size: 30px; font-weight: 700; color: #c4f542; }
 </style></head>
 <body>
-  <div class="brand">mycsmajor</div>
-  <h1>One CS problem a day</h1>
+  <div class="brand"><span class="mark">&gt;_</span>mycsmajor</div>
+  <h1>One CS problem a day.<br><span class="grad">Zero brain rot.</span></h1>
   <div class="row">
-    <div class="tracks"><span class="tag accent">Python</span><span class="tag">Logic</span><span class="tag">Data structures</span></div>
+    <div class="tracks"><span class="tag accent">Python</span><span class="tag">Cyber security</span><span class="tag">Data structures</span></div>
     <div class="url">mycsmajor.com</div>
   </div>
 </body></html>`;
 
 const browserPaths = [
+  process.env.CHROME_PATH,
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
@@ -44,7 +51,7 @@ const browserPaths = [
   '/usr/bin/google-chrome',
   '/usr/bin/chromium',
 ];
-const executablePath = browserPaths.find((p) => existsSync(p));
+const executablePath = browserPaths.find((p) => p && existsSync(p));
 if (!executablePath) throw new Error('No Edge or Chrome found.');
 
 const browser = await chromium.launch({ executablePath });

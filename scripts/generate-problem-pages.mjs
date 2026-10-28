@@ -123,7 +123,7 @@ ${rows}
 
   return page({
     title: `${problems.length} CS Practice Problems with Solutions | mycsmajor`,
-    description: `Every mycsmajor practice problem in one place: ${problems.length} Python, logic and data structures problems for CS students, from easy to hard, each with a hint and a solution.`,
+    description: `Every mycsmajor practice problem in one place: ${problems.length} Python, cyber security and data structures problems for CS students, from easy to hard, each with a hint and a solution.`,
     body: `      <div class="wrap">
         <header class="page-head">
           <span class="eyebrow">Problems</span>

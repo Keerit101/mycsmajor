@@ -3,6 +3,7 @@ import { formatDate, problemCard, problemUrl } from './problem-view.js';
 import { mountSolveControls } from './solve-controls.js';
 import { getStreak } from './streak.js';
 import { markScrollableCode } from './scrollable.js';
+import { shareStreakCard } from './share-card.js';
 
 const ARCHIVE_DAYS = 14;
 const today = new Date();
@@ -44,3 +45,21 @@ renderArchive(getStreak(today));
 markScrollableCode();
 
 document.body.classList.add('today-ready');
+
+const shareButton = document.querySelector('[data-share-card]');
+shareButton?.addEventListener('click', async () => {
+  shareButton.disabled = true;
+  try {
+    const { canvas, shared } = await shareStreakCard(getStreak(today));
+    if (!shared) {
+      const url = canvas.toDataURL('image/png');
+      document.querySelector('[data-share-img]').src = url;
+      document.querySelector('[data-share-download]').href = url;
+      const preview = document.querySelector('[data-share-preview]');
+      preview.hidden = false;
+      preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  } finally {
+    shareButton.disabled = false;
+  }
+});

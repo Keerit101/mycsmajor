@@ -13,7 +13,8 @@
 //   price       suggested price in Canadian dollars, shown to visitors
 //   chapters    every chapter, in order. `free: true` means the full chapter
 //               is on the site; the rest come with the paid download.
-//   checkoutUrl '' until the payment account exists. See TODO.md.
+//   checkoutUrl the book's Stripe Payment Link (https://buy.stripe.com/...),
+//               '' until it exists. See TODO.md.
 //   formats     what the buyer gets.
 //   cover       emoji and colour (0-360 hue) for the drawn cover on the shelf.
 
@@ -28,9 +29,8 @@ export const BUNDLE = {
 };
 
 // Tip jar: a "pay what you want" link for people who want to support the site
-// without buying a book. Any of these work: a Ko-fi page, a Buy Me a Coffee
-// page, a Stripe Payment Link with "customer chooses price", or a Lemon
-// Squeezy / Gumroad product set to pay-what-you-want. Until `url` is set, the
+// without buying a book: a Stripe Payment Link with "let customers choose
+// what to pay" (a Ko-fi or Buy Me a Coffee page also works). Until `url` is set, the
 // tip boxes say the tip jar is coming instead of showing a dead button.
 export const SUPPORT = {
   url: '', // TODO(payments): tip jar URL (Ko-fi, Buy Me a Coffee or Stripe)
@@ -49,8 +49,8 @@ export const books = [
     course: 'CPS 109',
     price: 12,
     checkoutUrl: '', // TODO(payments): checkout URL for the Python book
-    formats: 'PDF and EPUB, 12 chapters, 48 exercises with answers',
-    note: 'All twelve chapters are free to read on the site. The paid download is the same book as an offline PDF and EPUB, with the exercises collected at the back.',
+    formats: 'Personal PDF, 12 chapters, 48 exercises with answers',
+    note: 'All twelve chapters are free to read on the site. The paid download is the same book as an offline PDF, with the exercises collected at the back.',
     chapters: [
       { title: 'Getting started', desc: 'Install Python, run your first program and use the interactive shell.', href: '/python-book/getting-started/', free: true },
       { title: 'Variables and types', desc: 'Numbers, strings and booleans, converting between them, and f-strings.', href: '/python-book/variables-and-types/', free: true },
@@ -76,7 +76,7 @@ export const books = [
     course: 'CPS 209',
     price: 12,
     checkoutUrl: '', // TODO(payments): checkout URL for the Java book
-    formats: 'PDF and EPUB, 12 chapters, exercises with answers',
+    formats: 'Personal PDF, 12 chapters, exercises with answers',
     chapters: [
       { title: 'Your first Java program', desc: 'Install a JDK, compile and run, and understand why Java needs a class to print one line.', slug: 'your-first-java-program', free: true },
       { title: 'Types, and why Java insists', desc: 'Primitives, objects, casting and the errors the compiler catches for you.', slug: 'types', free: true },
@@ -102,7 +102,7 @@ export const books = [
     course: 'CPS 188 and CPS 305',
     price: 12,
     checkoutUrl: '', // TODO(payments): checkout URL for the C book
-    formats: 'PDF and EPUB, 11 chapters, exercises with answers',
+    formats: 'Personal PDF, 11 chapters, exercises with answers',
     chapters: [
       { title: 'From Python to C', desc: 'Compile and run your first program, and meet the compiler as a strict reviewer.', slug: 'from-python-to-c', free: true },
       { title: 'Pointers without fear', desc: 'Addresses, dereferencing and the diagrams that make pointers obvious.', slug: 'pointers-without-fear', free: true },
@@ -127,7 +127,7 @@ export const books = [
     course: 'CPS 305',
     price: 14,
     checkoutUrl: '', // TODO(payments): checkout URL for the data structures book
-    formats: 'PDF and EPUB, 13 chapters, 60 practice problems with solutions',
+    formats: 'Personal PDF, 13 chapters, 60 practice problems with solutions',
     chapters: [
       { title: 'Big O without a maths degree', desc: 'Count the work, drop the noise, and compare two solutions honestly.', slug: 'big-o', free: true },
       { title: 'Arrays, lists and when each wins', desc: 'What an index really costs, and why inserting at the front is expensive.', slug: 'arrays-and-lists', free: true },
@@ -154,7 +154,7 @@ export const books = [
     course: 'MTH 110',
     price: 14,
     checkoutUrl: '', // TODO(payments): checkout URL for the discrete math book
-    formats: 'PDF and EPUB, 12 chapters, 90 practice questions with full solutions',
+    formats: 'Personal PDF, 12 chapters, 90 practice questions with full solutions',
     chapters: [
       { title: 'Logic and truth tables', desc: 'Statements, connectives, truth tables, and the laws you are expected to know.', slug: 'logic-and-truth-tables', free: true },
       { title: 'Sets, properly', desc: 'Notation, subsets, operations, and the difference between an element and a subset.', slug: 'sets', free: true },
@@ -180,7 +180,7 @@ export const books = [
     course: null,
     price: 14,
     checkoutUrl: '', // TODO(payments): checkout URL for the security book
-    formats: 'PDF and EPUB, 12 chapters, lab exercises you can run locally',
+    formats: 'Personal PDF, 12 chapters, lab exercises you can run locally',
     chapters: [
       { title: 'How attacks actually start', desc: 'Trust boundaries, attack surface, and thinking like the person testing your code.', slug: 'how-attacks-start', free: true },
       { title: 'Passwords done properly', desc: 'Hashing, salting, why fast hashes lose, and the five lines that get it right.', slug: 'passwords', free: true },
@@ -206,7 +206,7 @@ export const books = [
     course: null,
     price: 10,
     checkoutUrl: '', // TODO(payments): checkout URL for the toolkit book
-    formats: 'PDF and EPUB, 11 chapters, plus a printable command sheet',
+    formats: 'Personal PDF, 11 chapters, plus a printable command sheet',
     chapters: [
       { title: 'The twelve commands you need', desc: 'Move around, find things and read files without touching the mouse.', slug: 'twelve-commands', free: true },
       { title: 'Git without panic', desc: 'Commits, branches, and what to do when Git says something frightening.', slug: 'git-without-panic', free: true },

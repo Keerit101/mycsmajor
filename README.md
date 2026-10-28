@@ -83,7 +83,7 @@ vite.config.js             Page discovery, layout injection, sitemap generation
 
 **Change the colours or fonts.** Edit the variables at the top of `src/styles.css`. The site is dark-only; headings use Space Grotesk and body text Inter, both self-hosted from npm.
 
-**Turn on payments.** Paste checkout links into `src/data/books.js` (`checkoutUrl` per book, `BUNDLE.checkoutUrl`, `SUPPORT.url` for tips). Every buy button reads from there. Step by step in `TODO.md`.
+**Turn on payments.** Paste Stripe Payment Links into `src/data/books.js` (`checkoutUrl` per book, `BUNDLE.checkoutUrl`, `SUPPORT.url` for tips). Every buy button reads from there. After paying, Stripe sends buyers to `/thanks/`, and the two Vercel functions in `api/` check the order and serve a PDF stamped with the buyer's email. They need the `STRIPE_SECRET_KEY` and `BOOK_FILES` environment variables. Step by step in `TODO.md`.
 
 **Turn on analytics.** Vercel Web Analytics (cookieless) is ready but commented out in `src/partials/head.html`. Enable it in the Vercel dashboard, paste the script path it gives you over `UNIQUE-PATH`, uncomment the two script tags and update the privacy policy. Step by step in `TODO.md`.
 

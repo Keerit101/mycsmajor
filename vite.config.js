@@ -117,8 +117,18 @@ ${urls.join('\n')}
   };
 }
 
+// `npm run preview` sends the same security headers as Vercel, so
+// `npm run check` catches anything the Content-Security-Policy would block.
+const vercelHeaders = Object.fromEntries(
+  JSON.parse(readFileSync(resolve(root, 'vercel.json'), 'utf8'))
+    .headers.find((h) => h.source === '/(.*)')
+    .headers.filter((h) => h.key !== 'Strict-Transport-Security')
+    .map((h) => [h.key, h.key === 'Content-Security-Policy' ? h.value.replace('; upgrade-insecure-requests', '') : h.value]),
+);
+
 export default defineConfig({
   plugins: [layout(), preloadFont(), sitemap()],
+  preview: { headers: vercelHeaders },
   build: {
     rolldownOptions: {
       input: Object.fromEntries(

@@ -3,8 +3,8 @@
 Usage: npm test
        (or: node scripts/export-solutions.mjs | python tests/check_solutions.py)
 
-Every problem with a `code` field must have a check below, and every logic
-answer that can be computed is checked too. Exits non-zero on any failure.
+Every problem with a `code` field must have a check below. Exits non-zero on
+any failure.
 """
 
 import contextlib
@@ -489,104 +489,6 @@ def _(ns, p):
     assert ns["dijkstra"](graph, "A") == {"A": 0, "C": 1, "B": 3, "D": 4}
 
 
-# ---------- Logic answers that can be computed ----------
-
-def josephus(n):
-    people = deque(range(1, n + 1))
-    while len(people) > 1:
-        people.rotate(-1)
-        people.popleft()
-    return people[0]
-
-
-def egg_drops(floors, eggs=2):
-    # Dynamic programming: worst-case drops needed for f floors with e eggs.
-    best = [[0] * (floors + 1) for _ in range(eggs + 1)]
-    for f in range(1, floors + 1):
-        best[1][f] = f
-    for e in range(2, eggs + 1):
-        for f in range(1, floors + 1):
-            best[e][f] = 1 + min(max(best[e - 1][k - 1], best[e][f - k]) for k in range(1, f + 1))
-    return best[eggs][floors]
-
-
-def bridge(times):
-    # Exhaustive search over states (people on the start side, torch side).
-    import heapq
-    start = (frozenset(times), True)
-    best = {start: 0}
-    heap = [(0, 0, start)]
-    counter = itertools.count(1)
-    while heap:
-        t, _, (left, torch_left) = heapq.heappop(heap)
-        if not left:
-            return t
-        if torch_left:
-            moves = [(frozenset(c), max(c)) for k in (1, 2) for c in itertools.combinations(left, k)]
-            nxt = [((left - m, False), cost) for m, cost in moves]
-        else:
-            right = frozenset(times) - left
-            nxt = [((left | {p}, True), p) for p in right]
-        for state, cost in nxt:
-            if t + cost < best.get(state, float("inf")):
-                best[state] = t + cost
-                heapq.heappush(heap, (t + cost, next(counter), state))
-
-
-def jugs(a, b, goal):
-    seen = {(0, 0): 0}
-    queue = deque([(0, 0)])
-    while queue:
-        x, y = queue.popleft()
-        if goal in (x, y):
-            return seen[(x, y)]
-        pour_xy = min(x, b - y)
-        pour_yx = min(y, a - x)
-        for s in ((a, y), (x, b), (0, y), (x, 0), (x - pour_xy, y + pour_xy), (x + pour_yx, y - pour_yx)):
-            if s not in seen:
-                seen[s] = seen[(x, y)] + 1
-                queue.append(s)
-
-
-def fib_calls(n):
-    return 1 if n < 2 else 1 + fib_calls(n - 1) + fib_calls(n - 2)
-
-
-def logic_checks():
-    assert int("101101", 2) == 45 and bin(200) == "0b11001000"
-    assert 10 * 9 // 2 == 45
-    assert len(range(0, 101, 10)) == 11
-    assert 0x2A == 42 and 0xFF == 255
-    assert [(a, b) for a in (False, True) for b in (False, True) if (a and not b) or (not a and b)] == [(False, True), (True, False)]
-    assert all((not (x > 0 and x < 10)) == (x <= 0 or x >= 10) for x in range(-5, 15))
-    assert jugs(5, 3, 4) == 6
-    assert math.comb(8, 3) == 56
-    lockers = [False] * 101
-    for s in range(1, 101):
-        for k in range(s, 101, s):
-            lockers[k] = not lockers[k]
-    assert [i for i in range(101) if lockers[i]] == [i * i for i in range(1, 11)]
-    assert fib_calls(5) == 15 and fib_calls(30) > 2_600_000
-    prob_distinct = 1.0
-    k = 0
-    while prob_distinct > 0.5:
-        k += 1
-        prob_distinct *= (365 - k + 1) / 365
-    assert k == 23 and abs((1 - prob_distinct) - 0.507) < 0.001
-    assert 2 ** 5 - 1 == 31
-    assert bridge([1, 2, 5, 10]) == 17
-    assert 2 ** 9 < 1000 <= 2 ** 10
-    assert egg_drops(100) == 14
-    assert josephus(41) == 19
-    n = 0
-    count = 0
-    for i in range(7):
-        for j in range(i, 7):
-            count += 1
-    assert count == 7 * 8 // 2
-    assert 2 ** 10 - 1 >= 1000 > 2 ** 9 - 1
-
-
 def main():
     problems = json.load(sys.stdin)
     failures = 0
@@ -606,12 +508,7 @@ def main():
         except Exception as exc:  # noqa: BLE001
             failures += 1
             print(f"FAIL {p['slug']}: {type(exc).__name__}: {exc}")
-    try:
-        logic_checks()
-    except AssertionError as exc:
-        failures += 1
-        print("FAIL logic answers:", exc)
-    print(f"{len(problems)} problems, {len(coded)} Python solutions checked, logic answers checked.")
+    print(f"{len(problems)} problems, {len(coded)} Python solutions checked.")
     if failures:
         print(f"{failures} failure(s).")
         sys.exit(1)

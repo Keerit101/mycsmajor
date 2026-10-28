@@ -83,7 +83,7 @@ export function renderBundle() {
           <div class="bundle-side">
             <p class="bundle-covers" aria-hidden="true">${books.map((b) => b.cover?.emoji ?? '📘').join(' ')}</p>
             ${buyButton(BUNDLE.checkoutUrl, `Get all ${books.length} books, ${money(BUNDLE.price)}`, 'btn-lg')}
-            <p class="buy-note">PDF and EPUB &middot; instant download &middot; 30-day refund</p>
+            <p class="buy-note">Personal PDF &middot; instant download &middot; stamped to you</p>
           </div>
         </section>`;
 }
@@ -131,7 +131,7 @@ export function renderBuyBox(slug) {
   if (!book) return '';
   const { free, paid, total } = counts(book);
   const status = book.checkoutUrl
-    ? 'Secure checkout, instant download, no account needed. 30-day refund.'
+    ? 'Secure checkout by Stripe, instant download, no account needed. Your copy is stamped with your email and licensed to you alone. All sales are final; see the <a href="/terms/">terms</a>.'
     : `The checkout is being set up. ${
         free ? `${free} chapter${free === 1 ? '' : 's'} ${free === 1 ? 'is' : 'are'} free to read right now.` : ''
       }`;
@@ -162,7 +162,7 @@ export function renderBuyStrip(slug) {
   return `<section class="card buy-box buy-strip" aria-label="About this book">
           <p><strong>This is a free sample chapter of ${esc(book.title)}.</strong> ${
             paid ? `The other ${paid} chapters come with the book` : 'The full book'
-          }: ${esc(book.formats.toLowerCase())}. ${book.checkoutUrl ? money(book.price) + '.' : ''}</p>
+          }: ${esc(book.formats)}. ${book.checkoutUrl ? money(book.price) + '.' : ''}</p>
           ${button}
         </section>`;
 }

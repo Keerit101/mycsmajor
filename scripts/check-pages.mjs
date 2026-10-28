@@ -75,7 +75,9 @@ for (const vp of VIEWPORTS) {
       return { scroll: document.documentElement.scrollWidth, width, wide };
     });
 
-    await page.addScriptTag({ content: axeSource });
+    // Evaluated rather than added as a <script> tag, so the site's own
+    // Content-Security-Policy (which blocks inline scripts) does not stop it.
+    await page.evaluate(axeSource);
     const a11y = await page.evaluate(async () => {
       const result = await window.axe.run(document, {
         runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] },

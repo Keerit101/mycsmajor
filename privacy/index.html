@@ -3,45 +3,71 @@
   <head>
     <!--head-->
     <title>Privacy Policy | mycsmajor</title>
-    <meta name="description" content="How mycsmajor.com handles your data: no accounts, no tracking cookies, and your problem streak is stored only in your own browser." />
+    <meta name="description" content="How mycsmajor.com handles your data: no accounts, no tracking cookies, your problem streak stays in your own browser, and payments happen on the provider's pages." />
   </head>
   <body>
     <!--header-->
     <main id="main">
       <div class="wrap prose">
         <header class="page-head">
-          <span class="eyebrow">Privacy</span>
+          <span class="eyebrow">Legal</span>
           <h1>Privacy policy</h1>
-          <p class="lede">Short version: no accounts, no tracking cookies, and your streak stays on your device.</p>
-          <p class="muted small">Last updated 24 October 2026.</p>
+          <p class="lede">Short version: no accounts, no tracking cookies, no ads, and your streak stays on your device. When you buy a book, the payment provider handles your card, not us.</p>
+          <p class="muted small">Last updated 28 October 2026.</p>
         </header>
 
-        <h2>What we store on your device</h2>
-        <p>When you press "I solved it" on a daily problem, the site saves your streak in your browser's <code>localStorage</code> under the key <code>mycsmajor:streak:v1</code>. It holds the dates you marked problems as solved, your current and best streak, and your total. This data never leaves your device and is never sent to us.</p>
-        <p>You can delete it at any time by clearing this site's data in your browser settings.</p>
+        <h2>Who is responsible</h2>
+        <p>mycsmajor.com is run by an individual in Ontario, Canada ("we", "us"). For anything about your personal information, email <a href="mailto:hello@mycsmajor.com">hello@mycsmajor.com</a>. That address is also our privacy contact.</p>
 
-        <h2>Cookies and analytics</h2>
-        <p>We do not set cookies and do not use analytics or advertising trackers. If that ever changes, we will update this page before it happens.</p>
+        <h2>What we collect, and why</h2>
+        <table>
+          <thead>
+            <tr><th>What</th><th>When</th><th>Why</th><th>Kept for</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Your streak (dates you marked solved, totals)</td><td>You press "I solved it"</td><td>To show your streak. Stored only in your browser; we never receive it.</td><td>Until you clear your browser data</td></tr>
+            <tr><td>Technical data: IP address, browser, page requested</td><td>Every visit</td><td>Our host needs it to deliver pages and block attacks.</td><td>Short-lived server logs at our host</td></tr>
+            <tr><td>Your email address and message</td><td>You email us</td><td>To reply to you.</td><td>Up to 2 years, then deleted</td></tr>
+            <tr><td>Order details: email, name, product, country, amount</td><td>You buy a book or leave a tip</td><td>To deliver your purchase, give support, stop licence abuse and keep tax records.</td><td>As long as tax law requires (in Canada, normally 6 years)</td></tr>
+          </tbody>
+        </table>
+        <p>We do not sell, rent or trade personal information, and we do not use it for advertising.</p>
 
-        <h2>Hosting</h2>
-        <p>The site is hosted on <a href="https://vercel.com/" rel="noopener">Vercel</a>. Like any web host, Vercel processes technical information such as IP addresses to deliver pages and protect against abuse. See <a href="https://vercel.com/legal/privacy-policy" rel="noopener">Vercel's privacy policy</a> for details.</p>
-        <p>Fonts are served from this site, not from a third-party font service.</p>
+        <h2>Cookies and local storage</h2>
+        <p><strong>mycsmajor.com does not set cookies</strong> and does not use analytics, advertising or social media trackers. The only thing the site stores on your device is your streak, in <code>localStorage</code> under the key <code>mycsmajor:streak:v1</code>, and only after you choose to press "I solved it". It is needed for a feature you asked for, never leaves your device, and you can delete it any time by clearing this site's data in your browser.</p>
+        <p>Because nothing optional is stored, the site does not show a cookie banner. If we ever add analytics or ads, this page will be updated first and, where the law requires it, we will ask for your consent before anything is set.</p>
+        <p>Checkout pages, tip pages and other sites we link to are run by others and may use their own cookies under their own policies.</p>
 
-        <h2>Contact form</h2>
-        <p>The contact form does not send data to a server. It opens your own email app with a pre-filled message. If you send it, we receive your email address and message, and use them only to reply to you.</p>
+        <h2>Buying a book or leaving a tip</h2>
+        <p>Checkout happens entirely on <a href="https://stripe.com/" rel="noopener">Stripe</a>'s own pages, not on mycsmajor.com. We never see or store your full card details. Stripe processes your payment and your data under its own <a href="https://stripe.com/privacy" rel="noopener">privacy policy</a>, and sends us your email address, name, country, what you bought and the amount.</p><p>When you open the download page, mycsmajor asks Stripe whether your order is paid and records how many times each book has been downloaded, in Stripe. Nothing about your order is stored on mycsmajor.com.</p>
+        <p>To protect each licence, the provider may print your email address or name into the files you download and may limit how many times a download link works. That information is used only to identify the licensed copy.</p>
 
-        <h2>Buying a book</h2>
-        <p>Checkout and payment happen entirely on our payment provider's own pages, not on mycsmajor.com. We never see or store your card details. Once the payment provider is connected, this section will name it and link to its privacy policy; until then, no book can be bought and no payment data is processed.</p>
-        <p>When a sale happens, we receive the information the provider passes on, which is normally your email address, the book you bought and the country used for tax. We use it to deliver the download, to answer support questions, to handle refunds and to keep the records tax law requires.</p>
+        <h2>Who else processes data</h2>
+        <ul>
+          <li><a href="https://vercel.com/legal/privacy-policy" rel="noopener">Vercel</a> hosts the site and processes technical data to deliver pages.</li>
+          <li><a href="https://stripe.com/privacy" rel="noopener">Stripe</a> processes payments and holds order records.</li>
+          <li>Our email provider stores messages you send us.</li>
+        </ul>
+        <p>These companies may store data outside Canada, including in the United States, where it can be subject to local law. Fonts are served from this site, not from a third-party font service.</p>
 
-        <h2>Links to other sites</h2>
-        <p>Pages link to other sites, such as vulnerability databases and shops. Some shop links may be affiliate links, which can tell the shop that you came from mycsmajor. Those sites have their own privacy policies. See the <a href="/affiliate-disclosure/">affiliate disclosure</a> for how affiliate links work here.</p>
+        <h2>Your rights</h2>
+        <p>Under Canada's PIPEDA, and the GDPR or UK GDPR if you are in Europe or the UK, you can ask to see the personal information we hold about you, correct it, or have it deleted (except records the law makes us keep). Europeans can also object to processing, ask for a copy in a portable format, and complain to their local data protection authority. In Canada you can complain to the <a href="https://www.priv.gc.ca/" rel="noopener">Office of the Privacy Commissioner of Canada</a>.</p>
+        <p>For Europe and the UK, our legal bases are: performing a contract (delivering what you bought), legal obligation (tax records), and legitimate interests (replying to you, keeping the site secure).</p>
+        <p>To use any of these rights, email <a href="mailto:hello@mycsmajor.com">hello@mycsmajor.com</a>. We reply within 30 days.</p>
+
+        <h2>Security</h2>
+        <p>The site is static: there are no accounts, passwords or databases on mycsmajor.com to break into. Every page is served over HTTPS only, with strict security headers. If we ever learn of a breach that affects your information and creates a real risk of significant harm, we will tell you and the regulator as the law requires.</p>
 
         <h2>Children</h2>
-        <p>The site is aimed at students and does not knowingly collect personal information from anyone, including children.</p>
+        <p>The site is aimed at university and college students. We do not knowingly collect personal information from children under 13. If you think a child has sent us information, email us and we will delete it.</p>
 
-        <h2>Questions</h2>
-        <p>Email <a href="mailto:hello@mycsmajor.com">hello@mycsmajor.com</a> or use the <a href="/contact/">contact page</a>.</p>
+        <h2>Links to other sites</h2>
+        <p>Pages link to other sites, such as vulnerability databases and shops. Some shop links may be affiliate links, which can tell the shop that you came from mycsmajor. See the <a href="/affiliate-disclosure/">affiliate disclosure</a>.</p>
+
+        <h2>Changes</h2>
+        <p>If this policy changes, the date at the top changes too. Significant changes will be noted on this page before they take effect.</p>
+
+        <p class="muted small">See also the <a href="/terms/">terms of use and sale</a>.</p>
       </div>
     </main>
     <!--footer-->

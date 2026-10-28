@@ -1,6 +1,6 @@
 // Daily problems: three tracks of 30, each ordered from easiest to hardest.
 //
-// Scheduling: days rotate Python, Logic, Data structures, and each track moves
+// Scheduling: days rotate Python, Cyber security, Data structures, and each track moves
 // one step harder every third day. The full cycle is 90 days, then it repeats.
 // Add new problems to the end of a track (or keep tracks the same length) so
 // that past dates keep showing the same problem.
@@ -12,12 +12,12 @@
 // Python solutions are checked by `npm test` (tests/check_solutions.py).
 
 import python from './tracks/python.js';
-import logic from './tracks/logic.js';
+import cyber from './tracks/cyber.js';
 import structures from './tracks/structures.js';
 
 export const TRACKS = [
   { key: 'python', name: 'Python', problems: python },
-  { key: 'logic', name: 'Logic', problems: logic },
+  { key: 'cyber', name: 'Cyber security', problems: cyber },
   { key: 'structures', name: 'Data structures', problems: structures },
 ];
 
