@@ -76,6 +76,20 @@ that one file. Then commit and push, and Vercel deploys it.
 - [ ] Decide whether to charge in Canadian dollars. The site says CAD; most
       student buyers abroad will see a converted price.
 
+## Selling the templates
+
+Four templates and a bundle are listed at `/templates/`, with prices in
+`src/data/templates.js`. The files to sell are in the project's shared folder
+(`template-shop/products/*.zip`), not in this repo.
+
+- [ ] Use the same checkout account as the books (or Gumroad, which many
+      template buyers already know). Create one product per zip, plus the bundle.
+- [ ] Upload each zip as the product file and use the matching image from
+      `template-shop/listing-images/` as the cover.
+- [ ] Paste each checkout URL into `checkoutUrl` in `src/data/templates.js`
+      (`grep -n "TODO(payments)" src/data/templates.js`), commit and push.
+- [ ] Turn on the 30-day refund policy, since `/templates/` promises one.
+
 ## Cyber Brief daily updates
 
 The "Exploited this month" section of `/cyber-brief/` updates itself. There is

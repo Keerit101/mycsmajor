@@ -3,16 +3,31 @@
   <head>
     <!--head-->
     <title>mycsmajor: One CS Problem a Day for Computer Science Students</title>
-    <meta name="description" content="One computer science problem a day for CS students: Python, logic and data structures with hints and solutions, plus a daily security brief and seven short CS books." />
+    <meta name="description" content="One CS problem a day for computer science students: Python, logic and data structures with solutions, plus a daily security brief, short books and templates." />
   </head>
   <body class="has-today">
     <!--header-->
     <main id="main">
       <div class="wrap">
-        <header class="hero">
-          <h1>One CS problem a day</h1>
-          <p>A short Python, logic or data structures problem every day. Solve it, check the solution, and keep your streak going.</p>
+        <header class="hero hero-split">
+          <div class="hero-text">
+            <span class="hero-chip">For computer science students</span>
+            <h1>One CS problem a day. <span class="hl">Zero</span> boring study plans.</h1>
+            <p>A short Python, logic or data structures problem every day, short books for first year, and templates that plan your term for you. With memes, because we are not animals.</p>
+            <div class="btn-row">
+              <a class="btn" href="/daily/">Solve today's problem</a>
+              <a class="btn btn-ghost" href="/templates/">Shop the templates</a>
+            </div>
+          </div>
+          <img class="hero-duck" src="/duck-cool.svg" alt="Byte, the mycsmajor debugging duck, wearing sunglasses" width="200" height="200">
         </header>
+
+        <ul class="stat-strip" aria-label="What is on the site">
+          <li><strong>90</strong> practice problems</li>
+          <li><strong>7</strong> short CS books</li>
+          <li><strong>4</strong> student templates</li>
+          <li><strong>Daily</strong> security brief</li>
+        </ul>
 
         <section aria-label="Today's problem" data-today>
           <noscript>
@@ -24,6 +39,22 @@
 
         <!-- AD SLOT: home-below-problem. Hidden until ads are set up; see src/js/ads.js and TODO.md. -->
         <aside class="ad-slot" data-ad-slot="home-below-problem" aria-label="Advertisement" hidden></aside>
+
+        <section class="home-sections" aria-labelledby="shop-title">
+          <div class="section-head">
+            <h2 id="shop-title">Templates that do the boring part</h2>
+            <a href="/templates/">See the shop</a>
+          </div>
+          <!--templates-teaser-->
+        </section>
+
+        <section class="home-sections" aria-labelledby="memes-title">
+          <div class="section-head">
+            <h2 id="memes-title">Memes, but make it CS</h2>
+            <a href="/templates/#memes-title">More memes</a>
+          </div>
+          <!--memes:3-->
+        </section>
 
         <section class="home-sections" aria-labelledby="explore-title">
           <h2 id="explore-title">More for CS students</h2>
