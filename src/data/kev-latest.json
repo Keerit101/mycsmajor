@@ -1,10 +1,41 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.10.28",
-  "dateReleased": "2026-10-28T19:00:04.8077Z",
-  "totalInCatalog": 1762,
+  "catalogVersion": "2026.10.29",
+  "dateReleased": "2026-10-29T19:09:34.4003Z",
+  "totalInCatalog": 1764,
   "items": [
+    {
+      "cveID": "CVE-2026-97229",
+      "vendorProject": "GitLab",
+      "product": "Community Edition and Enterprise Edition",
+      "vulnerabilityName": "GitLab Community Edition and Enterprise Edition Integer Overflow or Wraparound Vulnerability",
+      "dateAdded": "2026-10-29",
+      "shortDescription": "GitLab Community Edition and Enterprise Edition contain a integer overflow or wraparound vulnerability that could allow an unauthenticated user to execute arbitrary code on the GitLab server via a specially crafted regular expression in a CI/CD configuration, due to insufficient regular expression validation.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-190"
+      ],
+      "links": [
+        "https://www.ruby-lang.org/en/news/2026/10/23/regexp-fixes-for-gitlab-cves",
+        "https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-4-2-released/"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-76418",
+      "vendorProject": "Cisco",
+      "product": "Secure Firewall ASA Software and Cisco Secure FTD Software",
+      "vulnerabilityName": "Cisco Secure Firewall ASA Software and Cisco Secure FTD Software Unchecked Return Value to NULL Pointer Dereference Vulnerability",
+      "dateAdded": "2026-10-29",
+      "shortDescription": "Cisco Secure Firewall ASA Software and Cisco Secure FTD Software contains an unchecked return value to NULL pointer dereference vulnerability that could allow an unauthenticated, remote attacker to cause the device to reload unexpectedly, resulting in a denial of service (DoS) condition.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-690"
+      ],
+      "links": [
+        "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-asaftd-tunnel-dos-s6mgkb75"
+      ]
+    },
     {
       "cveID": "CVE-2026-46300",
       "vendorProject": "Linux",
@@ -520,23 +551,6 @@
       ],
       "links": [
         "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sdwan-webauth-xr8beuuU"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-86950",
-      "vendorProject": "Apple",
-      "product": "Multiple Products",
-      "vulnerabilityName": "Apple Multiple Products Out-of-Bounds Write Vulnerability",
-      "dateAdded": "2026-09-29",
-      "shortDescription": "Apple iOS, macOS, and iPadOS contain an out-of-bounds write vulnerability in CoreGraphics that may lead to arbitrary code execution.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-787"
-      ],
-      "links": [
-        "https://support.apple.com/en-us/149226",
-        "https://support.apple.com/en-us/149228",
-        "https://support.apple.com/en-us/149229"
       ]
     }
   ]
