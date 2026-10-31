@@ -1,10 +1,43 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.10.29",
-  "dateReleased": "2026-10-29T19:09:34.4003Z",
-  "totalInCatalog": 1764,
+  "catalogVersion": "2026.10.30",
+  "dateReleased": "2026-10-30T17:02:45.3665Z",
+  "totalInCatalog": 1766,
   "items": [
+    {
+      "cveID": "CVE-2026-118527",
+      "vendorProject": "Ivanti",
+      "product": "Connect Secure",
+      "vulnerabilityName": "Ivanti Connect Secure Generation of Predictable Numbers or Identifiers Vulnerability",
+      "dateAdded": "2026-10-30",
+      "shortDescription": "Ivanti Connect Secure contains a generation of predictable numbers or identifiers vulnerability that allows a remote authenticated attacker to upload files with attacker-controlled content to a known location on disk. This vulnerability can be chained with CVE-2026-104935 and CVE-2026-111357.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-340"
+      ],
+      "links": [
+        "https://hub.ivanti.com/s/article/Security-Advisory-Ivanti-Connect-Secure-CVE-2026-104935?language=en_US"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-111357",
+      "vendorProject": "Ivanti",
+      "product": "Connect Secure",
+      "vulnerabilityName": "Ivanti Connect Secure Missing Authentication for Critical Function Vulnerability",
+      "dateAdded": "2026-10-30",
+      "shortDescription": "Ivanti Connect Secure contains a missing authentication for critical function vulnerability that could allow a local authenticated attacker to escalate their privileges. This vulnerability can be chained with CVE-2026-104935 and CVE-2026-118527.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-306",
+        "CWE-862",
+        "CWE-345"
+      ],
+      "links": [
+        "https://hub.ivanti.com/s/article/Security-Advisory-Ivanti-Connect-Secure-CVE-2026-104935?language=en_US",
+        "https://www.cisa.gov/news-events/alerts/2026/10/13/cisa-urges-patching-newly-exploited-vulnerability-ivanti-connect-secure"
+      ]
+    },
     {
       "cveID": "CVE-2026-97229",
       "vendorProject": "GitLab",
@@ -536,21 +569,6 @@
       ],
       "links": [
         "https://fortiguard.fortinet.com/psirt/FG-IR-26-175"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-76504",
-      "vendorProject": "Cisco",
-      "product": "Catalyst SD-WAN Manager",
-      "vulnerabilityName": "Cisco Catalyst SD-WAN Manager Hex Encoding Vulnerability",
-      "dateAdded": "2026-09-30",
-      "shortDescription": "Cisco Catalyst SD-WAN Manager contains a hex encoding vulnerability that could allow an unauthenticated, remote attacker to access an affected system with privileges of the admin user due to improper handling of URI encoding in an HTTP request.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-177"
-      ],
-      "links": [
-        "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sdwan-webauth-xr8beuuU"
       ]
     }
   ]
