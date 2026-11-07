@@ -1,10 +1,25 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.11.04",
-  "dateReleased": "2026-11-04T20:00:05.774Z",
-  "totalInCatalog": 1768,
+  "catalogVersion": "2026.11.06",
+  "dateReleased": "2026-11-06T19:44:45.1797Z",
+  "totalInCatalog": 1769,
   "items": [
+    {
+      "cveID": "CVE-2026-19868",
+      "vendorProject": "SonicWall",
+      "product": "SonicOS SSLVPN",
+      "vulnerabilityName": "SonicWall SonicOS SSLVPN Use of Single-factor Authentication Vulnerability",
+      "dateAdded": "2026-11-06",
+      "shortDescription": "SonicWall SonicOS SSLVPN contains a use of single-factor authentication vulnerability that may allow a user with valid credentials for an alternate authentication method to bypass SAML authentication controls. Successful exploitation may also bypass SAML-enforced multi-factor authentication (MFA).",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-308"
+      ],
+      "links": [
+        "https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2026-0014"
+      ]
+    },
     {
       "cveID": "CVE-2024-27834",
       "vendorProject": "Apple",
