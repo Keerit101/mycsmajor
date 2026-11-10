@@ -1,10 +1,76 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.11.06",
-  "dateReleased": "2026-11-06T19:44:45.1797Z",
-  "totalInCatalog": 1769,
+  "catalogVersion": "2026.11.09",
+  "dateReleased": "2026-11-09T19:54:37.4945Z",
+  "totalInCatalog": 1773,
   "items": [
+    {
+      "cveID": "CVE-2026-123218",
+      "vendorProject": "IBM",
+      "product": "Aspera Faspex",
+      "vulnerabilityName": "IBM Aspera Faspex Incorrect Authorization Vulnerability",
+      "dateAdded": "2026-11-09",
+      "shortDescription": "IBM Aspera Faspex contains an incorrect authorization vulnerability that could allow an authenticated user to craft a specific message to bypass authorization, causing privilege escalations.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-863"
+      ],
+      "links": [
+        "https://www.ibm.com/support/pages/node/7295921"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-123158",
+      "vendorProject": "OpenBSD",
+      "product": "OpenSSH",
+      "vulnerabilityName": "OpenBSD OpenSSH Unexpected Status Code or Return Value Vulnerability",
+      "dateAdded": "2026-11-09",
+      "shortDescription": "OpenBSD OpenSSH on Linux contains an unexpected status code or return value vulnerability that could allow for authentication bypass.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-394"
+      ],
+      "links": [
+        "https://www.openssh.org/releasenotes.html",
+        "https://alpinelinux.org/posts/2026-11-05-openssh-password-authentication-bypass/",
+        "https://github.com/openssh/openssh-portable/commit/4353fdc43ef646c43a8dda7025cc1a898caf1482"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-116779",
+      "vendorProject": "SignalWire",
+      "product": "FreeSwitch",
+      "vulnerabilityName": "SignalWire FreeSwitch Code Injection Vulnerability",
+      "dateAdded": "2026-11-09",
+      "shortDescription": "SignalWire FreeSwitch contains a code injection vulnerability that permits configuration and credential disclosure, arbitrary call control, and command execution.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-77",
+        "CWE-78",
+        "CWE-749"
+      ],
+      "links": [
+        "https://github.com/signalwire/freeswitch/security/advisories/GHSA-mg63-h38w-8p9p"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-102895",
+      "vendorProject": "GPUStack",
+      "product": "GPUStack",
+      "vulnerabilityName": "GPUStack Improper Authentication Vulnerability",
+      "dateAdded": "2026-11-09",
+      "shortDescription": "GPUStack contains an improper authentication vulnerability which could allow unauthenticated administrative access, including user and model changes, persistent administrator API-key creation, disclosure of worker and cloud-provider secrets, and code execution through POST /v2/inference-backends/from-yaml.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-287",
+        "CWE-290",
+        "CWE-346"
+      ],
+      "links": [
+        "https://github.com/gpustack/gpustack/security/advisories/GHSA-gj9m-f8ph-pmhr"
+      ]
+    },
     {
       "cveID": "CVE-2026-19868",
       "vendorProject": "SonicWall",
@@ -473,86 +539,6 @@
       ],
       "links": [
         "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-96951"
-      ]
-    },
-    {
-      "cveID": "CVE-2023-22894",
-      "vendorProject": "Strapi",
-      "product": "Strapi",
-      "vulnerabilityName": "Strapi Cleartext Storage of Sensitive Information Vulnerability",
-      "dateAdded": "2026-10-08",
-      "shortDescription": "Strapi contains a cleartext storage of sensitive information vulnerability that could allow attackers with access to the admin panel to discover sensitive user details via the query filter. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version. This vulnerability can be chained with CVE-2023-22621 to achieve remote code execution.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-312"
-      ],
-      "links": [
-        "https://strapi.io/blog/security-disclosure-of-vulnerabilities-cve",
-        "https://github.com/strapi/strapi/releases"
-      ]
-    },
-    {
-      "cveID": "CVE-2021-3199",
-      "vendorProject": "ONLYOFFICE",
-      "product": "Docs",
-      "vulnerabilityName": "ONLYOFFICE Docs Server Path Traversal Vulnerability",
-      "dateAdded": "2026-10-08",
-      "shortDescription": "ONLYOFFICE Docs contains a path traversal vulnerability that can occur when JWT is used, via a /.. sequence in an image upload parameter and could allow for remote code execution.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-22"
-      ],
-      "links": [
-        "https://github.com/ONLYOFFICE/DocumentServer/blob/903fe5ab7a275bd69c3c3346af2d21cf87ebeabf/CHANGELOG.md#563"
-      ]
-    },
-    {
-      "cveID": "CVE-2016-3081",
-      "vendorProject": "Apache",
-      "product": "Struts",
-      "vulnerabilityName": "Apache Struts Command Injection Vulnerability",
-      "dateAdded": "2026-10-08",
-      "shortDescription": "Apache Struts contains a command injection vulnerability that could allow remote attackers to execute arbitrary code via method:prefix when Dynamic Method Invocation is enabled.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-77"
-      ],
-      "links": [
-        "https://cwiki.apache.org/confluence/display/WW/S2-032"
-      ]
-    },
-    {
-      "cveID": "CVE-2015-5477",
-      "vendorProject": "ISC",
-      "product": "BIND",
-      "vulnerabilityName": "ISC BIND Data Processing Errors Vulnerability",
-      "dateAdded": "2026-10-08",
-      "shortDescription": "ISC BIND contains a data processing errors vulnerability that could allow remote attackers to cause a denial of service via TKEY queries.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-19"
-      ],
-      "links": [
-        "https://web.archive.org/web/20150729014733/https://kb.isc.org/article/AA-01272",
-        "https://access.redhat.com/errata/RHSA-2015:1513.html",
-        "https://supportportal.juniper.net/s/article/2016-01-Security-Bulletin-Junos-Vulnerability-in-ISC-BIND-named-CVE-2015-5477"
-      ]
-    },
-    {
-      "cveID": "CVE-2015-3306",
-      "vendorProject": "ProFTPD",
-      "product": "ProFTPD",
-      "vulnerabilityName": "ProFTPD Improper Access Control Vulnerability",
-      "dateAdded": "2026-10-08",
-      "shortDescription": "ProFTPD contains an improper access control vulnerability that could allow remote attackers to read and write to arbitrary files via the site cpfr and site cpto commands.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-284"
-      ],
-      "links": [
-        "http://www.proftpd.org/",
-        "https://lists.debian.org/debian-security-announce/2015/msg00154.html",
-        "https://lists.opensuse.org/archives/list/updates@lists.opensuse.org/message/WE6YZRG5UVXMGQ7IVDRYBPIWV4M6UUGM/"
       ]
     }
   ]
