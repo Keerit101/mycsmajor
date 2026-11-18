@@ -1,10 +1,26 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.11.13",
-  "dateReleased": "2026-11-13T20:24:18.3008Z",
-  "totalInCatalog": 1781,
+  "catalogVersion": "2026.11.17",
+  "dateReleased": "2026-11-17T17:53:15.5664Z",
+  "totalInCatalog": 1782,
   "items": [
+    {
+      "cveID": "CVE-2026-115731",
+      "vendorProject": "Perforce",
+      "product": "Puppet Enterprise",
+      "vulnerabilityName": "Perforce Puppet Enterprise Deserialization of Untrusted Data Vulnerability",
+      "dateAdded": "2026-11-17",
+      "shortDescription": "Perforce Puppet Enterprise contains a deserialization of untrusted data vulnerability in Puppet’s report-processing code that allows a client with any CA-signed agent certificate to execute arbitrary code on the Puppet Server as the service user by submitting a report containing a crafted rich-data type through a PUT request. If the certificate authority automatically signs requests without strong verification, an unauthenticated network attacker can obtain a valid certificate and exploit the vulnerability.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-502",
+        "CWE-94"
+      ],
+      "links": [
+        "https://portal.perforce.com/s/cve/a91Qi000003IaHpIAK/report-deserialization-code-execution"
+      ]
+    },
     {
       "cveID": "CVE-2026-123039",
       "vendorProject": "Check Point",
@@ -529,51 +545,6 @@
       ],
       "links": [
         "https://forums.plex.tv/t/important-security-update-for-plex-media-server-v1-43-2-and-earlier/942319"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-102764",
-      "vendorProject": "BeyondTrust",
-      "product": "Remote Support",
-      "vulnerabilityName": "BeyondTrust Remote Support Authentication Bypass by Spoofing Vulnerability",
-      "dateAdded": "2026-10-16",
-      "shortDescription": "BeyondTrust Remote Support contains an authentication bypass by spoofing vulnerability that could allow a remote attacker to perform file operations on the appliance.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-290"
-      ],
-      "links": [
-        "https://www.beyondtrust.com/trust-center/security-advisories/bt26-05"
-      ]
-    },
-    {
-      "cveID": "CVE-2025-61624",
-      "vendorProject": "Fortinet",
-      "product": "Multiple Products",
-      "vulnerabilityName": "Fortinet Multiple Products Path Traversal Vulnerability",
-      "dateAdded": "2026-10-16",
-      "shortDescription": "FortiOS, FortiPAM, FortiProxy, and FortiSwitchManager contain a path traversal vulnerability that may allow an authenticated attacker with admin profile and at least read-write permissions to write or delete arbitrary files via specific CLI commands.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-22"
-      ],
-      "links": [
-        "https://fortiguard.fortinet.com/psirt/FG-IR-26-122"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-21589",
-      "vendorProject": "Atlassian",
-      "product": "Multiple Products",
-      "vulnerabilityName": "Atlassian Multiple Products Files or Directories Accessible to External Parties Vulnerability",
-      "dateAdded": "2026-10-15",
-      "shortDescription": "Multiple Atlassian products (Bitbucket Data Center ,Confluence Data Center, Jira Service Management Data Center, Jira Software Data Center, Bamboo Data Center, Crowd Data Center, Crucible and Fisheye) contain a files or directories accessible to external parties vulnerability which could allow an unauthenticated attacker to access specific files within the web application root directory in affected versions.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-552"
-      ],
-      "links": [
-        "https://confluence.atlassian.com/security/cve-2026-21589-arbitrary-file-access-vulnerability-impacts-multiple-products-1870495748.html?ref=labs.watchtowr.com"
       ]
     }
   ]
