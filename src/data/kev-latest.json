@@ -1,10 +1,70 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.11.18",
-  "dateReleased": "2026-11-18T19:17:41.0354Z",
-  "totalInCatalog": 1786,
+  "catalogVersion": "2026.11.20",
+  "dateReleased": "2026-11-20T17:48:39.1516Z",
+  "totalInCatalog": 1790,
   "items": [
+    {
+      "cveID": "CVE-2026-129448",
+      "vendorProject": "Apache",
+      "product": "Roller",
+      "vulnerabilityName": "Apache Roller Deserialization of Untrusted Data Vulnerability",
+      "dateAdded": "2026-11-20",
+      "shortDescription": "Apache Roller contains a deserialization of untrusted data vulnerability that allows an unauthenticated remote attacker to execute arbitrary code via the XML-RPC endpoint, which accepts and deserializes vendor extension types before authentication. This CVE covers the same underlying vulnerability as CVE-2026-82384 but applies to a broader range of affected versions.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-502"
+      ],
+      "links": [
+        "https://lists.apache.org/thread/cc0jck13nb9vvcmzxzwotr6n16mx28z9"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-123890",
+      "vendorProject": "Broadcom",
+      "product": "VMware vCenter",
+      "vulnerabilityName": "VMWare vCenter Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+      "dateAdded": "2026-11-20",
+      "shortDescription": "Broadcom VMware vCenter contains an authentication bypass using an alternate path or channel vulnerability in the VMware Directory Service that allows an unauthenticated attacker with network access to vCenter to bypass authentication and gain unauthorized access to the system.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-288"
+      ],
+      "links": [
+        "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/39495"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-76466",
+      "vendorProject": "Cisco",
+      "product": "Expressway Series",
+      "vulnerabilityName": "Cisco Expressway Series Use of Hard-coded Credentials Vulnerability",
+      "dateAdded": "2026-11-20",
+      "shortDescription": "Cisco Expressway Series contains a use of hard-coded credentials vulnerability that allows an unauthenticated, remote attacker with persistent cookies and network access to execute commands as root on a clustered device via the database service.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-798"
+      ],
+      "links": [
+        "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-vcs-static-cred-hr7EWZ8t"
+      ]
+    },
+    {
+      "cveID": "CVE-2025-42884",
+      "vendorProject": "SAP",
+      "product": "NetWeaver",
+      "vulnerabilityName": "SAP NetWeaver Improper Neutralization of Special Elements in Data Query Logic Vulnerability",
+      "dateAdded": "2026-11-20",
+      "shortDescription": "SAP NetWeaver Enterprise Portal contains an improper neutralization of special elements in data query logic vulnerability that allows an unauthenticated attacker to disclose or modify server information via injected JNDI environment properties or a URL used during JNDI lookup operations.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-943"
+      ],
+      "links": [
+        "https://support.sap.com/en/my-support/knowledge-base/security-notes-news/bulletin-2025.html"
+      ]
+    },
     {
       "cveID": "CVE-2026-90817",
       "vendorProject": "Vanderbilt University",
@@ -516,96 +576,6 @@
       "links": [
         "https://help.nextcloud.com/t/to-collabora-built-in-user-update-asap/250516",
         "https://github.com/CollaboraOnline/online/security/advisories/GHSA-g3vx-3m76-fghh"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-110936",
-      "vendorProject": "Siemens",
-      "product": "Software Center",
-      "vulnerabilityName": "Siemens Software Center Uncontrolled Search Path Element Vulnerability",
-      "dateAdded": "2026-10-20",
-      "shortDescription": "Siemens Software Center contains an uncontrolled search path element vulnerability that could allow an authenticated local attacker to place a specially crafted DLL in a directory that the application searches, leading to arbitrary code execution with the privileges of the affected application.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-427"
-      ],
-      "links": [
-        "https://productcert.siemens.com/productcert/html/ssa-580366.html"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-106931",
-      "vendorProject": "EG Secure Solutions",
-      "product": "SiteGuard Server Edition",
-      "vulnerabilityName": "EG Secure Solutions SiteGuard Server Edition OS Command Injection Vulnerability",
-      "dateAdded": "2026-10-20",
-      "shortDescription": "EG Secure Solutions SiteGuard Server Edition contains an OS command injection vulnerability which may allow an attacker to execute arbitrary OS commands with root or SYSTEM privileges on the system running the affected product.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-78"
-      ],
-      "links": [
-        "https://www.eg-secure.co.jp/siteguard/news/alert-202610-1"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-96656",
-      "vendorProject": "Plex",
-      "product": "Media Server",
-      "vulnerabilityName": "Plex Media Server External Control of File Name or Path Vulnerability",
-      "dateAdded": "2026-10-20",
-      "shortDescription": "Plex Media Server contains an external control of file name or path vulnerability which can allow an admin user to write arbitrary files that may be executed on load. This vulnerability can be chained with CVE-2026-96652, CVE-2026-96654, and CVE-2026-96655.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-73"
-      ],
-      "links": [
-        "https://forums.plex.tv/t/important-security-update-for-plex-media-server-v1-43-2-and-earlier/942319"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-96655",
-      "vendorProject": "Plex",
-      "product": "Media Server",
-      "vulnerabilityName": "Plex Media Server Server-Side Request Forgery (SSRF) Vulnerability",
-      "dateAdded": "2026-10-20",
-      "shortDescription": "Plex Media Server contains a server-side request forgery (SSRF) vulnerability that could allow an authenticated user to request arbitrary internal or external addresses via the '/video/:/transcode/universal' path parameter. This vulnerability can be chained with CVE-2026-96652, CVE-2026-96654, and CVE-2026-96656.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-918"
-      ],
-      "links": [
-        "https://forums.plex.tv/t/important-security-update-for-plex-media-server-v1-43-2-and-earlier/942319"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-96654",
-      "vendorProject": "Plex",
-      "product": "Media Server",
-      "vulnerabilityName": "Plex Media Server Improper Neutralization of Encoded URI Schemes in a Web Page Vulnerability",
-      "dateAdded": "2026-10-20",
-      "shortDescription": "Plex Media Server contains an improper neutralization of encoded URI schemes in a web page vulnerability that could allow an attacker to call other plugins' functions and supply their own parameters. This vulnerability can be chained with CVE-2026-96652, CVE-2026-96655, and CVE-2026-96656.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-84"
-      ],
-      "links": [
-        "https://forums.plex.tv/t/important-security-update-for-plex-media-server-v1-43-2-and-earlier/942319"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-96652",
-      "vendorProject": "Plex",
-      "product": "Media Server",
-      "vulnerabilityName": "Plex Media Server Server-Side Request Forgery (SSRF) Vulnerability",
-      "dateAdded": "2026-10-20",
-      "shortDescription": "Plex Media Server contains a server-side request forgery (SSRF) vulnerability which could allow an attacker using any X-Plex-Token value to include a full URL in the 'protocol' parameter and force the Plex server to POST to the attacker's chosen destination. This vulnerability can be chained with CVE-2026-96654, CVE-2026-96655, and CVE-2026-96656.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-918"
-      ],
-      "links": [
-        "https://forums.plex.tv/t/important-security-update-for-plex-media-server-v1-43-2-and-earlier/942319"
       ]
     }
   ]
