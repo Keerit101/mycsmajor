@@ -1,10 +1,41 @@
 {
   "source": "CISA Known Exploited Vulnerabilities Catalog",
   "sourceUrl": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-  "catalogVersion": "2026.11.20",
-  "dateReleased": "2026-11-20T17:48:39.1516Z",
-  "totalInCatalog": 1790,
+  "catalogVersion": "2026.11.23",
+  "dateReleased": "2026-11-23T19:43:55.7979Z",
+  "totalInCatalog": 1792,
   "items": [
+    {
+      "cveID": "CVE-2026-134624",
+      "vendorProject": "N-able",
+      "product": "MailAssure",
+      "vulnerabilityName": "N-able MailAssure (SpamExperts) Server-Side Request Forgery (SSRF) Vulnerability",
+      "dateAdded": "2026-11-23",
+      "shortDescription": "N-able MailAssure (SpamExperts) contains a server-side request forgery vulnerability in the LDAP synchronization connection check that allows an authenticated API user to connect to arbitrary internal hosts and ports, determine which are reachable, and send crafted data to internal services.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-918"
+      ],
+      "links": [
+        "https://me.n-able.com/s/security-advisory/aArVy0000002mrlKAA"
+      ]
+    },
+    {
+      "cveID": "CVE-2026-133968",
+      "vendorProject": "Project MONAI",
+      "product": "MONAI Label",
+      "vulnerabilityName": "Project MONAI MONAI Label Path Traversal Vulnerability",
+      "dateAdded": "2026-11-23",
+      "shortDescription": "Project MONAI MONAI Label contains a path traversal vulnerability that allows an unauthenticated remote attacker to write arbitrary files outside the intended datastore directory, potentially resulting in remote code execution.",
+      "knownRansomwareCampaignUse": "Unknown",
+      "cwes": [
+        "CWE-24"
+      ],
+      "links": [
+        "https://github.com/Project-MONAI/MONAILabel/security/advisories/GHSA-qc22-rmgc-vg94",
+        "https://github.com/Project-MONAI/MONAILabel/pull/1915"
+      ]
+    },
     {
       "cveID": "CVE-2026-129448",
       "vendorProject": "Apache",
@@ -118,7 +149,7 @@
       "vulnerabilityName": "Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability",
       "dateAdded": "2026-11-18",
       "shortDescription": "Synology DSM contains an improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) that could allow a remote attacker to execute arbitrary code via unspecified vectors.",
-      "knownRansomwareCampaignUse": "Unknown",
+      "knownRansomwareCampaignUse": "Known",
       "cwes": [
         "CWE-116"
       ],
@@ -545,37 +576,6 @@
       "links": [
         "https://www.php.net/",
         "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-114625",
-      "vendorProject": "Arista",
-      "product": "VeloCloud Orchestrator",
-      "vulnerabilityName": "Arista VeloCloud Orchestrator SQL Injection Vulnerability",
-      "dateAdded": "2026-10-23",
-      "shortDescription": "Arista VeloCloud Orchestrator on-prem contains a SQL injection vulnerability that may allow a remote attacker to access privileged internal functionality and impact the VCO host. Successful exploitation may compromise the confidentiality, integrity, and availability of the orchestrator and data managed by the orchestrator.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-89"
-      ],
-      "links": [
-        "https://www.arista.com/en/support/advisories-notices/security-advisory/24838-security-advisory-0199"
-      ]
-    },
-    {
-      "cveID": "CVE-2026-110447",
-      "vendorProject": "Collabora",
-      "product": "Collabora Online – Built-in CODE Server",
-      "vulnerabilityName": "Collabora Online – Built-in CODE Server OS Command Injection Vulnerability",
-      "dateAdded": "2026-10-23",
-      "shortDescription": "Collabora Collabora Online – Built-in CODE Server when used within the NextCloud platform contains an OS command injection vulnerability that allows for remote code execution when the CODE server isn't running.",
-      "knownRansomwareCampaignUse": "Unknown",
-      "cwes": [
-        "CWE-78"
-      ],
-      "links": [
-        "https://help.nextcloud.com/t/to-collabora-built-in-user-update-asap/250516",
-        "https://github.com/CollaboraOnline/online/security/advisories/GHSA-g3vx-3m76-fghh"
       ]
     }
   ]
